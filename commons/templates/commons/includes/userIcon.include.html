@@ -1,0 +1,11 @@
+<div>
+    {% if user.is_authenticated %}
+        <a href="">
+            <div class="contenedorFoto">
+                <img src="{{ request.user.userprofile.foto|cut:'usuarios' }}" alt="">
+            </div> 
+        </a>
+    {% else %}
+        <p>No has iniciado sesión.</p>
+    {% endif %}
+</div>

@@ -1,0 +1,24 @@
+@import url('./navbar.css');
+@import url('./colors.css');
+body{
+    background-color: var(--light-color);
+}
+.content{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+.contentList /*Contenedor cuando hay un seguido de contenido (Ej: los masajes)*/
+{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2%;
+    justify-content: center;
+    width: 90%;
+}
+.contentList a {
+    margin-top: 3%;
+}
+
+

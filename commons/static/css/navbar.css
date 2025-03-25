@@ -1,0 +1,126 @@
+/* Estilos generales del navbar */
+.navbar {
+    width: 100%;  /* Ocupa todo el ancho */
+    position: fixed;  /* Fija el navbar arriba */
+    top: 0;  /* Lo pega al borde superior */
+    left: 0; /* Se asegura de que comience desde el extremo izquierdo */
+    right: 0; /* Se extiende hasta el extremo derecho */
+    background-color: var(--dark-color); /* Color de fondo */
+    padding: 15px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start; /* Alinea los elementos a la izquierda */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    z-index: 1000; /* Se asegura de que esté por encima de otros elementos */
+    gap:20px
+}
+
+/* Agregar margen superior al contenido para que no quede tapado por el navbar */
+body {
+    padding-top: 70px; /* Ajusta según la altura del navbar */
+}
+
+/* Ajustar la imagen del logo */
+.navbar a img {
+    height: 50px;  /* Ajusta el tamaño */
+    width: auto;
+}
+
+/* Estilos para la lista de navegación */
+.navbar ul {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin: 0;
+    padding: 0;
+}
+
+
+/* Enlaces de la navegación */
+.navbar ul li a {
+    text-decoration: none;
+    color: white;
+    font-size: 1rem;
+    font-weight: 500;
+    transition: color 0.3s;
+}
+
+.navbar ul li a:hover {
+    color: var(--strong-color);
+}
+
+/* Estilos del Dropdown */
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+/* Botón del Dropdown */
+.navbar button {
+    background-color: var(--dark-color);
+    color: white;
+    padding: 10px 15px;
+    font-size: 1rem;
+    border: none;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.navbar button:hover {
+    background-color: #1abc9c;
+}
+
+/* Contenedor de las opciones del Dropdown */
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: var(--light-color);
+    min-width: 150px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+/* Estilo de cada opción dentro del Dropdown */
+.dropdown-content a {
+    color: var(--dark-color) !important;
+    padding: 10px 15px;
+    text-decoration: none;
+    display: block;
+    transition: background 0.3s;
+}
+
+.dropdown-content a:hover {
+    background-color: #f1f1f1 !important;
+}
+
+/* Mostrar el Dropdown cuando el usuario pasa el mouse */
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+/* Responsive: Cuando la pantalla es pequeña */
+@media (max-width: 768px) {
+    .navbar {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .navbar ul {
+        flex-direction: column;
+        width: 100%;
+        gap: 10px;
+    }
+
+    .dropdown-content {
+        position: relative;
+        width: 100%;
+    }
+
+    .dropbtn {
+        width: 100%;
+        text-align: left;
+    }
+}

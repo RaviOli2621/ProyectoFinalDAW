@@ -1,0 +1,63 @@
+# Byte-compiled / cached files
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyo
+*.pyd
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environment
+venv/
+.env/
+
+# Django stuff:
+db.sqlite3
+*.sqlite3
+
+# Logs
+logs/
+*.log
+*.out
+*.err
+logs/
+*.log
+
+# Static and media files
+/static/
+/media/
+
+# Local environment variables
+.env
+*.env
+
+# Django migrations
+*/migrations/__pycache__/
+*/migrations/*.pyc
+
+# IDE files
+.vscode/
+.idea/
+*.iml
+
+# Pytest / coverage
+.coverage
+htmlcov/
+*.cover
+*.py,cover
+.cache
+
+# MyPy
+.mypy_cache/
+.dmypy.json
+
+# Celery
+celerybeat-schedule
+
+# Docker
+*.pid
+
+# Other
+*.swp
+*~

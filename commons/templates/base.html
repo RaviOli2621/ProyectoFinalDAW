@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Django CRUD Application</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/test.css' %}">
+    <link rel="icon" type="image/x-icon" href="{% static 'Susremaster.ico' %}">
+</head>
+<body>
+
+    <nav class="navbar">
+        <a href="{% url 'home' %}">
+            <img src="{% static 'crayones.jpg' %}" alt="Crayones">
+        </a>
+        
+        <ul>
+            <div class="dropdown">
+                <a href="{% url 'masajes' %}">
+                    <button class="dropbtn">Masajes</button>
+                </a>
+                <div class="dropdown-content">
+                    <li>
+                    {% for tipo in tipos_masajes %}    
+                        <a href="{% url 'masajes' %}?tipo={{ tipo.id }}">{{ tipo.nombre }}</a>
+                    {% endfor %}
+                    </li>
+                </div>
+            </div>
+
+            
+            {% if user.is_authenticated %}  
+
+            <li>
+                <a href="{% url 'logout'%}"><button>Logout</button></a>
+            </li>
+            {% else %}            
+
+            <li>
+                <a href="{% url 'signup'%}"><button>Signup</button></a>
+            </li>
+            <li>
+                <a href="{% url 'signin'%}"><button>Signin</button></a>
+            </li>
+            {% endif %}
+            
+            {% include "commons/includes/userIcon.include.html" %}
+            
+        </ul>
+    </nav>
+    <div class="content">
+        {% block content %}
+    </div>
+    {% endblock %}
+    <footer>
+        <p>Author: Xavi Rubio<br>
+        <a href="mailto:ravirubio@gmail.com">ravirubio@gmail.com</a></p>
+    </footer>
+</body>
+</html>
