@@ -7,6 +7,6 @@
     <div class="masajeInfo">
         <input type="text" name="Title" class="Title" value="{{nombre}}">
         <div class="textarea" name="{{nombre}} description" id="{{nombre}}Desc"><b></b><br>{{description}}</div>
-        {% include "commons/includes/boton.include.html" with text="Hola" redirect="reservar" get="" %}
+        {% include "commons/includes/boton.include.html" with text="Reservar" redirect="reservar" get="?masajeId="|add:id %}
     </div>
 </div>

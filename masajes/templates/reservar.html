@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block content %}
+    {% include 'commons/includes/changeBackground.include.html' with imagen='reservaBackground.svg' %}
+    {% include "commons/includes/title.include.html" with Titulo="Reservar" Subtitulo="Algo" %}
+    <form method="post">
+        {% csrf_token %}
+        {{ reserva_form.as_p }}
+        <button type="submit">Guardar</button>
+    </form>
+{% endblock %}

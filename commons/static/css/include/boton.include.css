@@ -1,6 +1,6 @@
 .boton {
-    background-color: #9E9494; /* Color de fondo similar */
-    color: white; /* Texto en color blanco */
+    background-color: var(--dark-color); /* Color de fondo similar */
+    color: var(--light-color); /* Texto en color blanco */
     border: none;
     padding: 12px 30px;
     border-radius: 50px; /* Bordes redondeados */
