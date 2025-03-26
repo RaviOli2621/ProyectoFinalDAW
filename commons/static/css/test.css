@@ -2,6 +2,7 @@
 @import url('./colors.css');
 body{
     background-color: var(--light-color);
+    font-family: var(--font-text);
 }
 .content{
     display: flex;

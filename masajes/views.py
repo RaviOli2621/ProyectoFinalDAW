@@ -1,6 +1,32 @@
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from .models import Masaje, TipoMasaje
 from commons.utils import get_filename  # Importamos la función de utilidad
+from django.contrib.auth.decorators import login_required
+
+# decorador para cuando no estas logado
+def notAdmin_user(view_func):
+    def wrapper_func(request, *args, **kwargs):
+        if request.user.is_staff:
+            return redirect('home')
+        else:
+            return view_func(request, *args, **kwargs)
+    return wrapper_func
+
+@notAdmin_user
+def calendari(request):
+    return render(request,"masajes.html")
+
+@login_required
+def reserves(request):
+    return render(request,"masajes.html",{
+        "id":request.user.id
+    })
+
+@login_required
+def reservar(request):
+    return render(request,"masajes.html",{
+        "id":1
+    })
 
 def masajes(request):
     tipo_id = request.GET.get('tipo')
@@ -27,3 +53,16 @@ def masajes(request):
         'tipos': tipos,
         "verTipo": verTipo
     })
+
+def masaje(request):
+    id = request.GET.get('tipo')
+    masaje = Masaje.objects.filter(id=id).first()
+    masaje.foto_nombre = get_filename(masaje.foto)
+    if id:
+        return render(request, 'masaje.html', {
+            "masaje": masaje,
+        })  
+    else:
+        return redirect('home')
+
+

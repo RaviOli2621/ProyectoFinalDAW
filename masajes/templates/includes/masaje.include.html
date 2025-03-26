@@ -1,10 +1,12 @@
 {% load static %}
-<link rel="stylesheet" href="{% static 'masaje.include.css' %}">
-<div class="masaje">
-    <div class="imgDiv">
-        <img src="{% static imagen %}" alt="{{nombre}}">
-    </div>
+<link rel="stylesheet" href="{% static 'css/masaje.include.css' %}">
+<div class="masajeGande">
     <div>
-        <div class="textarea" name="{{nombre}} description" id="{{nombre}}Desc"><b>{{nombre}}</b><br>{{description}}</div>
+        <img src="{% static imagen %}" alt="asa" srcset="">
+    </div>
+    <div class="masajeInfo">
+        <input type="text" name="Title" class="Title" value="{{nombre}}">
+        <div class="textarea" name="{{nombre}} description" id="{{nombre}}Desc"><b></b><br>{{description}}</div>
+        {% include "commons/includes/boton.include.html" with text="Hola" redirect="reservar" get="" %}
     </div>
 </div>

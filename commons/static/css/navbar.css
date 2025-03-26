@@ -19,9 +19,16 @@
 body {
     padding-top: 70px; /* Ajusta según la altura del navbar */
 }
+.navbar .userIcon{
+    margin-left: auto;
+    transform: translateX(-70%);
+}
+.userIcon:hover .dropdown-content {
+    display: block;
+}
 
 /* Ajustar la imagen del logo */
-.navbar a img {
+.navbar img {
     height: 50px;  /* Ajusta el tamaño */
     width: auto;
 }
@@ -68,7 +75,7 @@ body {
 }
 
 .navbar button:hover {
-    background-color: #1abc9c;
+    background-color: var(--strong-color);
 }
 
 /* Contenedor de las opciones del Dropdown */
@@ -82,7 +89,10 @@ body {
     border-radius: 5px;
     overflow: hidden;
 }
+.userIcon .dropdown-content{
+    transform: translateX(-65%);
 
+}
 /* Estilo de cada opción dentro del Dropdown */
 .dropdown-content a {
     color: var(--dark-color) !important;

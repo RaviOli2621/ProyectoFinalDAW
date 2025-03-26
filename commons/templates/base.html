@@ -12,7 +12,7 @@
 
     <nav class="navbar">
         <a href="{% url 'home' %}">
-            <img src="{% static 'crayones.jpg' %}" alt="Crayones">
+            <img src="{% static 'logo.png' %}" alt="logo">
         </a>
         
         <ul>
@@ -29,33 +29,45 @@
                 </div>
             </div>
 
-            
-            {% if user.is_authenticated %}  
 
-            <li>
-                <a href="{% url 'logout'%}"><button>Logout</button></a>
-            </li>
-            {% else %}            
-
-            <li>
-                <a href="{% url 'signup'%}"><button>Signup</button></a>
-            </li>
-            <li>
-                <a href="{% url 'signin'%}"><button>Signin</button></a>
-            </li>
+            {% if user.is_authenticated and request.user.is_staff %}
+                <div class="dropdown">
+                    <button class="dropbtn">Reservas</button>
+                    <div class="dropdown-content">
+                        <li>
+                            <a href="{% url 'calendari' %}">Calendari</a>
+                            <a href="{% url 'reservas' %}">Reservas</a>
+                        </li>
+                    </div>
+                </div>
+            {% else %} 
+                <a href="{% url 'reservas' %}">
+                    <button>Reservas</button>
+                </a>
             {% endif %}
             
-            {% include "commons/includes/userIcon.include.html" %}
+            <!-- {% if user.is_authenticated %}   -->
+            <!-- <li> -->
+                <!-- <a href="{% url 'logout'%}"><button>Logout</button></a> -->
+            <!-- </li> -->
+            <!-- {% else %}             -->
+            <!-- <li> -->
+                <!-- <a href="{% url 'signup'%}"><button>Signup</button></a> -->
+            <!-- </li> -->
+            <!-- <li> -->
+                <!-- <a href="{% url 'signin'%}"><button>Signin</button></a> -->
+            <!-- </li> -->
+            <!-- {% endif %} -->
+            
+           
             
         </ul>
+         {% include "commons/includes/userIcon.include.html" %}
     </nav>
     <div class="content">
         {% block content %}
     </div>
     {% endblock %}
-    <footer>
-        <p>Author: Xavi Rubio<br>
-        <a href="mailto:ravirubio@gmail.com">ravirubio@gmail.com</a></p>
-    </footer>
+    {% include "commons/includes/footer.include.html" %}
 </body>
 </html>

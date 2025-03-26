@@ -4,9 +4,20 @@ from django.contrib.auth.models import User
 from django.contrib.auth import login,logout, authenticate
 from django.contrib.auth.decorators import login_required
 from django.db import IntegrityError
+from django.shortcuts import redirect
 
 # Create your views here.
 
+# decorador para cuando no estas logado
+def unauthenticated_user(view_func):
+    def wrapper_func(request, *args, **kwargs):
+        if request.user.is_authenticated:
+            return redirect('home')
+        else:
+            return view_func(request, *args, **kwargs)
+    return wrapper_func
+
+@unauthenticated_user
 def signup(request):
     if request.method == "GET": 
         return render(request,'signup.html',{
@@ -21,8 +32,8 @@ def signup(request):
                 login(request,user)
                 return redirect("home")
             except IntegrityError:
-                errorText = "User alredy exist"
-        else: errorText = "The passwords does not match"
+                errorText = "User already exists"
+        else: errorText = "The passwords do not match"
         return render(request,'signup.html',{
             'form':UserCreationForm,
             'error':errorText
@@ -33,6 +44,7 @@ def signout(request):
     logout(request)
     return redirect("home")
 
+@unauthenticated_user
 def signin(request):
     if request.method == "GET": 
         return render(request,"signin.html", {

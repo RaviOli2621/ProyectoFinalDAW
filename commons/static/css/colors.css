@@ -1,7 +1,11 @@
 :root{
 
-	--light-color: #e2f7f3;
-	--strong-color: #16cbaa;
-	--dark-color: #04241d;
-
+	--Legacylight-color: #e2f7f3;
+	--Legacystrong-color: #16cbaa;
+	--Legacydark-color: #04241d;
+	--light-color: #F4FAEF;
+	--strong-color: #D2C38D;
+	--dark-color: #40281C;
+	--light-shine: #f4faef6c;
+	--font-text: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif
 }

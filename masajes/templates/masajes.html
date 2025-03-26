@@ -5,7 +5,7 @@
         <div class="contentList">
             {% for tipo in tipos %}
                 <a href="{% url 'masajes' %}?tipo={{ tipo.id }}">
-                    {% include "includes/masaje.include.html" with imagen=tipo.foto_nombre nombre=tipo.nombre description=tipo.description %}
+                    {% include "includes/masajes.include.html" with imagen=tipo.foto_nombre nombre=tipo.nombre description=tipo.description %}
                 </a>
             {% endfor %}
         </div>
@@ -13,7 +13,9 @@
         {% for tipo in tipos %}{% include "commons/includes/title.include.html" with Titulo="Masajes" Subtitulo=tipo.nombre %}{% endfor %}
         <div class="contentList">
             {% for masaje in masajes %}
-                    {% include "includes/masaje.include.html" with imagen=masaje.foto_nombre nombre=masaje.nombre description=masaje.description %}
+                <a href="{% url 'masaje' %}?tipo={{ masaje.id }}">
+                    {% include "includes/masajes.include.html" with imagen=masaje.foto_nombre nombre=masaje.nombre description=masaje.descriptionSh %}
+                </a>
             {% endfor %}
         </div>
     {% endif %}

@@ -1,0 +1,22 @@
+.boton {
+    background-color: #9E9494; /* Color de fondo similar */
+    color: white; /* Texto en color blanco */
+    border: none;
+    padding: 12px 30px;
+    border-radius: 50px; /* Bordes redondeados */
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    text-align: center;
+    display: inline-block;
+    transition: all 0.3s ease;
+}
+
+.boton:hover {
+    filter: brightness(1.2);
+    transition: all 0.3s ease;
+}
+.boton:active {
+    filter: brightness(0.8);
+    transition: all 0.3s ease;
+}
