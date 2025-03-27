@@ -1,4 +1,5 @@
 from datetime import datetime, timedelta 
+from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 
 from usuarios.forms import ReservaForm, TarjetaForm
@@ -23,18 +24,35 @@ def calendari(request):
 
 @login_required
 def reserves(request):
-    return render(request,"masajes.html",{
-        "id":request.user.id
+    idUser = request.user.id
+    reserves = Reserva.objects.filter(idCliente=idUser)
+    for reserva in reserves:
+        reserva.foto_nombre = get_filename(reserva.idMasaje.foto)  # Extrae solo el nombre de la imagen
+
+    return render(request,"reserves.html",{
+        "reserves": reserves
     })
 
 @login_required
 def reservar(request):
+    # Obtener el id del masaje desde la URL
+    masaje_id = request.GET.get('masajeId')  # Obtiene el masajeId de la URL
+    
+    if not masaje_id:
+        return redirect('home')  # Si no se pasa el idMasaje, redirige al home o muestra un error
+
+    # Verificar que el masaje existe en la base de datos
+    try:
+        masaje = Masaje.objects.get(id=masaje_id)
+    except Masaje.DoesNotExist:
+        return redirect('home')  # Redirigir o mostrar un mensaje de error si el masaje no existe
+
     if request.method == 'POST':
         reserva_form = ReservaForm(request.POST)
-        
+
         if reserva_form.is_valid():
             metodo_pago = reserva_form.cleaned_data['metodo_pago']
-            
+
             # Si el método de pago es "targeta", guardamos la reserva temporalmente en la sesión
             if metodo_pago == 'targeta':
                 reserva_temp = reserva_form.cleaned_data
@@ -44,24 +62,25 @@ def reservar(request):
                 reserva_temp['idCliente'] = request.user.id  # Guardamos solo el ID del usuario en la sesión
                 
                 # Almacenar solo el ID del objeto Masaje en la sesión
-                reserva_temp['idMasaje'] = reserva_temp['idMasaje'].id  # Guardamos el ID de Masaje
+                reserva_temp['idMasaje'] = masaje.id  # Usar el id de masaje que obtuvimos de la URL
                 
                 # Convertir la duración a segundos (timedelta a número entero)
                 reserva_temp['duracion'] = reserva_temp['duracion'].total_seconds()  # Convertimos la duración a segundos
                 
                 request.session['reserva_temp'] = reserva_temp
                 return redirect('pago_tarjeta')  # Redirige al formulario de pago con tarjeta
-            
+
             # Si el método de pago es "efectivo", simplemente guarda la reserva
             reserva = reserva_form.save(commit=False)
             reserva.idCliente = request.user  # Asocia la reserva al usuario actual
+            reserva.idMasaje = masaje  # Asocia el masaje seleccionado a la reserva
             reserva.save()
             return redirect('home')  # Redirige a la página de inicio (home) después de guardar la reserva
 
     else:
         reserva_form = ReservaForm()
 
-    return render(request, 'reservar.html', {'reserva_form': reserva_form})
+    return render(request, 'reservar.html', {'reserva_form': reserva_form, 'masaje': masaje})
 
 @login_required
 def pago_tarjeta(request):
@@ -111,6 +130,84 @@ def pago_tarjeta(request):
 
     return render(request, 'tarjeta_template.html', {'tarjeta_form': tarjeta_form})
 
+@login_required
+def editar_reserva(request):
+    reserva_id = request.GET.get('reservaid')  # Obtiene el masajeId de la URL
+
+    reserva = get_object_or_404(Reserva, id=reserva_id)
+    
+    if request.method == 'POST':
+        reserva_form = ReservaForm(request.POST, instance=reserva)
+        
+        if reserva_form.is_valid():
+            metodo_pago = reserva_form.cleaned_data['metodo_pago']
+
+            if metodo_pago == 'targeta' and reserva.pagado == False:
+                reserva_temp = reserva_form.cleaned_data
+                reserva_temp['fecha'] = reserva_temp['fecha'].strftime('%Y-%m-%d %H:%M:%S')
+                reserva_temp['idCliente'] = request.user.id
+                reserva_temp['idMasaje'] = reserva.idMasaje.id
+                reserva_temp['duracion'] = reserva_temp['duracion'].total_seconds()
+                reserva_temp['reserva_id'] = reserva.id  # Guardamos el ID de la reserva en la sesión
+                request.session['reserva_temp'] = reserva_temp
+                return redirect('pago_tarjeta_cambio')
+
+            reserva_form.save()
+            return redirect('home')
+    else:
+        reserva_form = ReservaForm(instance=reserva)
+
+    return render(request, 'reservar.html', {'reserva_form': reserva_form, 'reserva': reserva})
+
+@login_required
+def editar_pago_tarjeta(request):
+    reserva_temp = request.session.get('reserva_temp', None)
+
+    if not reserva_temp:
+        return redirect('home')
+    
+    if request.method == 'POST':
+        tarjeta_form = TarjetaForm(request.POST)
+        
+        if tarjeta_form.is_valid():
+            fecha = datetime.strptime(reserva_temp['fecha'], '%Y-%m-%d %H:%M:%S')
+            id_masaje = reserva_temp['idMasaje']
+            masaje = Masaje.objects.get(id=id_masaje)
+            duracion = timedelta(seconds=reserva_temp['duracion'])
+            id_cliente = reserva_temp['idCliente']
+            cliente = User.objects.get(id=id_cliente)
+            reserva_id = reserva_temp['reserva_id']
+            reserva = get_object_or_404(Reserva, id=reserva_id) 
+            reserva.fecha = fecha
+            reserva.idMasaje = masaje
+            reserva.duracion = duracion
+            reserva.metodo_pago = reserva_temp['metodo_pago']
+            reserva.idCliente = cliente
+            reserva.pagado = True
+            reserva.save()
+            
+            del request.session['reserva_temp']
+            return redirect('confirmacion_pago')
+    else:
+        tarjeta_form = TarjetaForm()
+
+    return render(request, 'tarjeta_template.html', {'tarjeta_form': tarjeta_form})
+
+@login_required
+def borrar_reserva(request, reserva_id):
+    if request.method == 'POST':
+        # Obtiene la reserva con el ID proporcionado, o devuelve un 404 si no existe.
+        reserva = get_object_or_404(Reserva, id=reserva_id)
+        
+        try:
+            # Eliminar la reserva
+            reserva.delete()
+            return JsonResponse({'success': True})
+        except Exception as e:
+            # En caso de error al eliminar
+            return JsonResponse({'success': False, 'error': str(e)})
+    return JsonResponse({'success': False, 'error': 'Método no permitido'}, status=405)
+
 def masajes(request):
     tipo_id = request.GET.get('tipo')
     verTipo = True
@@ -147,5 +244,4 @@ def masaje(request):
         })  
     else:
         return redirect('home')
-
 

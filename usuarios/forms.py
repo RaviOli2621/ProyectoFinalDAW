@@ -17,7 +17,7 @@ class Meta:
 class ReservaForm(forms.ModelForm):
     class Meta:
         model = Reserva
-        fields = ['fecha', 'idMasaje', 'duracion', 'metodo_pago']
+        fields = ['fecha', 'duracion', 'metodo_pago']
 
 class TarjetaForm(forms.Form):
     numero_tarjeta = forms.CharField(max_length=16, label="Número de tarjeta")

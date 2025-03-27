@@ -5,8 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Django CRUD Application</title>
     {% load static %}
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script defer src="{% static 'js/modal.include.js' %}"></script>
     <link rel="stylesheet" href="{% static 'css/test.css' %}">
     <link rel="icon" type="image/x-icon" href="{% static 'Susremaster.ico' %}">
+    <script>
+        var csrfToken = "{{ csrf_token }}";  // Aquí se inserta el token CSRF en la variable
+    </script>
 </head>
 <body>
 

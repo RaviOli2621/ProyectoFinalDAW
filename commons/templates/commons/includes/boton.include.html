@@ -1,5 +1,5 @@
 {% load static %}
 <link rel="stylesheet" href="{% static 'css/include/boton.include.css' %}">
-<a href="{% url redirect %}{{get}}">
-    <button class="boton">{{text}}</button>
+<a href="{% url redirect %}{{getTxt}}{{getValor}}">
+    <button class="boton">{{ text }}</button>
 </a>

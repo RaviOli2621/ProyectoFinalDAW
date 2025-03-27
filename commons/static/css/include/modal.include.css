@@ -1,0 +1,99 @@
+/* Estilos del Modal */
+.custom-modal {
+    display: none; /* Ocultamos el modal por defecto */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); /* Fondo oscuro */
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Estilos del Contenido del Modal */
+.custom-modal-content {
+    background: #fff;
+    border-radius: 8px;
+    width: 500px;
+    max-width: 90%;
+    padding: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilos del Header */
+.custom-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.custom-modal-close {
+    font-size: 30px;
+    cursor: pointer;
+    color: #888;
+}
+
+.custom-modal-close:hover {
+    color: #333;
+}
+
+/* Título del Modal */
+#modalTitle {
+    font-size: 20px;
+    margin: 0;
+}
+
+/* Cuerpo del Modal */
+.custom-modal-body {
+    margin: 20px 0;
+    font-size: 16px;
+    line-height: 1.5;
+    color: #333;
+}
+
+/* Estilos del Footer */
+.custom-modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+/* Estilos de los botones */
+.custom-btn {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.custom-btn-secondary {
+    background-color: #6c757d;
+    color: white;
+}
+
+.custom-btn-secondary:hover {
+    background-color: #5a6268;
+}
+
+.custom-btn-primary {
+    background-color: #007bff;
+    color: white;
+}
+
+.custom-btn-primary:hover {
+    background-color: #0056b3;
+}
+
+/* Nuevo botón para la acción de eliminar */
+.custom-btn-danger {
+    background-color: #dc3545; /* Rojo para indicar peligro */
+    color: white;
+}
+
+.custom-btn-danger:hover {
+    background-color: #c82333; /* Rojo más oscuro */
+}
