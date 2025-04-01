@@ -85,7 +85,7 @@ def userList(request):
         "usuarios":users
     })
 
-@login_required
+@permission_required('auth.change_user')
 def cambiar_privilegios(request,user_id):
     if request.method == 'POST':
         # Obtiene la reserva con el ID proporcionado, o devuelve un 404 si no existe.
