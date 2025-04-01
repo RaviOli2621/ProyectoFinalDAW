@@ -1,4 +1,4 @@
-function cambiarPriv(currentUserId){
+function cambiarPriv(currentUserId,elemento){
     if (currentUserId !== null) {
     // Hacer la solicitud AJAX para eliminar la reserva
         $.ajax({
@@ -9,7 +9,6 @@ function cambiarPriv(currentUserId){
             },
             success: function(response) {
                 alert('Accion ejecutada con éxito');
-                $('#myModal').hide();  // Ocultar el modal
                 location.reload();  // Recargar la página (o actualizar el listado)
             },
             error: function(xhr, status, error) {

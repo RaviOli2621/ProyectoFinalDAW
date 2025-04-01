@@ -22,4 +22,6 @@ body{
     margin-top: 3%;
 }
 
-
+.contentList .user-card {
+    margin-top: 2rem;
+}

@@ -79,7 +79,11 @@ def signin(request):
     
 @permission_required('auth.change_user')
 def userList(request):
-    return render(request, "admin/userList.html")
+    users = User.objects.all()
+
+    return render(request, "admin/userList.html",{
+        "usuarios":users
+    })
 
 @login_required
 def cambiar_privilegios(request,user_id):
