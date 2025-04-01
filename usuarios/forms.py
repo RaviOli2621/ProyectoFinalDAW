@@ -1,5 +1,7 @@
 from django import forms
 from .models import Masaje, Reserva  # Importa tu modelo
+from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.forms import UserCreationForm
 
 
 class TuModeloForm(forms.ModelForm):
@@ -23,3 +25,20 @@ class TarjetaForm(forms.Form):
     numero_tarjeta = forms.CharField(max_length=16, label="Número de tarjeta")
     fecha_expiracion = forms.CharField(max_length=5, label="Fecha de expiración (MM/YY)")
     cvv = forms.CharField(max_length=3, label="CVV")
+
+# LOGIN Y SIGNUP
+
+
+class CustomLoginForm(AuthenticationForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['username'].widget.attrs.update({'class': 'form-control', 'placeholder': 'Nombre de usuario'})
+        self.fields['password'].widget.attrs.update({'class': 'form-control', 'placeholder': 'Contraseña'})
+
+
+class CustomSignInForm(UserCreationForm):
+    gmail = forms.EmailField(
+        required=True,  # No obligatorio si solo es informativo
+        label="Gmail",
+        widget=forms.EmailInput(attrs={ 'class': 'form-control'})
+    )

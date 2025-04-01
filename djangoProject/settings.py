@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'usuarios',
     'commons',
     'masajes',
+    'capture_tag',
 ]
 
 MIDDLEWARE = [
@@ -141,3 +142,12 @@ STATICFILES_DIRS = [
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")  # Se usa en producción
 
 LOGIN_URL = "signin" 
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'  # Cambia esto según el servicio que utilices
+EMAIL_PORT = 587  # Puerto SMTP
+EMAIL_USE_TLS = True  # Seguridad TLS
+EMAIL_HOST_USER = 'j.rubio2@sapalomera.cat'  # Tu correo de servicio
+EMAIL_HOST_PASSWORD = 'tuvygrqdfxctzozj'
+
+EMAIL_SERVICE = 'j.rubio2@sapalomera.cat'

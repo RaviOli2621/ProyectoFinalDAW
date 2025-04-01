@@ -2,16 +2,78 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1>SignIn</h1>
 
-{{error}}
+{% load static %}
 
-<form method="POST">
-    {% csrf_token %}
-    {{form.as_p}}
-    <button>
-        SignIn
-    </button>
 
-</form>
+<link rel="stylesheet" href="{% static 'css/signin.css' %}">
+{% include "commons/includes/title.include.html" with Titulo="Iniciar sesión" Subtitulo="Algo" %}
+
+{% include "commons/includes/toast.include.html" with toastTxt=toastTxt toastType=toastType %}
+
+
+<div class="form">
+    <form method="post">
+        {% csrf_token %}
+        
+        <!-- Renderizado manual del campo username -->
+        <div class="form-group flex-column">
+            <label for="{{ form.username.id_for_label }}">Nombre de usuario</label>
+            <div class="inputForm">
+                <img src="{% static '/user.svg' %}" alt="Candado" class="icon">
+                {{ form.username }}
+            </div>
+            <!-- Mostrar errores del campo -->
+            {% if form.username.errors %}
+                <div class="error-message">
+                    {% for error in form.username.errors %}
+                        <p>{{ error }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+        
+        <!-- Renderizado manual del campo password -->
+        <div class="form-group flex-column">
+            <label for="{{ form.password.id_for_label }}">Contraseña</label>
+            <div class="inputForm">
+                <img src="{% static '/candado.svg' %}" alt="Candado" class="icon">
+                {{ form.password }}
+            </div>
+            <!-- Mostrar errores del campo -->
+            {% if form.password.errors %}
+                <div class="error-message">
+                    {% for error in form.password.errors %}
+                        <p>{{ error }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div><br>
+        <div class="form-group flex-row">
+            <div>
+                <input type="checkbox">
+                <label>Remember me </label>
+            </div>
+            <span class="span">Contrasenya olvidada?</span>
+        </div>
+        <!-- Botón de inicio de sesión -->
+        <button type="submit" class="button-submit">Iniciar sesión</button>
+        <p class="signup-link">
+            No tienes cuenta?   <a href="{% url 'signup' %}">SignUp</a>
+        </p>
+        <p class="signup-link">
+            o tambien <a></a>
+        </p>
+    </form>
+        <div class="flex-row">
+      <button class="btn google">
+        <img src="{% static 'google.svg' %}" alt="logo">
+        Google 
+      </button><button class="btn apple">
+        <img src="{% static 'apple.svg' %}" alt="logo">
+        Apple 
+        
+</button></div>
+</div>
+
 {% endblock %}

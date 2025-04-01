@@ -1,0 +1,68 @@
+.signup-form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.625rem;
+    background-color: #ffffff;
+    padding: 1.875rem;
+    width: 28.125rem;
+    border-radius: 1.25rem;
+    align-items: center;
+    justify-content: center;
+}
+
+h1 {
+    margin-bottom: 20px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+
+}
+
+.signup-form input, .signup-form textarea, .signup-form select {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    width: 100%;
+    font-size: 14px;
+    width: 450px;
+    border: solid 1.5px var(--strong-color);
+    transition: 0.25s;
+}
+
+.signup-form input:focus,.signup-form textarea:focus,.signup-form select:focus {
+    outline: none;
+    border: 1.5px solid #2d79f3;
+    transition: 0.25s;
+}
+
+.signup-form textarea{
+    resize: none;
+    width: 450px
+}
+
+.btn-submit {
+    background: black;
+    color: white;
+    border: none;
+    padding: 12px;
+    width: 100%;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.btn-submit:hover {
+    opacity: 0.8;
+}
+
+/* Estilizar los errores del formulario de Django */
+.signup-form .errorlist {
+    color: red;
+    list-style: none;
+    padding: 0;
+}

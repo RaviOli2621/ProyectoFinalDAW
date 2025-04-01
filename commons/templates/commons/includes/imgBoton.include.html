@@ -1,7 +1,15 @@
 {% load static %}
 <link rel="stylesheet" href="{% static 'css/include/imgBoton.include.css' %}">
+{% if url %}
 <a class="buttonA" href="{% url url %}{{data}}">
-    <button class="boton">
+    <button class="boton" onclick={{action}}>
         <img src="{% static src %}" alt="{{alt}}">
     </button>
 </a>
+{% else %}
+<a class="buttonA">
+    <button class="boton" onclick={{action}}>
+        <img src="{% static src %}" alt="{{alt}}">
+    </button>
+</a>
+{% endif %}

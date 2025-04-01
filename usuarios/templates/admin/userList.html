@@ -1,0 +1,15 @@
+
+{% extends "base.html" %}
+
+{% block content %}
+
+{% load static %}
+
+{% include "commons/includes/title.include.html" with Titulo="Crear usuari" Subtitulo="Algo" %}
+
+{% include "includes/userItem.include.html" with img="" name="Paco Juan" id="2" %}
+
+{% csrf_token %}
+
+
+{% endblock %}

@@ -24,6 +24,18 @@ def create_user_profile(sender, instance, created, **kwargs):
 def save_user_profile(sender, instance, **kwargs):
     instance.userprofile.save()
 
+class Worker(models.Model):
+    user_profile = models.OneToOneField(UserProfile, on_delete=models.CASCADE, related_name='worker')
+    dni = models.CharField(max_length=20, unique=True)
+    phone_number = models.CharField(max_length=15)
+    start_date = models.DateField()
+    start_time = models.TimeField()
+    end_time = models.TimeField()
+
+    def __str__(self):
+        return f"{self.user_profile.user.username} - {self.dni}"
+
+
 class Reserva(models.Model):
     fecha = models.DateTimeField()  # Automatically set the field to now when the object is created
     idCliente = models.ForeignKey(User, on_delete=models.CASCADE)  # Relación 1 a 1 con User

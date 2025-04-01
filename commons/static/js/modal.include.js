@@ -1,6 +1,5 @@
 
 let currentReservationId = null;  // Para guardar el id de la reserva que se quiere borrar
-console.log(csrfToken);
 
 // Mostrar el modal de confirmación con la reserva seleccionada
 function showConfirmModal(reservaId) {

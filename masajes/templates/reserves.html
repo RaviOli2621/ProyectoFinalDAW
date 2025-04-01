@@ -7,7 +7,6 @@
             <div class="contentList">
                 {% for reserva in reserves %}
                         {% include "includes/reserves.include.html" with imagen=reserva.foto_nombre nombre=reserva.idMasaje.nombre description="Mondongo" %}
-                        <button class="custom-btn custom-btn-danger" id="deleteButton" onclick="showConfirmModal({{ reserva.id }})">Borrar</button>
                 {% endfor %}
             </div>
         {%else%}

@@ -1,10 +1,14 @@
+from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
 from django.contrib.auth import login,logout, authenticate
 from django.contrib.auth.decorators import login_required
 from django.db import IntegrityError
 from django.shortcuts import redirect
+from django.contrib.auth.decorators import permission_required
+from django.contrib.auth.models import Group
+
+from usuarios.forms import CustomLoginForm, CustomSignInForm
 
 # Create your views here.
 
@@ -20,14 +24,17 @@ def unauthenticated_user(view_func):
 @unauthenticated_user
 def signup(request):
     if request.method == "GET": 
+        authentication_form = CustomSignInForm()
         return render(request,'signup.html',{
-            'form':UserCreationForm,
+            'form':authentication_form,
+            "toastTxt": " ",
+            "toastType": "error"
         })    
     elif request.method == "POST": 
+        authentication_form = CustomSignInForm(request.POST)
         if(request.POST['password2'] == request.POST['password1']):
-            errorText = ""
             try:
-                user = User.objects.create_user(username=request.POST['username'],password=request.POST['password1'])
+                user = User.objects.create_user(username=request.POST['username'],email=request.POST['gmail'],password=request.POST['password1'])
                 user.save()
                 login(request,user)
                 return redirect("home")
@@ -35,8 +42,9 @@ def signup(request):
                 errorText = "User already exists"
         else: errorText = "The passwords do not match"
         return render(request,'signup.html',{
-            'form':UserCreationForm,
-            'error':errorText
+            'form':authentication_form,
+            'toastTxt':errorText,
+            "toastType": "error"
         })  
 
 @login_required
@@ -47,18 +55,48 @@ def signout(request):
 @unauthenticated_user
 def signin(request):
     if request.method == "GET": 
-        return render(request,"signin.html", {
-            'form':AuthenticationForm
-        })
+        form = CustomLoginForm()  # Instancia vacía
+        return render(request, "signin.html", {'form': form})
+
     elif request.method == "POST":
-        print(request.POST)
-        user = authenticate(request,username=request.POST['username'],password=request.POST['password'])
+        form = CustomLoginForm(data=request.POST)  # IMPORTANTE: Usa "data=request.POST"
+
+        user = authenticate(
+            request,
+            username=request.POST.get('username'),
+            password=request.POST.get('password')
+        )
+
         if user is None:
-            return render(request,"signin.html", {
-                'form':AuthenticationForm,
-                'error':"Username/Password is incorrect"
+            return render(request, "signin.html", {
+                'form': form,  # Ahora mantiene los datos ingresados
+                'toastTxt': "Username/Password is incorrect",
+                "toastType": "error"
             })
         else: 
-            login(request,user)
+            login(request, user)
             return redirect("home")
-        
+    
+@permission_required('auth.change_user')
+def userList(request):
+    return render(request, "admin/userList.html")
+
+@login_required
+def cambiar_privilegios(request,user_id):
+    if request.method == 'POST':
+        # Obtiene la reserva con el ID proporcionado, o devuelve un 404 si no existe.
+        user = get_object_or_404(User, id=user_id)
+        grupo = Group.objects.get(name="Administradores")
+        if user.groups.filter(name="Administradores").exists():
+            print("Si")
+            user.groups.remove(grupo)
+            user.save()
+            return JsonResponse({'success': True})
+        else:
+            # Añadir usuario al grupo
+            print("Siu")
+            user.groups.add(grupo)
+            user.save()
+            return JsonResponse({'success': True})
+
+    return JsonResponse({'success': False, 'error': 'Método no permitido'}, status=405)

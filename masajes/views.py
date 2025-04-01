@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta 
+from datetime import datetime, timedelta
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 
@@ -28,6 +28,8 @@ def reserves(request):
     reserves = Reserva.objects.filter(idCliente=idUser)
     for reserva in reserves:
         reserva.foto_nombre = get_filename(reserva.idMasaje.foto)  # Extrae solo el nombre de la imagen
+        reserva.duracion_formatada = f"{reserva.duracion.total_seconds() / 3600:.1f}"  # Convierte duración a horas con un decimal
+        reserva.precio_final = float(reserva.idMasaje.precio) * float(reserva.duracion_formatada)
 
     return render(request,"reserves.html",{
         "reserves": reserves
@@ -75,7 +77,7 @@ def reservar(request):
             reserva.idCliente = request.user  # Asocia la reserva al usuario actual
             reserva.idMasaje = masaje  # Asocia el masaje seleccionado a la reserva
             reserva.save()
-            return redirect('home')  # Redirige a la página de inicio (home) después de guardar la reserva
+            return redirect('reservas') 
 
     else:
         reserva_form = ReservaForm()
@@ -153,7 +155,7 @@ def editar_reserva(request):
                 return redirect('pago_tarjeta_cambio')
 
             reserva_form.save()
-            return redirect('home')
+            return redirect('reservas')
     else:
         reserva_form = ReservaForm(instance=reserva)
 
@@ -193,20 +195,6 @@ def editar_pago_tarjeta(request):
 
     return render(request, 'tarjeta_template.html', {'tarjeta_form': tarjeta_form})
 
-@login_required
-def borrar_reserva(request, reserva_id):
-    if request.method == 'POST':
-        # Obtiene la reserva con el ID proporcionado, o devuelve un 404 si no existe.
-        reserva = get_object_or_404(Reserva, id=reserva_id)
-        
-        try:
-            # Eliminar la reserva
-            reserva.delete()
-            return JsonResponse({'success': True})
-        except Exception as e:
-            # En caso de error al eliminar
-            return JsonResponse({'success': False, 'error': str(e)})
-    return JsonResponse({'success': False, 'error': 'Método no permitido'}, status=405)
 
 def masajes(request):
     tipo_id = request.GET.get('tipo')
@@ -245,3 +233,18 @@ def masaje(request):
     else:
         return redirect('home')
 
+# Funciones para AJAX,etc
+@login_required
+def borrar_reserva(request, reserva_id):
+    if request.method == 'POST':
+        # Obtiene la reserva con el ID proporcionado, o devuelve un 404 si no existe.
+        reserva = get_object_or_404(Reserva, id=reserva_id)
+        
+        try:
+            # Eliminar la reserva
+            reserva.delete()
+            return JsonResponse({'success': True})
+        except Exception as e:
+            # En caso de error al eliminar
+            return JsonResponse({'success': False, 'error': str(e)})
+    return JsonResponse({'success': False, 'error': 'Método no permitido'}, status=405)

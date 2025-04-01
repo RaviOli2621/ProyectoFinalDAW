@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% load static %}
+
+<h1>SignUp</h1>
+
+<!-- Incluir la hoja de estilos -->
+<link rel="stylesheet" href="{% static 'css/contacta.css' %}">
+
+<form method="post" class="signup-form">
+    {% csrf_token %}
+    
+    <!-- Renderizar el formulario con clases personalizadas -->
+    <div class="form-group">
+        {{ form.as_p }}
+    </div>
+    
+    <button type="submit" class="btn-submit">Enviar correo</button>
+</form>
+{% endblock %}
