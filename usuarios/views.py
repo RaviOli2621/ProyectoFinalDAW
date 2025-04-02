@@ -9,6 +9,7 @@ from django.contrib.auth.decorators import permission_required
 from django.contrib.auth.models import Group
 
 from usuarios.forms import CustomLoginForm, CustomSignInForm
+from usuarios.models import Worker
 
 # Create your views here.
 
@@ -26,9 +27,7 @@ def signup(request):
     if request.method == "GET": 
         authentication_form = CustomSignInForm()
         return render(request,'signup.html',{
-            'form':authentication_form,
-            "toastTxt": " ",
-            "toastType": "error"
+            'form':authentication_form
         })    
     elif request.method == "POST": 
         authentication_form = CustomSignInForm(request.POST)
@@ -39,8 +38,8 @@ def signup(request):
                 login(request,user)
                 return redirect("home")
             except IntegrityError:
-                errorText = "User already exists"
-        else: errorText = "The passwords do not match"
+                errorText = "El usuario ya existe"
+        else: errorText = "Las contraseñas no coinciden"
         return render(request,'signup.html',{
             'form':authentication_form,
             'toastTxt':errorText,
@@ -70,24 +69,23 @@ def signin(request):
         if user is None:
             return render(request, "signin.html", {
                 'form': form,  # Ahora mantiene los datos ingresados
-                'toastTxt': "Username/Password is incorrect",
+                'toastTxt': "Usuario o contraseña incorrecta",
                 "toastType": "error"
             })
         else: 
             login(request, user)
             return redirect("home")
     
+# Admin users
 @permission_required('auth.change_user')
-def userList(request):
-    users = User.objects.all()
+def userList(request,user_id=""):
+    if request.method == "GET":
+        users = User.objects.all()
 
-    return render(request, "admin/userList.html",{
-        "usuarios":users
-    })
-
-@permission_required('auth.change_user')
-def cambiar_privilegios(request,user_id):
-    if request.method == 'POST':
+        return render(request, "admin/userList.html",{
+            "usuarios":users
+        })
+    elif request.method == 'POST':
         # Obtiene la reserva con el ID proporcionado, o devuelve un 404 si no existe.
         user = get_object_or_404(User, id=user_id)
         grupo = Group.objects.get(name="Administradores")
@@ -103,4 +101,29 @@ def cambiar_privilegios(request,user_id):
             user.save()
             return JsonResponse({'success': True})
 
+    return JsonResponse({'success': False, 'error': 'Método no permitido'}, status=405)
+
+# Admin workers
+
+@permission_required('auth.change_user')
+def workerList(request):
+    workers = Worker.objects.all()
+
+    return render(request, "admin/workerList.html",{
+        "workers":workers
+    })
+
+@login_required
+def borrar_worker(request, worker_id):
+    if request.method == 'POST':
+        # Obtiene la reserva con el ID proporcionado, o devuelve un 404 si no existe.
+        worker = get_object_or_404(Worker, id=worker_id)
+        
+        try:
+            # Eliminar la reserva
+            # worker.delete()
+            return JsonResponse({'success': True})
+        except Exception as e:
+            # En caso de error al eliminar
+            return JsonResponse({'success': False, 'error': str(e)})
     return JsonResponse({'success': False, 'error': 'Método no permitido'}, status=405)

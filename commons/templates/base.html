@@ -6,7 +6,6 @@
     <title>Django CRUD Application</title>
     {% load static %}
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script defer src="{% static 'js/modal.include.js' %}"></script>
     <link rel="stylesheet" href="{% static 'css/test.css' %}">
     <link rel="icon" type="image/x-icon" href="{% static 'Susremaster.ico' %}">
     <script>
@@ -72,6 +71,7 @@
          {% include "commons/includes/userIcon.include.html" %}
     </nav>
     <div class="content">
+        {% include "commons/includes/toast.include.html" with toastTxt=toastTxt toastType=toastType %}
         {% block content %}    
         {% endblock %}
     </div>

@@ -1,0 +1,19 @@
+
+{% extends "base.html" %}
+
+{% block content %}
+
+{% load static %}
+
+{% include "commons/includes/title.include.html" with Titulo="Crear usuari" Subtitulo="Algo" %}
+
+{% comment %} {{ request.user.userprofile.foto|cut:'usuarios' }} {% endcomment %}
+<div class="contentList">
+{% for worker in workers %}
+    {% include "includes/workerItem.include.html" with img=worker.user_profile.foto|cut:'usuarios' name=worker.user_profile.user.username id=worker.id texto="Calendario" %}
+{% endfor %}
+</div>
+{% csrf_token %}
+{% comment %} Incluir el modal {% endcomment %}
+{% include "commons/includes/modal.include.html" with Titulo="Borrar trabajador" Contenido="Seguro que quieres borrar este trabajador?" idConfirm="modalConfirmDeleteWorkBtn" modalId="DeleteWorkerMD" %}
+{% endblock %}

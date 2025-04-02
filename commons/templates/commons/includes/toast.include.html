@@ -2,19 +2,36 @@
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 
 <script>
+    function showToast(message, type) {
+        let color = type === "error" ? "#ff4d4d" : "#008000"; // Rojo para error, verde para éxito
+        Toastify({
+            text: message,
+            duration: 10000,
+            gravity: "top",
+            position: "center",
+            style:{
+                background: color
+            }
+        }).showToast();
+    }
+
     document.addEventListener("DOMContentLoaded", function() {
-        let errorMessage = "{{ toastTxt|escapejs }}".trim(); // Escapar caracteres especiales y eliminar espacios en blanco
+        // Verificar si hay un mensaje guardado en sessionStorage
+        let toastMessage = sessionStorage.getItem("toastMessage");
+        let toastType = sessionStorage.getItem("toastType");
+
+        if (toastMessage) {
+            showToast(toastMessage, toastType);
+            sessionStorage.removeItem("toastMessage"); // Borrar después de mostrarlo
+            sessionStorage.removeItem("toastType");
+        }
+
+        // También mostrar el mensaje si se pasó desde Django
+        let errorMessage = "{{ toastTxt|escapejs }}".trim();
         let type = "{{ toastType|escapejs }}".trim();
-        let color;
-        type == "error" ? color = "#ff4d4d": color = "#008000"
-        if (errorMessage !== "") { // Solo mostrar el toast si hay un mensaje de error
-            Toastify({
-                text: errorMessage,
-                duration: 3000,
-                gravity: "top",
-                position: "center",
-                backgroundColor: color
-            }).showToast();
+
+        if (errorMessage !== "") { 
+            showToast(errorMessage, type);
         }
     });
 </script>

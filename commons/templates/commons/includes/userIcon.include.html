@@ -8,6 +8,7 @@
         <div class="dropdown-content">
             {% if perms.auth.change_user %}
                 <a href="{% url 'userList' %}">Lista de usuarios</a>
+                <a href="{% url 'workerList' %}">Lista de trabajadores</a>
             {% endif %}
             <a href="{% url 'logout' %}">Logout</a>
         </div>

@@ -1,0 +1,24 @@
+{% load static %}
+{% load capture_tags %}
+
+
+{% comment %} Acciones de calendario, borrar y editar {% endcomment %}
+{% capture as accionAHacer silent %}cambiarPriv({{ id }},this){% endcapture %}
+{% capture as accionParaBorrar silent %}showConfirmModal({{ id }},"DeleteWorkerMD"){% endcapture %}
+
+{% comment %} Guardar botones superiores {% endcomment %}
+{% capture as boton_right silent %}
+    {% include "commons/includes/imgBoton.include.html" with src="/trash-black.svg" alt="Trash Icon" action=accionParaBorrar %}
+{% endcapture %}
+{% capture as boton_left silent %}
+    {% include "commons/includes/imgBoton.include.html" with src="/pen-black.svg" alt="Trash Icon" action=accionAHacer12121 %}
+{% endcapture %} 
+
+{% capture as bottom_content silent %}
+    {% include "commons/includes/boton.include.html" with text=texto action=accionAHacer %}
+{% endcapture %}
+
+{% include "commons/includes/infoCard.include.html" with top_action_left=boton_left top_action_right=boton_right title=name bottom_actions=bottom_content image_url=img %}
+
+<script defer src="{% static 'js/changeAdmin.js' %}"></script>
+<script defer src="{% static 'js/modal.include.js' %}"></script>

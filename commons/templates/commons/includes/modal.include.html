@@ -1,6 +1,6 @@
 {% load static %}
 <link rel="stylesheet" href="{% static 'css/include/modal.include.css' %}">
-<div id="myModal" class="custom-modal" style="display: none;">
+<div id="{{ modalId|default:'myModal'}}" class="custom-modal" style="display: none;">
     <div class="custom-modal-content">
         <div class="custom-modal-header">
             <span id="modalClose" class="custom-modal-close">&times;</span>

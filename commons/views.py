@@ -30,7 +30,21 @@ def enviar_correo(request):
                 [EMAIL_SERVICE],  # Correo del usuario
                 fail_silently=False,
             )
-            return render(request, 'home.html')  # Redirige a una página de éxito
+            return render(request, 'contacta.html',{
+                'form': form,
+                'toastTxt': "Correo enviado exitosamente",
+                "toastType": "succes"
+            })  # Redirige a una página de éxito
+        else:
+            errores = " ".join(
+                [f"{field}: {', '.join(errors)}" for field, errors in form.errors.items()]
+            )
+
+            return render(request, 'contacta.html', {
+                'form': form,
+                'toastTxt': f"Error al enviar el correo, {errores}",
+                "toastType": "error"
+            })
     else:
         form = EnviarCorreoForm()
 
