@@ -13,4 +13,7 @@ urlpatterns = [
     # Admin workers
     path('workerList/', views.workerList,name="workerList"),
     path('borrar_worker/<int:worker_id>/', views.borrar_worker, name='borrar_worker'),  # Vista para borrar una reserva
+    path('editWorker/', views.editar_worker,name="editWorker"),
+    path('createWorker/', views.crear_worker,name="createWorker"),
+
 ]

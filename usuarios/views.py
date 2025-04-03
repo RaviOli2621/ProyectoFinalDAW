@@ -8,7 +8,7 @@ from django.shortcuts import redirect
 from django.contrib.auth.decorators import permission_required
 from django.contrib.auth.models import Group
 
-from usuarios.forms import CustomLoginForm, CustomSignInForm
+from usuarios.forms import CustomLoginForm, CustomSignInForm, WorkeCreaterForm, WorkerEditForm
 from usuarios.models import Worker
 
 # Create your views here.
@@ -113,7 +113,7 @@ def workerList(request):
         "workers":workers
     })
 
-@login_required
+@permission_required('auth.change_user')
 def borrar_worker(request, worker_id):
     if request.method == 'POST':
         # Obtiene la reserva con el ID proporcionado, o devuelve un 404 si no existe.
@@ -126,4 +126,62 @@ def borrar_worker(request, worker_id):
         except Exception as e:
             # En caso de error al eliminar
             return JsonResponse({'success': False, 'error': str(e)})
+    return JsonResponse({'success': False, 'error': 'Método no permitido'}, status=405)
+
+@permission_required('auth.change_user')
+def crear_worker(request):
+    if request.method == 'GET':
+        # Crear el formulario con la instancia del worker
+
+        form = WorkeCreaterForm()
+        
+        return render(request, "admin/registerWorker.html", {
+            "form": form,
+        })
+    elif request.method == 'POST':
+        form = WorkeCreaterForm(request.POST)
+        
+        if form.is_valid():
+            form.save()
+            return redirect('workerList')  # Redirige a la lista de trabajadores
+        else:
+            return render(request, "admin/registerWorker.html", {
+                "form": form,
+            })
+    return JsonResponse({'success': False, 'error': 'Método no permitido'}, status=405)
+
+@permission_required('auth.change_user')
+def editar_worker(request):
+    if request.method == 'GET':
+        trabajador_id = request.GET.get('trabajador_id')
+        if trabajador_id:
+            worker = get_object_or_404(Worker, id=trabajador_id)
+            
+            # Crear el formulario con la instancia del worker
+
+            form = WorkerEditForm(worker=worker)  # Pasamos el worker al formulario
+            
+            return render(request, "admin/editWorker.html", {
+                "form": form,
+                "worker": worker,  # Importante: pasar el worker al template
+            })
+        else:
+            return JsonResponse({'success': False, 'error': 'ID de trabajador no proporcionado'}, status=400)
+    elif request.method == 'POST':
+        trabajador_id = request.POST.get('trabajador_id')
+        if trabajador_id:
+            worker = get_object_or_404(Worker, id=trabajador_id)
+            # Pasar el worker y no es necesario pasar instance porque lo hacemos en __init__
+            form = WorkerEditForm(request.POST, worker=worker)
+            
+            if form.is_valid():
+                form.save()
+                return redirect('workerList')  # Redirige a la lista de trabajadores
+            else:
+                return render(request, "admin/editWorker.html", {
+                    "form": form,
+                    "worker": worker,
+                })
+        else:
+            return JsonResponse({'success': False, 'error': 'ID de trabajador no proporcionado'}, status=400)
     return JsonResponse({'success': False, 'error': 'Método no permitido'}, status=405)

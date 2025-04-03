@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+{% load static %}
+
+{% include "commons/includes/title.include.html" with Titulo="Crear trabajador" Subtitulo="Crea los datos del trabajador" %}
+
+<div>
+    <form method="POST" action="{% url 'createWorker' %}">
+        {% csrf_token %}
+        
+        <!-- Username -->
+        <div style="margin-bottom: 1rem;">
+            <label for="{{ form.username.id_for_label }}">
+                Nombre de usuario:
+            </label>
+            {{ form.username }}
+            {% if form.username.errors %}
+                <div style="color: red;">{{ form.username.errors }}</div>
+            {% endif %}
+        </div>
+        
+        <!-- Email -->
+        <div style="margin-bottom: 1rem;">
+            <label for="{{ form.email.id_for_label }}">
+                Email:
+            </label>
+            {{ form.email }}
+            {% if form.email.errors %}
+                <div style="color: red;">{{ form.email.errors }}</div>
+            {% endif %}
+        </div>
+        
+        <!-- Contraseña -->
+        <div style="margin-bottom: 1rem;">
+            <label for="{{ form.password1.id_for_label }}">
+                Contraseña:
+            </label>
+            {{ form.password1 }}
+            {% if form.password1.errors %}
+                <div style="color: red;">{{ form.password1.errors }}</div>
+            {% endif %}
+            <div style="font-size: 0.875em; color: #666;">{{ form.password1.help_text }}</div>
+        </div>
+        
+        <!-- Confirmar contraseña -->
+        <div style="margin-bottom: 1rem;">
+            <label for="{{ form.password2.id_for_label }}">
+                Confirmar contraseña:
+            </label>
+            {{ form.password2 }}
+            {% if form.password2.errors %}
+                <div style="color: red;">{{ form.password2.errors }}</div>
+            {% endif %}
+        </div>
+        
+        <!-- DNI -->
+        <div style="margin-bottom: 1rem;">
+            <label for="{{ form.dni.id_for_label }}">
+                DNI:
+            </label>
+            {{ form.dni }}
+            {% if form.dni.errors %}
+                <div style="color: red;">{{ form.dni.errors }}</div>
+            {% endif %}
+        </div>
+        
+        <!-- Número de teléfono -->
+        <div style="margin-bottom: 1rem;">
+            <label for="{{ form.phone_number.id_for_label }}">
+                Número de teléfono:
+            </label>
+            {{ form.phone_number }}
+            {% if form.phone_number.errors %}
+                <div style="color: red;">{{ form.phone_number.errors }}</div>
+            {% endif %}
+        </div>
+        
+        <!-- Fecha de inicio -->
+        <div style="margin-bottom: 1rem;">
+            <label for="{{ form.start_date.id_for_label }}">
+                Fecha de inicio:
+            </label>
+            {{ form.start_date }}
+            {% if form.start_date.errors %}
+                <div style="color: red;">{{ form.start_date.errors }}</div>
+            {% endif %}
+        </div>
+        
+        <!-- Horario -->
+        <div style="margin-bottom: 1rem;">
+            <label for="{{ form.horario.id_for_label }}">
+                Horario (formato: HH:MM - HH:MM):
+            </label>
+            {{ form.horario }}
+            {% if form.horario.errors %}
+                <div style="color: red;">{{ form.horario.errors }}</div>
+            {% endif %}
+            <div style="font-size: 0.875em; color: #666;">Solo se permiten horas en punto (:00) o y media (:30)</div>
+        </div>
+        
+        <div style="display: flex; justify-content: space-between; margin-top: 1rem;">
+            <a href="{% url 'workerList' %}" style="background-color: #6c757d; color: white; padding: 0.375rem 0.75rem; text-decoration: none;">Cancelar</a>
+            <button type="submit" style="background-color: #007bff; color: white; padding: 0.375rem 0.75rem; border: none; cursor: pointer;">Crear trabajador</button>
+        </div>
+    </form>
+</div>
+
+{% endblock %}
