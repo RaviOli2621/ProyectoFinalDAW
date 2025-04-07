@@ -4,8 +4,20 @@
 {% block content %}
 
 {% load static %}
+<link rel="stylesheet" href="{% static 'css/workerList.css' %}">
 
-{% include "commons/includes/title.include.html" with Titulo="Crear usuari" Subtitulo="Algo" %}
+<div class="buttonsInTitle">
+    <div class="center">
+        {% include "commons/includes/title.include.html" with Titulo="Crear usuari" Subtitulo="Algo" action="" %}
+    </div>
+    <div class="right">
+        <input type="file" id="file-input" name="file-input" accept=".json" style="display: none;" onchange="this.form.submit();">
+        <label for="file-input">
+            {% include "commons/includes/imgBoton.include.html" with src="/doc-white.svg" action="document.getElementById('file-input').click();" color="#D9D9D9" alt="Trash Icon" %}
+        </label>
+        {% include "commons/includes/imgBoton.include.html" with src="/plus-white.svg" url="createWorker" data="" color="#D9D9D9" alt="Trash Icon" %}
+    </div>
+</div>
 
 {% comment %} {{ request.user.userprofile.foto|cut:'usuarios' }} {% endcomment %}
 <div class="contentList">
@@ -16,4 +28,16 @@
 {% csrf_token %}
 {% comment %} Incluir el modal {% endcomment %}
 {% include "commons/includes/modal.include.html" with Titulo="Borrar trabajador" Contenido="Seguro que quieres borrar este trabajador?" idConfirm="modalConfirmDeleteWorkBtn" modalId="DeleteWorkerMD" %}
+{% include "commons/includes/modal.include.html" with Titulo="Importar trabajadores" Contenido="Seguro que quieres importar los trabajadores? Se sobreescriviran todos los datos" idConfirm="modalConfirmImportWork" modalId="ConfirmImportMD" %}
+<script>
+    document.getElementById('file-input').addEventListener('change', function() {
+        
+        const file = this.files[0];
+        if (!file) return;
+        showConfirmModal(file,idModal="ConfirmImportMD");
+
+    });
+    </script>
+<script defer src="{% static 'js/modal.include.js' %}"></script>
+
 {% endblock %}

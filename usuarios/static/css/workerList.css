@@ -1,0 +1,29 @@
+.buttonsInTitle {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding-right: 6.5rem; /* Espacio desde el borde derecho */
+    padding-left: 6.5rem; /* Equilibra el padding-right para mantener el centro real */
+    box-sizing: border-box;
+}
+
+.buttonsInTitle::before {
+    content: "";
+    flex: 1; 
+}
+
+.buttonsInTitle .center {
+    flex: 0 0 auto; 
+}
+
+.buttonsInTitle .center + * {
+    margin-left: auto; 
+}
+
+.buttonsInTitle .right {
+    display: flex;
+    gap: 0.938rem;
+    align-items: center;
+    flex: 1;
+    justify-content: flex-end; 
+}

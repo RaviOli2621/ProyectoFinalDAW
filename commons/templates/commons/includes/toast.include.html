@@ -2,11 +2,12 @@
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 
 <script>
-    function showToast(message, type) {
-        let color = type === "error" ? "#ff4d4d" : "#008000"; // Rojo para error, verde para éxito
+    function showToast(message, type,time=10000) {
+        let color = type === "error" ? "#ff4d4d" : 
+            type === "info" ? "#0000ff" : "#008000"; // Rojo para error, azul para info, verde para éxito
         Toastify({
             text: message,
-            duration: 10000,
+            duration: time,
             gravity: "top",
             position: "center",
             style:{

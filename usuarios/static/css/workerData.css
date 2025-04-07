@@ -1,0 +1,182 @@
+.worker-form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.625rem;
+    background-color: #ffffff;
+    padding: 1.875rem;
+    max-width: 40rem;
+    margin: 0 auto;
+    border-radius: 1.25rem;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    box-shadow: 0 0.125rem 0.5rem rgba(0, 0, 0, 0.1);
+}
+
+/* Añadimos la estructura de dos columnas */
+.form-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.form-column {
+    flex: 1;
+    min-width: 45%;
+}
+
+/* Para dispositivos móviles */
+@media (max-width: 768px) {
+    .form-row {
+        flex-direction: column;
+    }
+}
+
+.form-group {
+    margin-bottom: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.form-group label {
+    color: #151717;
+    font-weight: 600;
+    font-size: 1rem;
+}
+
+.form-control {
+    border: 0.09375rem solid #ededef;
+    border-radius: 0.625rem;
+    height: 3.125rem;
+    padding: 0 1rem;
+    width: 100%;
+    box-sizing: border-box;
+    transition: 0.2s ease-in-out;
+    font-family: inherit;
+}
+
+.form-control:focus {
+    outline: none;
+    border: 0.09375rem solid #2d79f3;
+    box-shadow: 0 0 0 0.125rem rgba(45, 121, 243, 0.1);
+}
+
+.help-text {
+    font-size: 0.875em;
+    color: #666;
+    margin-top: 0.25rem;
+}
+
+.error-text {
+    color: #dc3545;
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+}
+
+/* Ajuste para asegurar que los botones queden abajo */
+.form-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 2rem;
+    width: 100%;
+}
+
+.btn {
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.625rem;
+    font-weight: 500;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+    border: none;
+    text-decoration: none;
+    display: inline-block;
+    text-align: center;
+}
+
+.btn-cancel {
+    background-color: #6c757d;
+    color: white;
+}
+
+.btn-cancel:hover {
+    background-color: #5a6268;
+}
+
+.btn-primary {
+    background-color: #151717;
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: #252727;
+}
+
+/* File upload styling */
+input[type="file"] {
+    border: 0.09375rem dashed #ededef;
+    padding: 1rem;
+    height: auto;
+    cursor: pointer;
+}
+
+input[type="file"]::-webkit-file-upload-button {
+    background-color: #151717;
+    color: white;
+    border-radius: 0.5rem;
+    padding: 0.5rem 1rem;
+    border: none;
+    margin-right: 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+}
+
+input[type="file"]::-webkit-file-upload-button:hover {
+    background-color: #252727;
+}
+
+/* Date picker styling */
+input[type="date"] {
+    padding-right: 0.5rem;
+}
+
+/* Estilos para mostrar la foto actual */
+.current-photo {
+    margin-bottom: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.current-photo label {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.profile-image {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 3px solid #ededef;
+    margin-bottom: 0.5rem;
+}
+
+/* Estilo para el icono del bolígrafo */
+.current-photo label img:nth-child(2) {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    width: 24px;
+    height: 24px;
+    background-color: white;
+    border-radius: 35%;
+    padding: 3px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s ease;
+}
+
+.current-photo label:hover img:nth-child(2) {
+    transform: scale(1.1);
+}

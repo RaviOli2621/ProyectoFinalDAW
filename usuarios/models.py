@@ -31,10 +31,16 @@ class Worker(models.Model):
     start_date = models.DateField()
     start_time = models.TimeField()
     end_time = models.TimeField()
+    delete_date = models.DateField(null=True, blank=True)  # Campo para almacenar la fecha de eliminación lógica
 
     def __str__(self):
         return f"{self.user_profile.user.username} - {self.dni}"
 
+    def delete(self, *args, **kwargs):
+            user = self.user_profile.user
+            result = super().delete(*args, **kwargs)
+            user.delete()
+            return result
 
 class Reserva(models.Model):
     fecha = models.DateTimeField()  # Automatically set the field to now when the object is created

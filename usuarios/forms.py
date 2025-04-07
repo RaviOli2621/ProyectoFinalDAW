@@ -79,6 +79,11 @@ class WorkeCreaterForm(UserCreationForm):
         widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': '09:00 - 17:00'})
     )
     
+    foto = forms.ImageField(
+    required=False,
+    label="Foto de Perfil",
+    widget=forms.FileInput(attrs={'class': 'form-control'})
+    )
     class Meta:
         model = User
         fields = ['username', 'email', 'password1', 'password2']
@@ -137,18 +142,20 @@ class WorkeCreaterForm(UserCreationForm):
             raise forms.ValidationError(f"Error en el formato del horario: {str(e)}")
     
     def save(self, commit=True):
-        # Primero creamos el usuario base
         user = super().save(commit=False)
         user.email = self.cleaned_data['email']
         
         if commit:
             user.save()
             
-            # Obtenemos el perfil de usuario creado automáticamente
             user_profile = UserProfile.objects.get_or_create(user=user)[0]
+
+            #Si hay foto, la guardamos
+            if self.cleaned_data.get('foto'):
+                user_profile.foto = self.cleaned_data['foto']
+                user_profile.save()
             
-            # Finalmente creamos el trabajador
-            horario = self.cleaned_data.get('horario')  # Usar el valor ya validado
+            horario = self.cleaned_data.get('horario')
             worker = Worker.objects.create(
                 user_profile=user_profile,
                 dni=self.cleaned_data['dni'],
@@ -200,7 +207,7 @@ class WorkerEditForm(forms.Form):
         widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': '09:00 - 17:00'})
     )
     
-    # Campos para cambiar la contraseña (opcionales)
+    # (opcionales)
     password1 = forms.CharField(
         required=False,
         label="Nueva Contraseña",
@@ -214,6 +221,12 @@ class WorkerEditForm(forms.Form):
         widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Confirmar contraseña'})
     )
     
+    foto = forms.ImageField(
+        required=False,
+        label="Foto de Perfil",
+        widget=forms.FileInput(attrs={'class': 'form-control'})
+    )
+
     def __init__(self, *args, **kwargs):
         # Extraer el worker para inicializar campos
         self.worker_instance = kwargs.pop('worker', None)
@@ -319,13 +332,17 @@ class WorkerEditForm(forms.Form):
         worker.phone_number = self.cleaned_data['phone_number']
         worker.start_date = self.cleaned_data['start_date']
         
-        # Usar el valor ya limpio de cleaned_data, no llamar al método de nuevo
         horario = self.cleaned_data.get('horario')
         worker.start_time = horario['start_time']
         worker.end_time = horario['end_time']
         
+        # Actualizar foto si se proporcionó una nueva
+        if self.cleaned_data.get('foto'):
+            worker.user_profile.foto = self.cleaned_data['foto']
+        
         if commit:
             user.save()
+            worker.user_profile.save()  # Guardar el perfil para la foto
             worker.save()
         
         return worker

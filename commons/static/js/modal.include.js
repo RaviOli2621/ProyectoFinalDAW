@@ -74,3 +74,27 @@ $('#modalConfirmDeleteWorkBtn').click(function() {
         });
     }
 });
+//Modal para confirmar la importación de trabajadores
+$('#modalConfirmImportWork').click(function() { 
+    if (currentReservationId !== null) {
+        const formData = new FormData();
+        formData.append('file', currentReservationId); // currentReservationId es el archivo que se va a importar
+        showToast("Importando trabajadores...","info",999999999); // Mostrar un toast de información
+        fetch('/importar-workers/', {
+            method: 'POST',
+            body: formData,
+        })
+        .then(res => res.json())
+        .then(data => {
+            sessionStorage.setItem("toastMessage", "Trabajador importados con éxito");
+            sessionStorage.setItem("toastType", "success");
+            location.reload(); // Recargar la página
+        })
+        .catch(err => {
+            console.error('Error details:', xhr.responseText);  
+            sessionStorage.setItem("toastMessage", "Hubo un error al importar los trabajadores: " + error);
+            sessionStorage.setItem("toastType", "error");
+            location.reload(); // Recargar la página
+        });
+    }
+});
