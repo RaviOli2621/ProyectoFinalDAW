@@ -1,14 +1,27 @@
-from datetime import datetime, timedelta
+from datetime import datetime, time, timedelta
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 
 from usuarios.forms import ReservaForm, TarjetaForm
-from usuarios.models import Reserva
+from usuarios.models import Fiestas, Reserva, Worker
 from .models import Masaje, TipoMasaje
 from commons.utils import get_filename  # Importamos la función de utilidad
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User  # Import User model
+from django.utils.timezone import make_aware, is_naive
+import os
+import glob
+# Function to dynamically import all view modules in the current directory
+def import_views_from_directory(directory):
+    view_files = glob.glob(os.path.join(directory, "*.py"))
+    for view_file in view_files:
+        module_name = os.path.basename(view_file)[:-3]
+        if module_name != "__init__":
+            __import__(f"masajes.{module_name}")
 
+# Import all views from the current directory
+current_directory = os.path.dirname(__file__)
+import_views_from_directory(current_directory)
 # decorador para cuando no estas logado
 def notAdmin_user(view_func):
     def wrapper_func(request, *args, **kwargs):
@@ -22,13 +35,136 @@ def notAdmin_user(view_func):
 def calendari(request):
     return render(request,"masajes.html")
 
+def safe_aware(dt):
+    if is_naive(dt):
+        return make_aware(dt)
+    return dt
+
+def calcDiaCalendario(dia_evento, current_date, workers, delta):
+    # Comprobar si es fiesta general
+    if Fiestas.objects.filter(fecha=current_date, general=True).exists():
+        dia_evento["color"] = "gray"
+        current_date += delta
+        return dia_evento
+        
+    # Calcular trabajadores disponibles ese día (fiestas personales)
+    festivos_personales = Fiestas.objects.filter(fecha=current_date, general=False).count()
+
+    # Franja horaria: de 8:00 a 22:00 cada 30 minutos
+    franjas = [
+        safe_aware(datetime.combine(current_date, time(8, 0)) + timedelta(minutes=30 * i))
+        for i in range(28)
+    ]
+    horas_ocupadas = 0
+    for franja_inicio in franjas:
+        franja_fin = franja_inicio + timedelta(minutes=30)
+
+
+        workersThisHour = workers.filter(start_time__lte=franja_inicio.time())  # El trabajador empieza antes de la franja
+        workersThisHour = workersThisHour.filter(end_time__gte=franja_fin.time())  # El trabajador acaba después de la franja
+        total_workers = workersThisHour.count()
+        workers_disponibles = total_workers - festivos_personales
+        reservas = Reserva.objects.filter(
+            fecha__lte=franja_inicio,
+            fecha__gte=franja_inicio - timedelta(hours=3)  # margen para masajes largos
+        )
+
+        ocupacion = 0
+
+        for r in reservas:
+            inicio = r.fecha
+
+            duracion = r.duracion or r.idMasaje.duracion
+            fin = inicio + duracion
+
+            if inicio < franja_fin and fin > franja_inicio:
+                ocupacion += 1
+
+        if ocupacion >= workers_disponibles:
+            horas_ocupadas += 1
+
+    # Clasificar el día según ocupación
+    if horas_ocupadas == 0:
+        dia_evento["backgroundColor"] = "green"
+    elif horas_ocupadas < len(franjas):
+        dia_evento["backgroundColor"] = "orange"
+    else:
+        dia_evento["backgroundColor"] = "red"
+    return dia_evento
+
+def calendario_api(request):
+    eventos = []
+    # Obtener año y mes del request, o usar los actuales por defecto
+    year = int(request.GET.get('year', request.GET['year']))
+    month = int(request.GET.get('month', request.GET['month']))
+
+    # Calcular rango de días a mostrar (incluyendo días del mes anterior/siguiente)
+    start_date = datetime(year, month, 1).date()
+    end_date = (start_date.replace(day=28) + timedelta(days=10)).replace(day=1)
+    delta = timedelta(days=1)
+
+    # Obtener información de trabajadores
+    workers = Worker.objects.filter(delete_date__isnull=True)
+
+    current_date = start_date
+    while current_date < end_date:
+        dia_evento = {"start": current_date.isoformat(), "display": "background"}
+       
+        dia_evento = calcDiaCalendario(dia_evento, current_date, workers, delta)
+
+        eventos.append(dia_evento)
+        current_date += delta
+
+    return JsonResponse(eventos, safe=False)
+
+def horas_api(request):
+    # Obtener el día seleccionado del calendario
+    fecha_seleccionada = request.GET.get('fecha')
+    fecha = datetime.strptime(fecha_seleccionada, '%Y-%m-%d').date()
+
+    # Crear un diccionario para almacenar las horas ocupadas
+    horas_ocupadas = []
+
+    franjas = [
+    safe_aware(datetime.combine(fecha, time(8, 0)) + timedelta(minutes=30 * i))
+    for i in range(28)
+    ]
+    workers = Worker.objects.filter(delete_date__isnull=True)
+
+    for franja_inicio in franjas:
+        franja_fin = franja_inicio + timedelta(minutes=30)
+        reservas = Reserva.objects.filter(
+            fecha__lte=franja_inicio,
+            fecha__gte=franja_inicio - timedelta(hours=3)  # margen para masajes largos
+        )
+        workersThisHour = workers.filter(start_time__lte=franja_inicio.time())
+        workersThisHour = workersThisHour.filter(end_time__gte=franja_fin.time())  
+        total_workers = workersThisHour.count()
+        horas_disponibles = total_workers
+
+        for r in reservas:
+            inicio = r.fecha  
+            duracion = r.duracion if r.duracion else r.idMasaje.duracion
+            fin = inicio + duracion
+
+            if inicio < franja_fin and fin > franja_inicio:
+                horas_disponibles -= 1
+             
+        if horas_disponibles <= 0:
+            horas_ocupadas.append({"fecha":franja_inicio.isoformat(),"color":"red"})
+        elif horas_disponibles < workersThisHour.count():
+            horas_ocupadas.append({"fecha":franja_inicio.isoformat(),"color":"orange"})
+        else:
+            horas_ocupadas.append({"fecha":franja_inicio.isoformat(),"color":"green"})
+    return JsonResponse(horas_ocupadas, safe=False)
+
 @login_required
 def reserves(request):
     idUser = request.user.id
     reserves = Reserva.objects.filter(idCliente=idUser)
     for reserva in reserves:
         reserva.foto_nombre = get_filename(reserva.idMasaje.foto)  # Extrae solo el nombre de la imagen
-        reserva.duracion_formatada = f"{reserva.duracion.total_seconds() / 3600:.1f}"  # Convierte duración a horas con un decimal
+        reserva.duracion_formatada = f"{reserva.idMasaje.duracion.total_seconds() / 3600:.1f}"  # Convierte duración a horas con un decimal
         reserva.precio_final = float(reserva.idMasaje.precio) * float(reserva.duracion_formatada)
 
     return render(request,"reserves.html",{
@@ -73,14 +209,17 @@ def reservar(request):
                 return redirect('pago_tarjeta')  # Redirige al formulario de pago con tarjeta
 
             # Si el método de pago es "efectivo", simplemente guarda la reserva
+            
             reserva = reserva_form.save(commit=False)
             reserva.idCliente = request.user  # Asocia la reserva al usuario actual
             reserva.idMasaje = masaje  # Asocia el masaje seleccionado a la reserva
+            reserva.duracion = None  # No guardar cambios en el campo duracion
             reserva.save()
             return redirect('reservas') 
 
     else:
         reserva_form = ReservaForm()
+        reserva_form.fields['duracion'].initial = masaje.duracion  # Establecer la duración inicial en el formulario
 
     return render(request, 'reservar.html', {'reserva_form': reserva_form, 'masaje': masaje})
 
@@ -105,7 +244,7 @@ def pago_tarjeta(request):
             masaje = Masaje.objects.get(id=id_masaje)  # Recuperamos el objeto Masaje usando el ID
             
             # Convertir la duración de segundos a timedelta
-            duracion = timedelta(seconds=reserva_temp['duracion'])  # Usamos timedelta correctamente
+            # duracion = timedelta(seconds=reserva_temp['duracion'])  # Usamos timedelta correctamente
 
             # Obtener la instancia del usuario usando el ID almacenado en la sesión
             id_cliente = reserva_temp['idCliente']
@@ -115,7 +254,7 @@ def pago_tarjeta(request):
             reserva = Reserva(
                 fecha=fecha,
                 idMasaje=masaje,  # Usamos la instancia de Masaje recuperada
-                duracion=duracion,  # Usamos la duración convertida a timedelta
+                # duracion=duracion,  # Usamos la duración convertida a timedelta
                 metodo_pago=reserva_temp['metodo_pago'],
                 idCliente=cliente,  # Usamos la instancia de User recuperada
                 pagado=True,  # Suponemos que el pago es exitoso
@@ -175,14 +314,14 @@ def editar_pago_tarjeta(request):
             fecha = datetime.strptime(reserva_temp['fecha'], '%Y-%m-%d %H:%M:%S')
             id_masaje = reserva_temp['idMasaje']
             masaje = Masaje.objects.get(id=id_masaje)
-            duracion = timedelta(seconds=reserva_temp['duracion'])
+            # duracion = timedelta(seconds=reserva_temp['duracion'])
             id_cliente = reserva_temp['idCliente']
             cliente = User.objects.get(id=id_cliente)
             reserva_id = reserva_temp['reserva_id']
             reserva = get_object_or_404(Reserva, id=reserva_id) 
             reserva.fecha = fecha
             reserva.idMasaje = masaje
-            reserva.duracion = duracion
+            # reserva.duracion = duracion
             reserva.metodo_pago = reserva_temp['metodo_pago']
             reserva.idCliente = cliente
             reserva.pagado = True

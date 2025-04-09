@@ -1,10 +1,15 @@
 {% extends "base.html" %}
 {% block content %}
     {% include 'commons/includes/changeBackground.include.html' with imagen='reservaBackground.svg' %}
-    {% include "commons/includes/title.include.html" with Titulo="Pago con Tarjeta" Subtitulo="Prefieres sangrar ya, he" %}
+    {% include "commons/includes/title.include.html" with Titulo="Pago con Tarjeta" Subtitulo="Prefieres sangrar ya, eh" %}
+    
+
     <form method="post">
         {% csrf_token %}
         {{ tarjeta_form.as_p }}
         <button type="submit">Pagar y Guardar</button>
     </form>
+    
+
+
 {% endblock %}

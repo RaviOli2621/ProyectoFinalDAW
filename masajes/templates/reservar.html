@@ -1,10 +1,133 @@
 {% extends "base.html" %}
 {% block content %}
+    {% load capture_tags %}
+    {% load static %}
+
     {% include 'commons/includes/changeBackground.include.html' with imagen='reservaBackground.svg' %}
-    {% include "commons/includes/title.include.html" with Titulo="Reservar" Subtitulo="Algo" %}
-    <form method="post">
-        {% csrf_token %}
-        {{ reserva_form.as_p }}
-        <button type="submit">Guardar</button>
-    </form>
+
+            {% include "commons/includes/title.include.html" with Titulo="Reservar" Subtitulo="Algo" %}
+
+    <div class="reservation-container">
+        <form method="post" class="reservation-form">
+            {% csrf_token %}
+            
+            <!-- Hidden original datetime field for form submission -->
+            <input type="hidden" id="id_fecha" name="fecha" required value="{{ reserva_form.fecha.value|date:'Y-m-d\TH:i' }}">
+            
+            <div class="form-group">
+                <label for="id_fecha_date">Fecha:</label>
+                <div class="input-group">
+                    <input type="date" id="id_fecha_date" readonly class="form-control" 
+                           value="{{ reserva_form.fecha.value|date:'Y-m-d' }}" onchange="syncDateTime()">
+                    {% include "commons/includes/imgBoton.include.html" with src="/calendar.svg" alt="Calendar Icon" action='showCalendarModal()' %}
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="id_fecha_time">Hora:</label>
+                <div class="input-group">
+                    <input type="time" id="id_fecha_time" readonly class="form-control" 
+                           value="{{ reserva_form.fecha.value|date:'H:i' }}" onchange="syncDateTime()">
+                    {% include "commons/includes/imgBoton.include.html" with src="/hour.svg" alt="Clock Icon" action='showHourModal()' %}
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="id_duracion">Duración:</label>
+                <div class="input-group">
+                    <input type="text" id="id_duracion" name="duracion" readonly class="form-control" value="{{ reserva_form.duracion.value }}">
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="id_metodo_pago">Método de pago:</label>
+                <select id="id_metodo_pago" name="metodo_pago" required class="form-control">
+                    <option value="efectivo" {% if reserva_form.metodo_pago.value == 'efectivo' %}selected{% endif %}>Efectivo</option>
+                    <option value="targeta" {% if reserva_form.metodo_pago.value == 'targeta' %}selected{% endif %}>Tarjeta</option>
+                </select>
+            </div>
+            
+            <button type="submit" class="btn btn-primary">Guardar</button>
+        </form>
+    </div>
+    
+    <style>
+
+        .reservation-container {
+            background-color: var(--dark-transparent);
+            border-radius: 0.625rem;
+            padding: 1.25rem;
+            width: 41.75rem;
+            height: 31.25rem;
+            margin: 1.25rem auto;
+            box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.2);
+        }
+        
+        .reservation-form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.9375rem;
+        }
+        
+        .form-group {
+            align-items: center;
+            display: flex;
+            width: 16.1875rem;
+            flex-direction: column;
+        }
+        .input-group{
+            display: flex;
+            align-items: center;
+            width: 90%;
+            justify-content: center;
+            background-color: rgba(255, 255, 255);
+            border-radius: 1rem;
+        }
+        .input-group input {
+            border: solid 0 #ccc;
+            text-align: center;
+            width: 8.125rem;
+        }
+        .form-group label {
+            color: white;
+            margin-bottom: 0.3125rem;
+            font-weight: bold;
+        }
+        
+        .form-control {
+            padding: 0.625rem;
+            border-radius: 0.3125rem;
+            border: 0.0625rem solid #ccc;
+            background-color: rgba(255, 255, 255, 0.9);
+        }
+        
+        .btn-primary {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 0.625rem;
+            border-radius: 0.3125rem;
+            cursor: pointer;
+            margin-top: 0.625rem;
+            font-weight: bold;
+        }
+        
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+    </style>
+    
+    {% comment %} Modal para mostrar el calendario y horas disponibles {% endcomment %}
+    {% capture as calendario silent %}
+        <div id="calendar"></div>
+    {% endcapture %}
+    {% include "commons/includes/modal.include.html" with Titulo="Calendario" Contenido=calendario idConfirm="modalConfirmCalendario" modalId="CalendarioMD" %}
+
+
+    {% include "commons/includes/modal.include.html" with Titulo="Horas" Contenido="Cargando..." idConfirm="modalConfirmHoras" modalId="HorasMD" %}
+
+    
+    <script defer src="{% static 'js/modal.include.js' %}"></script>
+    <script defer src="{% static 'js/calendarModal.js' %}"></script>
 {% endblock %}

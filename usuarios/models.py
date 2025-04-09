@@ -43,12 +43,26 @@ class Worker(models.Model):
             return result
 
 class Reserva(models.Model):
-    fecha = models.DateTimeField()  # Automatically set the field to now when the object is created
-    idCliente = models.ForeignKey(User, on_delete=models.CASCADE)  # Relación 1 a 1 con User
+    fecha = models.DateTimeField()
+    idCliente = models.ForeignKey(User, on_delete=models.CASCADE)
     idMasaje = models.ForeignKey(Masaje, on_delete=models.CASCADE)
-    duracion = models.DurationField()  # Campo para almacenar la duración del masaje
+    duracion = models.DurationField(null=True, blank=True)  # Eliminamos el default problemático
     pagado = models.BooleanField(default=False)
-    metodo_pago = models.CharField(max_length=10, choices=[('efectivo', 'Efectivo'), ('targeta', 'Tarjeta')],default="efectivo")
+    metodo_pago = models.CharField(max_length=10, choices=[('efectivo', 'Efectivo'), ('targeta', 'Tarjeta')], default="efectivo")
+
+    def save(self, *args, **kwargs):
+        # Si no hay duración establecida, obtenerla del masaje
+        if not self.duracion and self.idMasaje_id:
+            self.duracion = self.idMasaje.duracion
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return self.idCliente.username + " - " + self.idMasaje.nombre
+    
+class Fiestas(models.Model):
+    fecha = models.DateField()
+    general = models.BooleanField(default=False)  # Si es festivo general o un dia de fiesta de un empleado
+    empleado = models.ForeignKey(Worker, on_delete=models.CASCADE, null=True, blank=True)  # Relación 1 a 1 con Worker
+
+    def __str__(self):
+        return self.nombre + " - " + str(self.fecha)

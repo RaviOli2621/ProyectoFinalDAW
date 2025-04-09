@@ -2,9 +2,9 @@
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 
 <script>
-    function showToast(message, type,time=10000) {
+    function showToast(message, type,time=5000) {
         let color = type === "error" ? "#ff4d4d" : 
-            type === "info" ? "#0000ff" : "#008000"; // Rojo para error, azul para info, verde para éxito
+            type === "info" ? "##2f319e" : "#008000"; // Rojo para error, azul para info, verde para éxito
         Toastify({
             text: message,
             duration: time,
@@ -35,4 +35,23 @@
             showToast(errorMessage, type);
         }
     });
+    function removeToasts(animated = false) {
+        const toastElements = document.querySelectorAll(".toastify");
+        if (!animated) {
+            toastElements.forEach(toast => {
+                toast.remove();
+            });
+            return;
+        }
+        toastElements.forEach(toast => {
+            // Aplicar una transición rápida para desaparecer gradualmente
+            toast.style.transition = "opacity 300ms ease";
+            toast.style.opacity = "0";
+            
+            // Eliminar del DOM después de que termine la transición
+            setTimeout(() => {
+                toast.remove();
+            }, 300);
+        });
+    }
 </script>

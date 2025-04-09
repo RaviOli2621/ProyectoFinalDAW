@@ -54,6 +54,7 @@ $('#modalConfirmDeleteResBtn').click(function() {
 // Función para confirmar la eliminación de un trabajador
 $('#modalConfirmDeleteWorkBtn').click(function() { 
     if (currentReservationId !== null) {
+        showToast("Borrando trabajador...","info",999999999); // Mostrar un toast de información
         $.ajax({
             url: '/borrar_worker/' + currentReservationId + '/',
             type: 'POST',

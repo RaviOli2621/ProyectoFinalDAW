@@ -8,6 +8,7 @@ body{
     display: flex;
     justify-content: center;
     align-items: center;
+    text-align: center;
     flex-direction: column;
 }
 .contentList /*Contenedor cuando hay un seguido de contenido (Ej: los masajes)*/

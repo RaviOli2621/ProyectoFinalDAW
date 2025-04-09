@@ -16,13 +16,13 @@
 
 {% if url %}
 <a class="buttonA" href="{% url url %}{{data}}">
-    <button style={{estiloBtn}} class="boton" onclick={{action}}>
+    <button type="button" style={{estiloBtn}} class="boton" onclick={{action}}>
         <img src="{% static src %}" alt="{{alt}}">
     </button>
 </a>
 {% else %}
 <a class="buttonA">
-    <button style={{estiloBtn}} class="boton" onclick={{action}}>
+    <button type="button" style={{estiloBtn}} class="boton" onclick={{action}}>
         <img src="{% static src %}" alt="{{alt}}">
     </button>
 </a>

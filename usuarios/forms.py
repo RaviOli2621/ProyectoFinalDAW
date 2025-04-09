@@ -16,11 +16,13 @@ class Meta:
         model = Masaje  # Aquí se asocia el modelo Masaje
         fields = ['fecha', 'duracion', 'metodo_pago']  # Campos que quieres incluir en el formulario
 
-# Formulario para la creación de una reserva
 class ReservaForm(forms.ModelForm):
     class Meta:
         model = Reserva
         fields = ['fecha', 'duracion', 'metodo_pago']
+        widgets = {
+            'duracion': forms.TextInput(attrs={'readonly': 'readonly'}),
+        }
 
 class TarjetaForm(forms.Form):
     numero_tarjeta = forms.CharField(max_length=16, label="Número de tarjeta")
