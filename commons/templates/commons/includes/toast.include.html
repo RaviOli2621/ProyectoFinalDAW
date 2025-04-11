@@ -2,19 +2,72 @@
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 
 <script>
-    function showToast(message, type,time=5000) {
-        let color = type === "error" ? "#ff4d4d" : 
-            type === "info" ? "##2f319e" : "#008000"; // Rojo para error, azul para info, verde para éxito
-        Toastify({
-            text: message,
-            duration: time,
-            gravity: "top",
-            position: "center",
-            style:{
-                background: color
-            }
-        }).showToast();
+function colorToast(type) {
+    let color = type === "error" ? "#ff4d4d" : 
+        type === "info" ? "#2f319e" : "#008000"; 
+    return color;
+}
+
+function removeToasts(animated = false, type = "") {
+    const toastElements = document.querySelectorAll(".toastify");
+    
+    // Si no hay toasts, no hacer nada
+    if (toastElements.length === 0) return;
+    
+    if (!animated) {
+        toastElements.forEach(toast => {
+            if (type === "" || toast.style.backgroundColor === colorToast(type)) {
+                // Asegurarse de que se elimina del DOM
+                if (toast.parentNode) {
+                    toast.parentNode.removeChild(toast);
+                } else {
+                    toast.remove();
+                }
+            }            
+        });
+        return;
     }
+    
+    toastElements.forEach(toast => {
+        // Aplicar una transición rápida para desaparecer gradualmente
+        toast.style.transition = "opacity 300ms ease";
+        toast.style.opacity = "0";
+        
+        // Eliminar del DOM después de que termine la transición
+        setTimeout(() => {
+            if (type === "" || toast.style.backgroundColor === colorToast(type)) {
+                // Asegurarse de que se elimina del DOM
+                if (toast.parentNode) {
+                    toast.parentNode.removeChild(toast);
+                } else {
+                    toast.remove();
+                }
+            }
+        }, 300);
+    });
+}
+
+// Corrección para la función showToast que evita duplicados
+function showToast(message, type, time=5000) {
+    // Primero elimina cualquier toast existente para evitar duplicados
+    removeToasts(false);
+    
+    let color = colorToast(type);
+    Toastify({
+        text: message,
+        duration: time,
+        gravity: "top",
+        position: "center",
+        style: {
+            background: color
+        },
+        stopOnFocus: true, // Añadido para que los toasts se paren cuando el usuario enfoca
+        onClick: function() { 
+            // Al hacer clic en un toast, se elimina
+            this.removeElement();
+        }
+    }).showToast();
+}
 
     document.addEventListener("DOMContentLoaded", function() {
         // Verificar si hay un mensaje guardado en sessionStorage
@@ -35,23 +88,4 @@
             showToast(errorMessage, type);
         }
     });
-    function removeToasts(animated = false) {
-        const toastElements = document.querySelectorAll(".toastify");
-        if (!animated) {
-            toastElements.forEach(toast => {
-                toast.remove();
-            });
-            return;
-        }
-        toastElements.forEach(toast => {
-            // Aplicar una transición rápida para desaparecer gradualmente
-            toast.style.transition = "opacity 300ms ease";
-            toast.style.opacity = "0";
-            
-            // Eliminar del DOM después de que termine la transición
-            setTimeout(() => {
-                toast.remove();
-            }, 300);
-        });
-    }
 </script>

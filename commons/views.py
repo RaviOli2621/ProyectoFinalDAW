@@ -1,49 +1,50 @@
-from http.client import HTTPResponse
 from django.shortcuts import render
-from django.core.mail import send_mail
 from commons.forms import EnviarCorreoForm
-from django.conf import settings
-
-from djangoProject.settings import EMAIL_SERVICE  # Para acceder a las configuraciones
-
-# Create your views here.
+from commons.services.email_service import send_email
+from djangoProject.settings import EMAIL_SERVICE
 
 def home(request):
-    return render(request,'home.html')
+    return render(request, 'home.html')
 
 def enviar_correo(request):
     if request.method == 'POST':
         form = EnviarCorreoForm(request.POST)
         if form.is_valid():
-            correo_usuario = form.cleaned_data['correo_usuario']
-            asunto = form.cleaned_data['asunto']
+            titulo = form.cleaned_data['titulo']
             cuerpo = form.cleaned_data['cuerpo']
             
-            # Agregar "firmado" con el correo del usuario al final del cuerpo
-            cuerpo += f"\n\nFirmado,\n{correo_usuario}"
+            # Versión de texto plano
+            mensaje_texto = f"{titulo}\n\n{cuerpo}"
             
-            # Enviar el correo
-            send_mail(
-                asunto,
-                cuerpo,
-                EMAIL_SERVICE,  # Correo de servicio desde donde se enviará
-                [EMAIL_SERVICE],  # Correo del usuario
-                fail_silently=False,
+            # Versión HTML con formato
+            mensaje_html = f"""
+            <h1>{titulo}</h1>
+            <div>{cuerpo.replace('\n', '<br>')}</div>
+            """
+            
+            success = send_email(
+                subject=form.cleaned_data['asunto'],
+                message=mensaje_texto,
+                html_message=mensaje_html,  # Añadir versión HTML
+                to_emails=[EMAIL_SERVICE],
+                signature_email=form.cleaned_data['correo_usuario'],
+                add_signature=True
             )
-            return render(request, 'contacta.html',{
+            
+            context = {
                 'form': form,
-                'toastTxt': "Correo enviado exitosamente",
-                "toastType": "succes"
-            })  # Redirige a una página de éxito
+                'toastType': 'success' if success else 'error',
+                'toastTxt': "Correo enviado exitosamente" if success else "Error al enviar el correo"
+            }
+            return render(request, 'contacta.html', context)
         else:
             errores = " ".join(
                 [f"{field}: {', '.join(errors)}" for field, errors in form.errors.items()]
             )
-
             return render(request, 'contacta.html', {
                 'form': form,
                 'toastTxt': f"Error al enviar el correo, {errores}",
-                "toastType": "error"
+                'toastType': 'error'
             })
     else:
         form = EnviarCorreoForm()

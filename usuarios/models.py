@@ -65,4 +65,7 @@ class Fiestas(models.Model):
     empleado = models.ForeignKey(Worker, on_delete=models.CASCADE, null=True, blank=True)  # Relación 1 a 1 con Worker
 
     def __str__(self):
-        return self.nombre + " - " + str(self.fecha)
+        if(self.general):
+            return str(self.fecha) + " - General"
+        else:
+            return str(self.fecha) + " - " + str(self.empleado)

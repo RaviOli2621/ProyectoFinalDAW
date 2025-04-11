@@ -21,7 +21,8 @@ from .calendar import (
     calendari,
     calcDiaCalendario,
     calendario_api,
-    horas_api
+    horas_api,
+    gestionarDiasFiesta
 )
 
 # Make all functions available at the package level

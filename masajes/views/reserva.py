@@ -142,7 +142,8 @@ def editar_reserva(request):
     reserva_id = request.GET.get('reservaid')  # Obtiene el masajeId de la URL
 
     reserva = get_object_or_404(Reserva, id=reserva_id)
-    
+    if reserva.idCliente.id != request.user.id:
+        return redirect('home')  # Redirige al home si el usuario no es el propietario de la reserva
     if request.method == 'POST':
         reserva_form = ReservaForm(request.POST, instance=reserva)
         

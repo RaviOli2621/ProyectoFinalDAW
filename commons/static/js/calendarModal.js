@@ -49,14 +49,18 @@ function showCalendarModal() {
                 const backgroundColor = event ? event.backgroundColor : window.getComputedStyle(dayCell).backgroundColor;
                 console.log("Color de fondo del día seleccionado:", backgroundColor);
 
-                if (backgroundColor != "red") {
+                if (backgroundColor != "red" && backgroundColor != "gray") {
                     diaSeleccionado = info.dateStr + "T00:00";
                     dayCell = info.dayEl;
                     dayCell.style.filter = "brightness(1.2)";
                     if (dayCellG) dayCellG.style.filter = "";
-                    dayCellG = dayCell;
+                    if(dayCellG == dayCell) {
+                        dayCellG = null;
+                        diaSeleccionado = ""; 
+                    }
+                    else dayCellG = dayCell;
                 } else {
-                    showToast("Dia completo", "error", 5000);
+                    showToast("Dia completo/festivo", "error", 5000);
                 }
             },
             eventContent: function(arg) {
@@ -190,6 +194,7 @@ $('#modalConfirmCalendario').click(function() {
         diaSeleccionado = "";
         dayCellG.style.filter = ""; // Resetear el filtro de brillo
         $('.custom-modal').hide();  // Ocultar el modal
+        showHourModal();
     }
 });
 

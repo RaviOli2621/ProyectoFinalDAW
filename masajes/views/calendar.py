@@ -9,19 +9,18 @@ from commons.utils import get_filename  # Importamos la función de utilidad
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User  # Import User model
 from django.utils.timezone import make_aware, is_naive
+from django.views.decorators.http import require_http_methods
 
 # decorador para cuando no estas logado
 def notAdmin_user(view_func):
     def wrapper_func(request, *args, **kwargs):
         if request.user.is_staff:
-            return redirect('home')
-        else:
             return view_func(request, *args, **kwargs)
-    return wrapper_func
+        else:
+            return redirect('home')
 
-@notAdmin_user
-def calendari(request):
-    return render(request,"masajes.html")
+    return wrapper_func
+# ApiS para el calendario
 
 def safe_aware(dt):
     if is_naive(dt):
@@ -154,5 +153,39 @@ def horas_api(request):
     return JsonResponse(horas_ocupadas, safe=False)
 
 def quitarHorasDeDescanso(franjas):
-    franjas = [franja for franja in franjas if franja.time() not in {time(13, 0), time(19, 0)}]
+    franjas = [franja for franja in franjas if franja.time() not in {time(13, 0),time(13, 30), time(19, 0),time(19, 30)}]
     return franjas
+
+@require_http_methods(["PUT", "DELETE"])
+def gestionarDiasFiesta(request):
+    dia = request.GET.get('fecha')
+    print(request.method)
+
+    if request.method == "PUT":
+        # Handle the PUT method
+        reservas = Reserva.objects.filter(fecha__date=dia)
+        for reserva in reservas:
+            # Enviar correo a los usuarios con reservas
+            from commons.services.email_service import send_email  # Importar el servicio de correo
+            try:
+                send_email(
+                to_emails=reserva.idCliente.email,
+                subject="Cancelación de reserva",
+                message=f"Estimado/a {reserva.idCliente.first_name},\n\n"
+                    f"Lamentamos informarle que su reserva para el día {dia} ha sido cancelada. Su pago sera reenvolsado de inmediato \n\n"
+                    f"Saludos cordiales,\nEl equipo de Masajes."
+                )
+            except Exception as e:
+                print(f"Error sending email: {e}")
+                return JsonResponse({"status": "error", "message": "Error sending email to " + reserva.idCliente.email}, status=500)
+        reservas.delete()
+        Fiestas.objects.create(fecha=dia, general=True)
+        print("fiesta general")
+    elif request.method == "DELETE":
+        # Handle the DELETE method
+        Fiestas.objects.filter(fecha=dia).delete()
+    return JsonResponse({"status": "success"}, status=200)
+#Vistas
+@notAdmin_user
+def calendari(request):
+    return render(request,"calendario.html")

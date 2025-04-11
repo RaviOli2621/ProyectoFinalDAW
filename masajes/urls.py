@@ -3,7 +3,6 @@ from . import views
 urlpatterns = [
     path('masajes/', views.masajes,name="masajes"),
     path('masaje/', views.masaje,name="masaje"),
-    path('calendari/', views.calendari,name="calendari"),
     path('reservas/', views.reserves,name="reservas"),
     path('reservar/', views.reservar,name="reservar"),
     path('pago_tarjeta/', views.pago_tarjeta, name='pago_tarjeta'),
@@ -14,4 +13,7 @@ urlpatterns = [
 
     path('api/calendario/', views.calendario_api, name='calendario_api'),
     path('api/horas/', views.horas_api, name='horas_api'),
+
+    path('calendari/', views.calendari,name="calendari"),
+    path('api/calendari/fiestas/', views.gestionarDiasFiesta,name="calendari_fiestas"),
 ]
