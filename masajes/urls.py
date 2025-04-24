@@ -17,4 +17,5 @@ urlpatterns = [
     path('calendari/', views.calendari,name="calendari"),
     path('api/calendari/fiestas/', views.gestionarDiasFiesta,name="calendari_fiestas"),
     path('api/calendari/fiestas/trabajador/', views.fiestaTrabajador,name="trabajador_fiestas"),
+    path('api/calendari/fiestas/trabajador/<int:idTrabajador>/', views.cambiarFiestatrabajador,name="trabajador_fiestas"),
 ]

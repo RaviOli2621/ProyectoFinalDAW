@@ -265,3 +265,14 @@ def calcFiestaTrabajador(dia_evento, current_date, workers, delta, worker):
     dia_evento["backgroundColor"] = "green"
     return dia_evento
 
+def cambiarFiestatrabajador(request,idTrabajador):
+    fecha = request.GET.get('fecha')
+    worker = Worker.objects.filter(id=idTrabajador).first()
+    fiesta = Fiestas.objects.filter(fecha=fecha, empleado=worker).first()
+    if fiesta:
+        fiesta.delete()
+        return JsonResponse({"status": "success"}, status=200)
+    else:
+        Fiestas.objects.create(fecha=fecha, empleado=worker, general=False)
+        return JsonResponse({"status": "error"}, status=200)
+        

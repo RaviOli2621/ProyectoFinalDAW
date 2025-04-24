@@ -86,110 +86,6 @@ function showCalendarModal(id) {
     }
 }
 
-function showHourModal() {
-    // Use the date from the date field instead of datetime field
-    dia = document.getElementById("id_fecha_date").value;
-    if(dia){
-        showConfirmModal(10,"HorasMD");
-        document.getElementById("modalConfirmHoras")?.remove();
-        // Give time for the modal to render in the DOM
-        setTimeout(() => {
-            fetch(`/api/horas/?fecha=${dia}`)
-                .then(response => response.json())
-                .then(data => {
-                    console.log("Horas disponibles:", data);
-                    
-                    // Try different approaches to find modal container
-                    let modalBody = document.querySelector('#HorasMD .custom-modal-body');
-                    if(!modalBody) modalBody = document.querySelector('#HorasMD .modal-body');
-                    if(!modalBody) modalBody = document.getElementById('HorasMD').querySelector('div');
-                    
-                    if(modalBody) {
-                        // Clear previous content
-                        modalBody.innerHTML = "";
-                        
-                        // Use the createHours function to generate the hours UI
-                        const hoursContainer = createHours(data);
-                        modalBody.appendChild(hoursContainer);
-                    } else {
-                        console.error("Modal container not found - HorasMD", document.getElementById('HorasMD'));
-                        showToast("Error al mostrar las horas - contenedor no encontrado", "error", 5000);
-                    }
-                })
-                .catch(err => {
-                    console.error("Error al cargar las horas:", err);
-                    showToast("Error al cargar las horas", "error", 5000);
-                });
-        }, 200); // Increased delay to ensure modal is fully rendered
-    } else {
-        showToast("No hay día seleccionado", "error", 5000);
-    }
-}
-
-function selectHour(dateTime) {
-    console.log('Selected datetime:', dateTime);
-    
-    // Extract time portion from the datetime string
-    let timePart = dateTime.split('T')[1];
-    if (timePart) {
-        // Remove seconds if present
-        timePart = timePart.substring(0, 5);
-        
-        // Update the time field
-        const timeField = document.getElementById('id_fecha_time');
-        timeField.value = timePart;
-        console.log('Set time to:', timePart);
-        
-        // Sync with the hidden datetime field
-        syncDateTime();
-    }
-    
-    $('.custom-modal').hide();  // Hide the modal
-}
-
-function createHours(data){
-    // Create a container for the hours with styling
-    const hoursContainer = document.createElement('div');
-    hoursContainer.className = 'hours-container';
-    hoursContainer.style.display = 'flex';
-    hoursContainer.style.flexWrap = 'wrap';
-    hoursContainer.style.justifyContent = 'center';
-    hoursContainer.style.gap = '10px';
-    hoursContainer.style.margin = '15px 0';
-    
-    data.forEach(hora => {
-        const horaElement = document.createElement('div');
-        horaElement.textContent = hora.fecha.split('T')[1].substring(0, 5); // Extraer solo la hora HH:MM
-        
-        // Add explicit styles to make hours visible
-        horaElement.style.padding = '10px 15px';
-        horaElement.style.borderRadius = '5px';
-        horaElement.style.cursor = 'pointer';
-        
-        // Set background color based on availability
-        if(hora.color === 'green') {
-            horaElement.style.backgroundColor = '#4CAF50';
-            horaElement.style.color = 'white';
-        } else if(hora.color === 'orange') {
-            horaElement.style.backgroundColor = '#FF9800';
-            horaElement.style.color = 'black';
-        } else if(hora.color === 'red') {
-            horaElement.style.backgroundColor = '#F44336';
-            horaElement.style.color = 'white';
-            horaElement.style.opacity = '0.6';
-            horaElement.style.cursor = 'not-allowed';
-        }
-        
-        if(hora.color !== 'red') {
-            horaElement.addEventListener('click', () => {
-                selectHour(hora.fecha);
-            });
-        }
-        
-        hoursContainer.appendChild(horaElement);
-    });
-    return hoursContainer;
-}
 
 $('#modalConfirmCalendario').click(function() { 
     if (diaSeleccionado != "") {
@@ -212,35 +108,38 @@ $('#modalConfirmCalendario').click(function() {
         }
         // También aceptar el nombre directamente
         color = color.toLowerCase();
-
+        let fechaFormateada = diaSeleccionado.split('T')[0]; // Extract YYYY-MM-DD
+        let partesFecha = fechaFormateada.split('-'); // Split into [YYYY, MM, DD]
+        fechaFormateada = `${partesFecha[0]}-${partesFecha[1]}-${partesFecha[2]}`; // Rearrange to DD-MM-YYYY
         if (color === "green" || color === "orange") {
-            showToast("¡Se ha dado fiesta al trabajador!", "success", 4000);
-            $('.custom-modal').hide();
+            changeWorkerFestivity(fechaFormateada, lastId, {message:"¡Se ha dado fiesta al trabajador!", status:"success", time:4000});
         } else if (color === "red") {
             showToast("Si le das fiesta, un cliente no podrá ser atendido", "error", 5000);
         } else if (color === "blue") {
-            showToast("¡Se ha quitado la fiesta al trabajador!", "info", 4000);
-            $('.custom-modal').hide();
+            changeWorkerFestivity(fechaFormateada, lastId, {message:"¡Se ha quitado la fiesta al trabajador!", status:"info", time:4000});
         } else if (color === "gray") {
-            showToast("Dia completo/festivo", "error", 5000);
+            showToast("Dia festivo", "error", 5000);
         } else {
             showToast("Selecciona un día válido", "error", 4000);
         }
     }
 });
-
-function syncDateTime() {
-    const dateField = document.getElementById('id_fecha_date');
-    const timeField = document.getElementById('id_fecha_time');
-    const datetimeField = document.getElementById('id_fecha');
-    
-    // Only proceed if both fields have values
-    if (dateField.value && timeField.value) {
-        datetimeField.value = `${dateField.value}T${timeField.value}`;
-        console.log('Synchronized datetime:', datetimeField.value);
-    }
+//Toast es un objeto que tiene que contener el mensaje, el tipo y la duración
+function changeWorkerFestivity(fecha, id, toast) {
+    fetch(`/api/calendari/fiestas/trabajador/${id}/?fecha=${fecha}`)
+    .then(response => response.json())
+    .then(data => {
+        removeToasts(true);
+        showToast(toast.message, toast.status, toast.time);
+        $('.custom-modal').hide();
+        dayCellG.style.filter = "";
+        dayCellG = null;
+        diaSeleccionado = "";
+    })
+    .catch(err => {
+        showToast("Error al cambiar la festividad: " + err, "error", 5000);
+    });
 }
-
 // Initialize fields on page load
 document.addEventListener('DOMContentLoaded', function() {
     const timeField = document.getElementById('id_fecha_time');

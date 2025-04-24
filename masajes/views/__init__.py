@@ -23,7 +23,8 @@ from .calendar import (
     calendario_api,
     horas_api,
     gestionarDiasFiesta,
-    fiestaTrabajador
+    fiestaTrabajador,
+    cambiarFiestatrabajador,
 )
 
 # Make all functions available at the package level
@@ -41,5 +42,8 @@ __all__ = [
     'calendari',
     'calcDiaCalendario',
     'calendario_api',
-    'horas_api'
+    'horas_api',
+    'gestionarDiasFiesta',
+    'fiestaTrabajador',
+    'cambiarFiestatrabajador',
 ]
