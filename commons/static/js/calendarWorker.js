@@ -2,13 +2,17 @@ let calendar = null;
 let diaSeleccionado = ""; // Variable para almacenar el día numerico seleccionado
 let currentAbortController = null;  // Variable para almacenar el controlador de la última solicitud
 let dayCellG; // Variable para almacenar la celda del día seleccionado
+let colorSeleccionado = ""; // Nuevo: para guardar el color del día seleccionado
 
-function showCalendarModal() {
+let lastId = 0
+function showCalendarModal(id) {
     showConfirmModal(10, idModal = "CalendarioMD");
     diaSeleccionado = "";
+    colorSeleccionado = "";
     const calendarEl = document.getElementById('calendar');
 
-    if (!calendar) {
+    if (!calendar || lastId != id) {
+        lastId = id;
         calendar = new FullCalendar.Calendar(calendarEl, {
             initialView: 'dayGridMonth',
             locale: 'es',
@@ -27,7 +31,7 @@ function showCalendarModal() {
                 const abortController = new AbortController();
                 currentAbortController = abortController;
 
-                fetch(`/api/calendario/?year=${year}&month=${month}`, { signal: abortController.signal })
+                fetch(`/api/calendari/fiestas/trabajador/?year=${year}&month=${month}&idTrabajador=${id}`, { signal: abortController.signal })
                     .then(response => response.json())
                     .then(data => {
                         removeToasts(true);
@@ -41,27 +45,35 @@ function showCalendarModal() {
             dateClick: function(info) {
                 const today = new Date().toISOString().split('T')[0];
                 if (info.dateStr <= today) {
-                    showToast("No se pueden seleccionar días pasados o el día de hoy", "info", 5000);
+                    showToast("No se pueden seleccionar días pasados o el día de hoy", "error", 5000);
                     return;
                 }
 
                 const event = info.view.calendar.getEvents().find(e => e.startStr === info.dateStr);
-                const backgroundColor = event ? event.backgroundColor : window.getComputedStyle(dayCell).backgroundColor;
-                console.log("Color de fondo del día seleccionado:", backgroundColor);
-
-                if (backgroundColor != "red" && backgroundColor != "gray") {
-                    diaSeleccionado = info.dateStr + "T00:00";
-                    dayCell = info.dayEl;
-                    dayCell.style.filter = "opacity(50%)";
-                    if (dayCellG) dayCellG.style.filter = "";
-                    if(dayCellG == dayCell) {
-                        dayCellG = null;
-                        diaSeleccionado = ""; 
-                    }
-                    else dayCellG = dayCell;
-                } else {
-                    showToast("Dia completo/festivo", "error", 5000);
+                let backgroundColor = event ? event.backgroundColor : window.getComputedStyle(info.dayEl).backgroundColor;
+                // Convertir a rgb si es necesario
+                if (backgroundColor.startsWith('rgb')) {
+                    // Gris: rgb(128, 128, 128) o similar
+                    if (backgroundColor.includes('128, 128, 128')) backgroundColor = "gray";
                 }
+                // Guardar el color seleccionado
+                colorSeleccionado = backgroundColor;
+
+                if (backgroundColor === "gray") {
+                    showToast("Dia completo/festivo", "error", 5000);
+                    return;
+                }
+
+                diaSeleccionado = info.dateStr + "T00:00";
+                dayCell = info.dayEl;
+                dayCell.style.filter = "opacity(50%)";
+                if (dayCellG) dayCellG.style.filter = "";
+                if(dayCellG == dayCell) {
+                    dayCellG = null;
+                    diaSeleccionado = ""; 
+                    colorSeleccionado = "";
+                }
+                else dayCellG = dayCell;
             },
             eventContent: function(arg) {
                 return { domNodes: [] };
@@ -181,20 +193,39 @@ function createHours(data){
 
 $('#modalConfirmCalendario').click(function() { 
     if (diaSeleccionado != "") {
-        // Extract date part from diaSeleccionado
-        const datePart = diaSeleccionado.split('T')[0];
-        
-        // Update the date field
-        document.getElementById('id_fecha_date').value = datePart;
-        
-        // Get current time value and update the hidden datetime field
-        const currentTime = document.getElementById('id_fecha_time').value || "00:00";
-        document.getElementById('id_fecha').value = `${datePart}T${currentTime}`;
-        
-        diaSeleccionado = "";
-        dayCellG.style.filter = ""; // Resetear el filtro de brillo
-        $('.custom-modal').hide();  // Ocultar el modal
-        showHourModal();
+        // Extraer color base (puede ser rgb, hex o nombre)
+        let color = colorSeleccionado;
+        // Normalizar colores
+        if (color.startsWith('#')) {
+            if (color.toLowerCase() === "#4caf50") color = "green";
+            else if (color.toLowerCase() === "#ff9800") color = "orange";
+            else if (color.toLowerCase() === "#f44336") color = "red";
+            else if (color.toLowerCase() === "#2196f3") color = "blue";
+        }
+        // Si es rgb, convertir a nombre
+        if (color.startsWith('rgb')) {
+            if (color.replace(/ /g,'').includes('76,175,80')) color = "green";
+            else if (color.replace(/ /g,'').includes('255,152,0')) color = "orange";
+            else if (color.replace(/ /g,'').includes('244,67,54')) color = "red";
+            else if (color.replace(/ /g,'').includes('33,150,243')) color = "blue";
+            else if (color.replace(/ /g,'').includes('128,128,128')) color = "gray";
+        }
+        // También aceptar el nombre directamente
+        color = color.toLowerCase();
+
+        if (color === "green" || color === "orange") {
+            showToast("¡Se ha dado fiesta al trabajador!", "success", 4000);
+            $('.custom-modal').hide();
+        } else if (color === "red") {
+            showToast("Si le das fiesta, un cliente no podrá ser atendido", "error", 5000);
+        } else if (color === "blue") {
+            showToast("¡Se ha quitado la fiesta al trabajador!", "info", 4000);
+            $('.custom-modal').hide();
+        } else if (color === "gray") {
+            showToast("Dia completo/festivo", "error", 5000);
+        } else {
+            showToast("Selecciona un día válido", "error", 4000);
+        }
     }
 });
 

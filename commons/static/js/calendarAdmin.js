@@ -91,11 +91,19 @@ function getUrlParam(param) {
                 }
                 
                 const today = new Date().toISOString().split('T')[0];
-                if (info.dateStr === today) {
-                    showToast("Hoy no se puede modificar", "info", 5000);
+                if (info.dateStr <= today) {
+                    showToast("No se pueden modificar días pasados o el día de hoy", "info", 5000);
                     return;
                 }
+                else if (info.dateStr) {
+                    const selectedDate = new Date(info.dateStr);
+                    const dayOfWeek = selectedDate.getDay(); // 0 = Sunday, 6 = Saturday
 
+                    if (dayOfWeek === 0 || dayOfWeek === 6) {
+                        showToast("No se pueden seleccionar días de fin de semana", "info", 5000);
+                        return;
+                    }
+                }
                 // Obtener el color de fondo del evento (si existe)
                 const event = info.view.calendar.getEvents().find(e => e.startStr === info.dateStr);
                 const backgroundColor = event ? event.backgroundColor : ""; // Color por defecto si no hay evento
@@ -135,7 +143,7 @@ function getUrlParam(param) {
                     
                     // Marcar visualmente con una clase y filtro de brillo
                     dayCellG.classList.add('calendario-dia-seleccionado');
-                    dayCellG.style.filter = "brightness(1.2)";
+                    dayCellG.style.filter = "opacity(50%)";
                 
                     // Si es un doble clic, mostrar el modal directamente
                     if (isDoubleClick) {
@@ -441,7 +449,7 @@ function warningModal(dia){
     const style = document.createElement('style');
     style.textContent = `
         .calendario-dia-seleccionado {
-            filter: brightness(1.2) !important;
+            filter: opacity(50%) !important;
             outline: 2px solid #5c7cfa !important;
             position: relative;
             z-index: 1;

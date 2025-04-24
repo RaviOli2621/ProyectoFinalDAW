@@ -162,6 +162,10 @@ def editar_reserva(request):
 
             reserva_form.save()
             return redirect('reservas')
+        else:
+            print(reserva_form.errors)  
+            reserva_form = ReservaForm(instance=reserva)
+        
     else:
         reserva_form = ReservaForm(instance=reserva)
 

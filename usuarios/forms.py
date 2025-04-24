@@ -23,6 +23,70 @@ class ReservaForm(forms.ModelForm):
         widgets = {
             'duracion': forms.TextInput(attrs={'readonly': 'readonly'}),
         }
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        
+        # Asegurar que el campo duración tenga un valor predeterminado si es necesario
+        if self.instance and self.instance.pk and hasattr(self.instance, 'duracion'):
+            self.initial['duracion'] = self.instance.duracion
+        elif 'initial' in kwargs and 'duracion' in kwargs['initial']:
+            pass
+        else:
+            self.initial['duracion'] = 60
+    
+    def clean(self):
+        cleaned_data = super().clean()
+        fecha = cleaned_data.get('fecha')
+        
+        if fecha:
+            try:
+                # Convertir a formato de fecha YYYY-MM-DD para la API
+                fecha_str = fecha.strftime('%Y-%m-%d')
+                
+                # Mejor enfoque: Acceder directamente a la vista sin HTTP
+                from django.urls import reverse
+                from django.http import HttpRequest
+                from masajes.views.calendar import horas_api  # Importar la vista directamente
+                
+                print(f"DEBUG - Consultando horas disponibles para: {fecha_str}")
+                
+                # Simulamos la petición directamente
+                request = HttpRequest()
+                request.method = 'GET'
+                request.GET = {'fecha': fecha_str}
+                
+                # Llamar directamente a la vista
+                from django.http import JsonResponse
+                try:
+                    # Intentar llamar a la vista API directamente
+                    response = horas_api(request)
+
+                    if isinstance(response, JsonResponse):
+                        horas_disponibles = response.content
+                        import json
+                        horas_disponibles = json.loads(horas_disponibles.decode('utf-8'))
+                        fechaFormated = str(fecha).replace(' ', 'T')
+                        hora_objeto = next((hora for hora in horas_disponibles if hora.get('fecha') == fechaFormated), None)
+                        reserva = Reserva.objects.filter(id=self.instance.id).first().fecha
+
+                        if not hora_objeto:
+                            self.add_error('fecha', "No hay horas disponibles para esta fecha")
+                        if hora_objeto["color"] == 'red' and reserva != fecha:
+                            self.add_error('fecha', "No hay horas disponibles para esta fecha")
+                        
+                        # Guardar las horas disponibles en el formulario para uso posterior
+                        self._horas_disponibles = horas_disponibles
+                    else:
+                        print(f"DEBUG - Respuesta inesperada de la API: {type(response)}")
+                except Exception as e:
+                    print(f"DEBUG - Error al llamar directamente a la vista: {e}")
+            except Exception as e:
+                import traceback
+                print(f"DEBUG - Error al verificar disponibilidad: {type(e).__name__}: {e}")
+                traceback.print_exc()
+                
+        return cleaned_data
 
 class TarjetaForm(forms.Form):
     numero_tarjeta = forms.CharField(max_length=16, label="Número de tarjeta")
@@ -284,6 +348,7 @@ class WorkerEditForm(forms.Form):
             
             # Validar formato de hora (HH:MM)
             import re
+
             time_pattern = re.compile(r'^([01]?[0-9]|2[0-3]):(30|00)$')
             
             if not time_pattern.match(start_time):

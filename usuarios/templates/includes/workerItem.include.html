@@ -3,7 +3,7 @@
 
 
 {% comment %} Acciones de calendario, borrar y editar {% endcomment %}
-{% capture as accionAHacer silent %}cambiarPriv({{ id }},this){% endcapture %}
+{% capture as accionAHacer silent %}showCalendarModal({{id}}){% endcapture %}
 {% capture as dataEditarTrabajador silent %}?trabajador_id={{ id }}{% endcapture %}
 {% capture as accionParaBorrar silent %}showConfirmModal({{ id }},"DeleteWorkerMD"){% endcapture %}
 
@@ -21,4 +21,10 @@
 
 {% include "commons/includes/infoCard.include.html" with top_action_left=boton_left top_action_right=boton_right title=name bottom_actions=bottom_content image_url=img %}
 
-<script defer src="{% static 'js/changeAdmin.js' %}"></script>
+{% comment %} <script defer src="{% static 'js/changeAdmin.js' %}"></script> {% endcomment %}
+
+{% capture as calendario silent %}
+    <div id="calendar"></div>
+{% endcapture %}
+{% include "commons/includes/modal.include.html" with Titulo="Calendario" Contenido=calendario idConfirm="modalConfirmCalendario" modalId="CalendarioMD" %}
+<script defer src="{% static 'js/calendarWorker.js' %}"></script>

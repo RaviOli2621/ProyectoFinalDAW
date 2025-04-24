@@ -28,20 +28,14 @@ def safe_aware(dt):
     return dt
 
 def calcDiaCalendario(dia_evento, current_date, workers, delta):
-    # Comprobar si es fiesta general
     if current_date <= datetime.now().date():
         dia_evento["backgroundColor"] = "red"
-        current_date += delta
         return dia_evento
-    if Fiestas.objects.filter(fecha=current_date, general=True).exists():
-        dia_evento["color"] = "gray"
-        current_date += delta
-        return dia_evento
-        
-    # Calcular trabajadores disponibles ese día (fiestas personales)
-    festivos_personales = Fiestas.objects.filter(fecha=current_date, general=False).count()
 
-    # Franja horaria: de 8:00 a 22:00 cada 30 minutos
+    if current_date.weekday() in {5, 6} or Fiestas.objects.filter(fecha=current_date, general=True).exists():
+        dia_evento["color"] = "gray"
+        return dia_evento
+
     franjas = [
         safe_aware(datetime.combine(current_date, time(8, 0)) + timedelta(minutes=30 * i))
         for i in range(28)
@@ -52,24 +46,32 @@ def calcDiaCalendario(dia_evento, current_date, workers, delta):
     for franja_inicio in franjas:
         franja_fin = franja_inicio + timedelta(minutes=30)
 
-
-        workersThisHour = workers.filter(start_time__lte=franja_inicio.time())  # El trabajador empieza antes de la franja
-        workersThisHour = workersThisHour.filter(end_time__gte=franja_fin.time())  # El trabajador acaba después de la franja
+        # Trabajadores disponibles en la franja
+        workersThisHour = workers.filter(
+            start_time__lte=franja_inicio.time(),
+            end_time__gte=franja_fin.time()
+        )
         total_workers = workersThisHour.count()
+
+        # Festivos personales SOLO de los que trabajan en esta franja
+        festivos_personales = Fiestas.objects.filter(
+            fecha=current_date,
+            general=False,
+            empleado_id__in=workersThisHour.values_list('id', flat=True)
+        ).count()
+
         workers_disponibles = total_workers - festivos_personales
+
         reservas = Reserva.objects.filter(
             fecha__lte=franja_inicio,
-            fecha__gte=franja_inicio - timedelta(hours=3)  # margen para masajes largos
+            fecha__gte=franja_inicio - timedelta(hours=3)
         )
 
         ocupacion = 0
-
         for r in reservas:
             inicio = r.fecha
-
             duracion = r.duracion or r.idMasaje.duracion
             fin = inicio + duracion
-
             if inicio < franja_fin and fin > franja_inicio:
                 ocupacion += 1
 
@@ -125,7 +127,6 @@ def horas_api(request):
     workers = Worker.objects.filter(delete_date__isnull=True)
     franjas = quitarHorasDeDescanso(franjas)
     for franja_inicio in franjas:
-        print(franja_inicio)
         franja_fin = franja_inicio + timedelta(minutes=30)
         reservas = Reserva.objects.filter(
             fecha__lte=franja_inicio,
@@ -159,7 +160,6 @@ def quitarHorasDeDescanso(franjas):
 @require_http_methods(["PUT", "DELETE"])
 def gestionarDiasFiesta(request):
     dia = request.GET.get('fecha')
-    print(request.method)
 
     if request.method == "PUT":
         # Handle the PUT method
@@ -180,7 +180,6 @@ def gestionarDiasFiesta(request):
                 return JsonResponse({"status": "error", "message": "Error sending email to " + reserva.idCliente.email}, status=500)
         reservas.delete()
         Fiestas.objects.create(fecha=dia, general=True)
-        print("fiesta general")
     elif request.method == "DELETE":
         # Handle the DELETE method
         Fiestas.objects.filter(fecha=dia).delete()
@@ -189,3 +188,80 @@ def gestionarDiasFiesta(request):
 @notAdmin_user
 def calendari(request):
     return render(request,"calendario.html")
+
+def fiestaTrabajador(request):
+    eventos = []
+    # Obtener año y mes del request, o usar los actuales por defecto
+    year = int(request.GET.get('year', request.GET['year']))
+    month = int(request.GET.get('month', request.GET['month']))
+
+    # Calcular rango de días a mostrar (incluyendo días del mes anterior/siguiente)
+    start_date = datetime(year, month, 1).date()
+    end_date = (start_date.replace(day=28) + timedelta(days=10)).replace(day=1)
+    delta = timedelta(days=1)
+
+    # Obtener información de trabajadores
+    workers = Worker.objects.filter(delete_date__isnull=True)
+
+    worker = Worker.objects.filter(id=request.GET.get('idTrabajador')).first()
+    current_date = start_date
+    while current_date < end_date:
+        dia_evento = {"start": current_date.isoformat(), "display": "background"}
+    
+        dia_evento = calcFiestaTrabajador(dia_evento, current_date, workers, delta,worker)
+
+        eventos.append(dia_evento)
+        current_date += delta
+
+    return JsonResponse(eventos, safe=False)
+
+def calcFiestaTrabajador(dia_evento, current_date, workers, delta, worker):
+    # Comprobar si es fiesta específica del trabajador
+    if worker is not None:
+        worker_instance = worker
+        if Fiestas.objects.filter(fecha=current_date, general=False, empleado_id=worker_instance.id).exists():
+            dia_evento["backgroundColor"] = "blue"
+            return dia_evento
+
+    if current_date <= datetime.now().date():
+        dia_evento["backgroundColor"] = "red"
+        return dia_evento
+
+    if current_date.weekday() in {5, 6} or Fiestas.objects.filter(fecha=current_date, general=True).exists():
+        dia_evento["color"] = "gray"
+        return dia_evento
+
+    # Comprobar si quitando al worker hay más reservas que trabajadores en alguna franja
+    franjas = [
+        safe_aware(datetime.combine(current_date, time(8, 0)) + timedelta(minutes=30 * i))
+        for i in range(28)
+    ]
+    franjas = quitarHorasDeDescanso(franjas)
+
+    for franja_inicio in franjas:
+        franja_fin = franja_inicio + timedelta(minutes=30)
+        # Trabajadores disponibles en esa franja, quitando al worker
+        workersThisHour = workers.exclude(id=worker.id).filter(
+            start_time__lte=franja_inicio.time(),
+            end_time__gte=franja_fin.time()
+        )
+        total_workers = workersThisHour.count()
+        reservas = Reserva.objects.filter(
+            fecha__lte=franja_inicio,
+            fecha__gte=franja_inicio - timedelta(hours=3)
+        )
+
+        ocupacion = 0
+        for r in reservas:
+            inicio = r.fecha
+            duracion = r.duracion or r.idMasaje.duracion
+            fin = inicio + duracion
+            if inicio < franja_fin and fin > franja_inicio:
+                ocupacion += 1
+        if ocupacion > total_workers:
+            print(f"franja: {franja_inicio} trabajadores: {total_workers} {reservas}")
+            dia_evento["backgroundColor"] = "red"
+            return dia_evento
+    dia_evento["backgroundColor"] = "green"
+    return dia_evento
+
