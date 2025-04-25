@@ -1,13 +1,14 @@
 let calendar = null;
-let diaSeleccionado = ""; // Variable para almacenar el día numerico seleccionado
-let currentAbortController = null;  // Variable para almacenar el controlador de la última solicitud
-let dayCellG; // Variable para almacenar la celda del día seleccionado
-let colorSeleccionado = ""; // Nuevo: para guardar el color del día seleccionado
+let diasSeleccionados = []; // Array para almacenar los días seleccionados
+let currentAbortController = null;
+let dayCellsSeleccionadas = []; // Array para almacenar las celdas seleccionadas
+let colorSeleccionado = "";
+let lastId = 0;
 
-let lastId = 0
 function showCalendarModal(id) {
     showConfirmModal(10, idModal = "CalendarioMD");
-    diaSeleccionado = "";
+    diasSeleccionados = [];
+    dayCellsSeleccionadas = [];
     colorSeleccionado = "";
     const calendarEl = document.getElementById('calendar');
 
@@ -51,29 +52,47 @@ function showCalendarModal(id) {
 
                 const event = info.view.calendar.getEvents().find(e => e.startStr === info.dateStr);
                 let backgroundColor = event ? event.backgroundColor : window.getComputedStyle(info.dayEl).backgroundColor;
-                // Convertir a rgb si es necesario
                 if (backgroundColor.startsWith('rgb')) {
-                    // Gris: rgb(128, 128, 128) o similar
                     if (backgroundColor.includes('128, 128, 128')) backgroundColor = "gray";
                 }
-                // Guardar el color seleccionado
                 colorSeleccionado = backgroundColor;
 
-                if (backgroundColor === "gray") {
+                // Normalizar color
+                let color = colorSeleccionado;
+                if (color.startsWith('#')) {
+                    if (color.toLowerCase() === "#4caf50") color = "green";
+                    else if (color.toLowerCase() === "#ff9800") color = "orange";
+                    else if (color.toLowerCase() === "#f44336") color = "red";
+                    else if (color.toLowerCase() === "#2196f3") color = "blue";
+                }
+                if (color.startsWith('rgb')) {
+                    if (color.replace(/ /g,'').includes('76,175,80')) color = "green";
+                    else if (color.replace(/ /g,'').includes('255,152,0')) color = "orange";
+                    else if (color.replace(/ /g,'').includes('244,67,54')) color = "red";
+                    else if (color.replace(/ /g,'').includes('33,150,243')) color = "blue";
+                    else if (color.replace(/ /g,'').includes('128,128,128')) color = "gray";
+                }
+                color = color.toLowerCase();
+
+                // Si es gris o rojo, mostrar error y no seleccionar
+                if (color === "gray") {
                     showToast("Dia completo/festivo", "error", 5000);
                     return;
                 }
 
-                diaSeleccionado = info.dateStr + "T00:00";
-                dayCell = info.dayEl;
-                dayCell.style.filter = "opacity(50%)";
-                if (dayCellG) dayCellG.style.filter = "";
-                if(dayCellG == dayCell) {
-                    dayCellG = null;
-                    diaSeleccionado = ""; 
-                    colorSeleccionado = "";
+
+                // Si ya está seleccionado, deselecciona
+                let fechaSeleccionada = info.dateStr + "T00:00";
+                let index = diasSeleccionados.indexOf(fechaSeleccionada);
+                if (index !== -1) {
+                    diasSeleccionados.splice(index, 1);
+                    info.dayEl.style.filter = "";
+                    dayCellsSeleccionadas = dayCellsSeleccionadas.filter(cell => cell !== info.dayEl);
+                } else {
+                    diasSeleccionados.push(fechaSeleccionada);
+                    info.dayEl.style.filter = "opacity(50%)";
+                    dayCellsSeleccionadas.push(info.dayEl);
                 }
-                else dayCellG = dayCell;
             },
             eventContent: function(arg) {
                 return { domNodes: [] };
@@ -84,47 +103,95 @@ function showCalendarModal(id) {
         calendar.removeAllEvents();
         calendar.refetchEvents();
     }
+
+    calendar.on('datesSet', function(info) {
+        // Limpiar todos los filtros primero
+        document.querySelectorAll('.fc-daygrid-day').forEach(cell => {
+            cell.style.filter = "";
+        });
+        // Volver a aplicar el efecto solo a los días seleccionados que estén en el mes visible
+        diasSeleccionados.forEach(dia => {
+            const fechaSinHora = dia.split('T')[0];
+            const celda = Array.from(document.querySelectorAll('.fc-daygrid-day')).find(
+                cell => cell.getAttribute('data-date') === fechaSinHora
+            );
+            if (celda) {
+                celda.style.filter = "opacity(50%)";
+                if (!dayCellsSeleccionadas.includes(celda)) {
+                    dayCellsSeleccionadas.push(celda);
+                }
+            }
+        });
+    });
 }
 
+$('#modalConfirmCalendario').off('click').on('click', function() {
+    if (diasSeleccionados.length === 0) {
+        showToast("Selecciona al menos un día válido", "error", 4000);
+        return;
+    }
 
-$('#modalConfirmCalendario').click(function() { 
-    if (diaSeleccionado != "") {
-        // Extraer color base (puede ser rgb, hex o nombre)
-        let color = colorSeleccionado;
-        // Normalizar colores
-        if (color.startsWith('#')) {
-            if (color.toLowerCase() === "#4caf50") color = "green";
-            else if (color.toLowerCase() === "#ff9800") color = "orange";
-            else if (color.toLowerCase() === "#f44336") color = "red";
-            else if (color.toLowerCase() === "#2196f3") color = "blue";
+    // Comprobar si hay algún día rojo
+    let hayRojo = false;
+    let diasRojos = [];
+    diasSeleccionados.forEach(dia => {
+        const fechaSinHora = dia.split('T')[0];
+        const celda = Array.from(document.querySelectorAll('.fc-daygrid-day')).find(
+            cell => cell.getAttribute('data-date') === fechaSinHora
+        );
+        let backgroundColor = "";
+        if (celda) {
+            const event = calendar.getEvents().find(e => e.startStr.startsWith(fechaSinHora));
+            backgroundColor = event ? event.backgroundColor : "";
         }
-        // Si es rgb, convertir a nombre
-        if (color.startsWith('rgb')) {
-            if (color.replace(/ /g,'').includes('76,175,80')) color = "green";
-            else if (color.replace(/ /g,'').includes('255,152,0')) color = "orange";
-            else if (color.replace(/ /g,'').includes('244,67,54')) color = "red";
-            else if (color.replace(/ /g,'').includes('33,150,243')) color = "blue";
-            else if (color.replace(/ /g,'').includes('128,128,128')) color = "gray";
+        let color = backgroundColor.toLowerCase();
+        if (color === "#f44336" || color === "rgb(244, 67, 54)" || color === "red") {
+            hayRojo = true;
+            diasRojos.push(dia);
         }
-        // También aceptar el nombre directamente
-        color = color.toLowerCase();
-        let fechaFormateada = diaSeleccionado.split('T')[0]; // Extract YYYY-MM-DD
-        let partesFecha = fechaFormateada.split('-'); // Split into [YYYY, MM, DD]
-        fechaFormateada = `${partesFecha[0]}-${partesFecha[1]}-${partesFecha[2]}`; // Rearrange to DD-MM-YYYY
-        if (color === "green" || color === "orange") {
-            changeWorkerFestivity(fechaFormateada, lastId, {message:"¡Se ha dado fiesta al trabajador!", status:"success", time:4000});
-        } else if (color === "red") {
-            showToast("Si le das fiesta, un cliente no podrá ser atendido", "error", 5000);
-        } else if (color === "blue") {
-            changeWorkerFestivity(fechaFormateada, lastId, {message:"¡Se ha quitado la fiesta al trabajador!", status:"info", time:4000});
-        } else if (color === "gray") {
-            showToast("Dia festivo", "error", 5000);
-        } else {
-            showToast("Selecciona un día válido", "error", 4000);
-        }
+    });
+
+    if (hayRojo) {
+        // Mostrar modal de advertencia
+        showConfirmModal(10, "WarningWorkerMD");
+        setTimeout(() => {
+            const confirmBtn = document.getElementById("modalConfirmWarningWorker");
+            if (confirmBtn) {
+                confirmBtn.onclick = function() {
+                    $('#WarningWorkerMD').hide();
+                    $('.custom-modal').hide();
+                    // Procesar todos los días seleccionados
+                    procesarDiasSeleccionados();
+                };
+            }
+        }, 100);
+    } else {
+        // Si no hay días rojos, procesar directamente
+        procesarDiasSeleccionados();
     }
 });
-//Toast es un objeto que tiene que contener el mensaje, el tipo y la duración
+
+function procesarDiasSeleccionados() {
+    diasSeleccionados.forEach((dia, idx) => {
+        let fechaFormateada = dia.split('T')[0];
+        let partesFecha = fechaFormateada.split('-');
+        fechaFormateada = `${partesFecha[0]}-${partesFecha[1]}-${partesFecha[2]}`;
+        changeWorkerFestivity(
+            fechaFormateada,
+            lastId,
+            {
+                message: "¡Se ha dado o quitado la fiesta al trabajador!",
+                status: "success",
+                time: 4000
+            }
+        );
+    });
+    // Limpiar selección visual
+    dayCellsSeleccionadas.forEach(cell => cell.style.filter = "");
+    dayCellsSeleccionadas = [];
+    diasSeleccionados = [];
+}
+
 function changeWorkerFestivity(fecha, id, toast) {
     fetch(`/api/calendari/fiestas/trabajador/${id}/?fecha=${fecha}`)
     .then(response => response.json())
@@ -132,33 +199,8 @@ function changeWorkerFestivity(fecha, id, toast) {
         removeToasts(true);
         showToast(toast.message, toast.status, toast.time);
         $('.custom-modal').hide();
-        dayCellG.style.filter = "";
-        dayCellG = null;
-        diaSeleccionado = "";
     })
     .catch(err => {
         showToast("Error al cambiar la festividad: " + err, "error", 5000);
     });
 }
-// Initialize fields on page load
-document.addEventListener('DOMContentLoaded', function() {
-    const timeField = document.getElementById('id_fecha_time');
-    const dateField = document.getElementById('id_fecha_date');
-    const datetimeField = document.getElementById('id_fecha');
-    
-    // If date field has value but time field is empty, extract time from datetime
-    if (dateField.value && !timeField.value && datetimeField.value) {
-        const timePart = datetimeField.value.split('T')[1];
-        if (timePart) {
-            timeField.value = timePart.substring(0, 5);
-        } else {
-            // Set default time
-            timeField.value = '09:00';
-        }
-    }
-    
-    // Log initial values for debugging
-    console.log('Initial date:', dateField.value);
-    console.log('Initial time:', timeField.value);
-    console.log('Initial datetime:', datetimeField.value);
-});

@@ -27,4 +27,5 @@
     <div id="calendar"></div>
 {% endcapture %}
 {% include "commons/includes/modal.include.html" with Titulo="Calendario" Contenido=calendario idConfirm="modalConfirmCalendario" modalId="CalendarioMD" %}
+{% include "commons/includes/modal.include.html" with Titulo="ALERTA!!!" Contenido="Si confirmas, se dará fiesta aunque algún cliente no pueda ser atendido." idConfirm="modalConfirmWarningWorker" modalId="WarningWorkerMD" %}
 <script defer src="{% static 'js/calendarWorker.js' %}"></script>

@@ -1,7 +1,7 @@
 let calendar = null;
-let diaSeleccionado = ""; // Variable para almacenar el día numerico seleccionado
+let diasSeleccionados = [];
+let dayCellsSeleccionadas = [];
 let currentAbortController = null;  // Variable para almacenar el controlador de la última solicitud
-let dayCellG = null; // Variable para almacenar la celda del día seleccionado
 let lastClickedDate = null; // Variable para almacenar la última fecha clicada
 let lastClickTime = 0; // Variable para almacenar el tiempo del último clic
 let isUserInitiatedRefresh = false; // Variable para controlar si la actualización es iniciada por el usuario
@@ -14,7 +14,7 @@ function getUrlParam(param) {
 }
 
 (() => {
-    diaSeleccionado = "";
+    diasSeleccionados = [];
     const calendarEl = document.getElementById('calendar');
 
     if (!calendar) {
@@ -58,16 +58,13 @@ function getUrlParam(param) {
                         canInteract = true; 
                         
                         // Si había una selección anterior, restaurarla visualmente
-                        if (dayCellG && diaSeleccionado) {
+                        if (dayCellsSeleccionadas.length > 0 && diasSeleccionados.length > 0) {
                             try {
-                                const fechaSeleccionada = diaSeleccionado.split('T')[0];
                                 const celdas = document.querySelectorAll('.fc-daygrid-day');
                                 for (let celda of celdas) {
                                     const dataDate = celda.getAttribute('data-date');
-                                    if (dataDate === fechaSeleccionada) {
+                                    if (diasSeleccionados.includes(dataDate)) {
                                         celda.classList.add('calendario-dia-seleccionado');
-                                        dayCellG = celda;
-                                        break;
                                     }
                                 }
                             } catch (e) {
@@ -89,67 +86,37 @@ function getUrlParam(param) {
                     showToast("Espera mientras se cargan los datos", "info", 3000);
                     return;
                 }
-                
                 const today = new Date().toISOString().split('T')[0];
                 if (info.dateStr <= today) {
                     showToast("No se pueden modificar días pasados o el día de hoy", "info", 5000);
                     return;
                 }
-                else if (info.dateStr) {
-                    const selectedDate = new Date(info.dateStr);
-                    const dayOfWeek = selectedDate.getDay(); // 0 = Sunday, 6 = Saturday
-
-                    if (dayOfWeek === 0 || dayOfWeek === 6) {
-                        showToast("No se pueden seleccionar días de fin de semana", "info", 5000);
-                        return;
-                    }
+                const selectedDate = new Date(info.dateStr);
+                const dayOfWeek = selectedDate.getDay();
+                if (dayOfWeek === 0 || dayOfWeek === 6) {
+                    showToast("No se pueden seleccionar días de fin de semana", "info", 5000);
+                    return;
                 }
-                // Obtener el color de fondo del evento (si existe)
                 const event = info.view.calendar.getEvents().find(e => e.startStr === info.dateStr);
-                const backgroundColor = event ? event.backgroundColor : ""; // Color por defecto si no hay evento
-
-                // Verificar si el día está completamente reservado
+                const backgroundColor = event ? event.backgroundColor : "";
                 if (backgroundColor === "red") {
                     showToast("Día completo", "error", 5000);
                     return;
                 }
 
-                // Comprobar si es un doble clic
-                const currentTime = new Date().getTime();
-                const isDoubleClick = (info.dateStr === lastClickedDate && currentTime - lastClickTime < 300);
-                
-                // Actualizar las variables de seguimiento
-                lastClickedDate = info.dateStr;
-                lastClickTime = currentTime;
-
-                // Añadir un atributo data-date para facilitar la comparación
-                const clickedDate = info.dateStr;
-                const previousSelectedDate = diaSeleccionado ? diaSeleccionado.split('T')[0] : null;
-                
-                // Limpiar la selección anterior
-                document.querySelectorAll('.calendario-dia-seleccionado').forEach(el => {
-                    el.classList.remove('calendario-dia-seleccionado');
-                    el.style.filter = "";
-                });
-
-                // Si se hace clic en el mismo día que ya estaba seleccionado, quitar la selección
-                if (previousSelectedDate === clickedDate && !isDoubleClick) {
-                    diaSeleccionado = "";
-                    dayCellG = null;
+                // Multi-selección: alternar
+                let fechaSeleccionada = info.dateStr + "T00:00";
+                let idx = diasSeleccionados.indexOf(fechaSeleccionada);
+                if (idx !== -1) {
+                    diasSeleccionados.splice(idx, 1);
+                    info.dayEl.classList.remove('calendario-dia-seleccionado');
+                    info.dayEl.style.filter = "";
+                    dayCellsSeleccionadas = dayCellsSeleccionadas.filter(cell => cell !== info.dayEl);
                 } else {
-                    // Seleccionar el nuevo día
-                    diaSeleccionado = clickedDate + "T00:00";
-                    dayCellG = info.dayEl;
-                    
-                    // Marcar visualmente con una clase y filtro de brillo
-                    dayCellG.classList.add('calendario-dia-seleccionado');
-                    dayCellG.style.filter = "opacity(50%)";
-                
-                    // Si es un doble clic, mostrar el modal directamente
-                    if (isDoubleClick) {
-                        const fiesta = backgroundColor === "gray";
-                        confirmCalendar(diaSeleccionado, fiesta, backgroundColor);
-                    }
+                    diasSeleccionados.push(fechaSeleccionada);
+                    info.dayEl.classList.add('calendario-dia-seleccionado');
+                    info.dayEl.style.filter = "opacity(50%)";
+                    dayCellsSeleccionadas.push(info.dayEl);
                 }
             },
             
@@ -316,8 +283,10 @@ document.addEventListener('DOMContentLoaded', function() {
 function changeFest(dia, metodo) {
     // Desactivar interacción mientras se procesa
     canInteract = false;
-    
-    fetch(`/api/calendari/fiestas/?fecha=${dia}`, {
+    let fechaFormateada = dia.split('T')[0];
+    let partesFecha = fechaFormateada.split('-');
+    fechaFormateada = `${partesFecha[0]}-${partesFecha[1]}-${partesFecha[2]}`;
+    fetch(`/api/calendari/fiestas/?fecha=${fechaFormateada}`, {
         method: metodo,
         headers: {
             'Content-Type': 'application/json',
@@ -402,12 +371,12 @@ function confirmCalendar(dia, fiesta, backgroundColor){
     showHourModal(datePart, fiesta, backgroundColor);
     
     // Limpiar la selección después de confirmar
-    diaSeleccionado = "";
+    diasSeleccionados = [];
     document.querySelectorAll('.calendario-dia-seleccionado').forEach(el => {
         el.classList.remove('calendario-dia-seleccionado');
         el.style.filter = "";
     });
-    dayCellG = null;
+    dayCellsSeleccionadas = [];
 }
 
 function warningModal(dia){
@@ -450,7 +419,6 @@ function warningModal(dia){
     style.textContent = `
         .calendario-dia-seleccionado {
             filter: opacity(50%) !important;
-            outline: 2px solid #5c7cfa !important;
             position: relative;
             z-index: 1;
         }
@@ -475,4 +443,53 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 });
+
+document.getElementById('confirmarDiasSeleccionadosBtn').onclick = function() {
+    if (diasSeleccionados.length === 0) {
+        showToast("Selecciona al menos un día válido", "error", 4000);
+        return;
+    }
+
+    for (let i = 0; i < diasSeleccionados.length; i++) {
+        const dia = diasSeleccionados[i];
+        const fechaSinHora = dia.split('T')[0];
+        const celda = Array.from(document.querySelectorAll('.fc-daygrid-day')).find(
+            cell => cell.getAttribute('data-date') === fechaSinHora
+        );
+        let metodo = "PUT"; // Por defecto añadir fiesta
+
+        // Buscar el evento de ese día
+        let backgroundColor = "";
+        if (celda) {
+            const event = calendar.getEvents().find(e => e.startStr.startsWith(fechaSinHora));
+            backgroundColor = event ? event.backgroundColor : "";
+        }
+
+        // Normalizar color
+        let color = backgroundColor.toLowerCase();
+        if (color === "#ff9800" || color === "rgb(255, 152, 0)" || color === "orange") {
+            // Amarillo: mostrar warning y detener el bucle
+            warningModal(dia);
+            return;
+        }
+        if (color === "#f44336" || color === "rgb(244, 67, 54)" || color === "red") {
+            // Rojo: mostrar warning y detener el bucle
+            warningModal(dia);
+            return;
+        }
+        if (color === "#2196f3" || color === "rgb(33, 150, 243)" || color === "blue") {
+            metodo = "DELETE"; // Quitar fiesta
+        }
+
+        changeFest(dia, metodo);
+    }
+
+    // Limpiar selección visual y arrays
+    dayCellsSeleccionadas.forEach(cell => {
+        cell.classList.remove('calendario-dia-seleccionado');
+        cell.style.filter = "";
+    });
+    dayCellsSeleccionadas = [];
+    diasSeleccionados = [];
+};
 

@@ -26,8 +26,8 @@ function showCalendarModal() {
                 }
                 const abortController = new AbortController();
                 currentAbortController = abortController;
-
-                fetch(`/api/calendario/?year=${year}&month=${month}`, { signal: abortController.signal })
+                duracion = document.getElementById("id_duracion").value;
+                fetch(`/api/calendario/?year=${year}&month=${month}&blue='False'&duracion=${duracion}`, { signal: abortController.signal })
                     .then(response => response.json())
                     .then(data => {
                         removeToasts(true);
@@ -77,12 +77,14 @@ function showCalendarModal() {
 function showHourModal() {
     // Use the date from the date field instead of datetime field
     dia = document.getElementById("id_fecha_date").value;
+    duracion = document.getElementById("id_duracion").value;
+    
     if(dia){
         showConfirmModal(10,"HorasMD");
         document.getElementById("modalConfirmHoras")?.remove();
         // Give time for the modal to render in the DOM
         setTimeout(() => {
-            fetch(`/api/horas/?fecha=${dia}`)
+            fetch(`/api/horas/?fecha=${dia}&duracion=${duracion}`)
                 .then(response => response.json())
                 .then(data => {
                     console.log("Horas disponibles:", data);

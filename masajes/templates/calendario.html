@@ -11,6 +11,8 @@
 {% include "commons/includes/modal.include.html" with Titulo="Horas" Contenido="Cargando..." idConfirm="modalConfirmHoras" modalId="HorasMD" %}
 {% include "commons/includes/modal.include.html" with Titulo="ALERTA!!!" Contenido="Se borraran las reservas de ese dia y se aran devoluciones a los clientes" idConfirm="modalConfirmWarning" modalId="WarningMD" %}
 
+<button id="confirmarDiasSeleccionadosBtn">Confirmar selección</button>
+
 <script defer src="{% static 'js/calendarAdmin.js' %}"></script>
 <script defer src="{% static 'js/modal.include.js' %}"></script>
 
