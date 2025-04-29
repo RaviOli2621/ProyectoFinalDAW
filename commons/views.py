@@ -17,10 +17,11 @@ def enviar_correo(request):
             mensaje_texto = f"{titulo}\n\n{cuerpo}"
             
             # Versión HTML con formato
+            contenido_formateado = cuerpo.replace('\n', '<br>')
             mensaje_html = f"""
-            <h1>{titulo}</h1>
-            <div>{cuerpo.replace('\n', '<br>')}</div>
-            """
+                <h1>{titulo}</h1>
+                <div>{contenido_formateado}</div>
+                """
             
             success = send_email(
                 subject=form.cleaned_data['asunto'],
