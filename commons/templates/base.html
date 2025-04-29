@@ -53,22 +53,7 @@
             {% endif %}
             <a href="{% url 'enviar_correo' %}">
                 <button class="dropbtn">Contacta con nosotros</button>
-            </a>
-            <!-- {% if user.is_authenticated %}   -->
-            <!-- <li> -->
-                <!-- <a href="{% url 'logout'%}"><button>Logout</button></a> -->
-            <!-- </li> -->
-            <!-- {% else %}             -->
-            <!-- <li> -->
-                <!-- <a href="{% url 'signup'%}"><button>Signup</button></a> -->
-            <!-- </li> -->
-            <!-- <li> -->
-                <!-- <a href="{% url 'signin'%}"><button>Signin</button></a> -->
-            <!-- </li> -->
-            <!-- {% endif %} -->
-            
-           
-            
+            </a>            
         </ul>
          {% include "commons/includes/userIcon.include.html" %}
     </nav>
@@ -77,6 +62,6 @@
         {% block content %}    
         {% endblock %}
     </div>
-    {% include "commons/includes/footer.include.html" %}
+    {% include "commons/includes/footer.include.html" with tipos_masajes=tipos_masajes %}
 </body>
 </html>
