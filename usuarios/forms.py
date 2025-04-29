@@ -4,6 +4,48 @@ from django.contrib.auth.models import User  # Importa el modelo User
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.forms import UserCreationForm
 
+class UserEditForm(forms.ModelForm):
+    password1 = forms.CharField(
+        label="Nueva contraseña",
+        required=False,
+        widget=forms.PasswordInput(attrs={
+            'class': 'form-control',
+            'autocomplete': 'new-password'
+            })
+    )
+    password2 = forms.CharField(
+        label="Confirmar nueva contraseña",
+        required=False,
+        widget=forms.PasswordInput(attrs={
+            'class': 'form-control',
+            'autocomplete': 'new-password'})
+    )
+    foto = forms.ImageField(
+        required=False,
+        label="Foto de Perfil",
+        widget=forms.FileInput(attrs={'class': 'form-control'})
+    )
+
+    class Meta:
+        model = User
+        fields = ['username', 'email']
+        widgets = {
+            'username': forms.TextInput(attrs={'class': 'form-control'}),
+            'email': forms.EmailInput(attrs={'class': 'form-control', 'readonly': 'readonly'}),
+        }
+        
+    def clean(self):
+        cleaned_data = super().clean()
+        password1 = cleaned_data.get('password1')
+        password2 = cleaned_data.get('password2')
+        
+        if password1:
+            if not password2:
+                self.add_error('password2', 'Por favor, confirma la contraseña')
+            elif password1 != password2:
+                self.add_error('password2', 'Las contraseñas no coinciden')
+                
+        return cleaned_data
 
 class TuModeloForm(forms.ModelForm):
     METODOS_PAGO = [

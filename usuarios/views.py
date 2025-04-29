@@ -11,7 +11,7 @@ from django.contrib.auth.decorators import permission_required
 from django.contrib.auth.models import Group
 from django.views.decorators.csrf import csrf_exempt
 
-from usuarios.forms import CustomLoginForm, CustomSignInForm, WorkeCreaterForm, WorkerEditForm
+from usuarios.forms import CustomLoginForm, CustomSignInForm, UserEditForm, WorkeCreaterForm, WorkerEditForm
 from usuarios.models import UserProfile, Worker
 
 # Create your views here.
@@ -79,6 +79,58 @@ def signin(request):
             login(request, user)
             return redirect("home")
     
+@login_required
+def editUser(request):
+    if request.method == 'GET':
+        # Usar el usuario actual en lugar de buscar un Worker
+        user = request.user
+        
+        # Inicializar el formulario con los datos del usuario actual
+        initial_data = {
+            'username': user.username,
+            'email': user.email,
+        }
+        
+        form = UserEditForm(initial=initial_data)
+        
+        return render(request, "editUser.html", {
+            "form": form,
+            # El usuario y su perfil ya están disponibles en el template como request.user
+        })
+    elif request.method == 'POST':
+        user = request.user
+        form = UserEditForm(request.POST, request.FILES, instance=user)
+        
+        if form.is_valid():
+            # Guardar cambios en el usuario
+            user = form.save(commit=False)
+            
+            user.email = user._original_email if hasattr(user, '_original_email') else User.objects.get(id=user.id).email
+
+
+            # Manejar la contraseña si se proporcionó una nueva
+            password1 = form.cleaned_data.get('password1')
+            if password1:
+                user.set_password(password1)
+                
+            user.save()
+            
+            # Actualizar foto de perfil si se proporcionó
+            if 'foto' in request.FILES:
+                user.userprofile.foto = request.FILES['foto']
+                user.userprofile.save()
+            
+            # Mantener la sesión del usuario después de cambiar la contraseña
+            if password1:
+                login(request, user)
+                
+            return redirect('home')
+        else:
+            return render(request, "editUser.html", {
+                "form": form,
+            })
+    return JsonResponse({'success': False, 'error': 'Método no permitido'}, status=405)
+
 # Admin users
 @permission_required('auth.change_user')
 def userList(request,user_id=""):

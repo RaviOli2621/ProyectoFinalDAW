@@ -6,6 +6,7 @@
             {% endif %}
         </div>
         <div class="dropdown-content">
+            <a href="{% url 'editUser' %}">Editar usuario</a>
             {% if perms.auth.change_user %}
                 <a href="{% url 'userList' %}">Lista de usuarios</a>
                 <a href="{% url 'workerList' %}">Lista de trabajadores</a>

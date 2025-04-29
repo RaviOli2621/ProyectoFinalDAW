@@ -7,6 +7,7 @@ urlpatterns = [
     path('signin/', views.signin,name="signin"),
 
     # Admin usuaris
+    path('editUser/', views.editUser,name="editUser"),
     path('userList/', views.userList,name="userList"),
     path('userChangePriv/<int:user_id>/', views.userList,name="userChangePriv"),
 
