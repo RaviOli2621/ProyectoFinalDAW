@@ -1,0 +1,18 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/include/modal.include.css' %}">
+<div id="{{ modalId|default:'myModal'}}" class="custom-modal" style="display: none;">
+    <div class="custom-modal-content">
+        <div class="custom-modal-header">
+            <span id="modalClose" class="custom-modal-close">&times;</span>
+            <h5 id="modalTitle">{{Titulo}}</h5>
+        </div>
+        <div id="modalBody" class="custom-modal-body">
+            <!-- Contenido del Modal: Confirmación -->
+            {{Contenido}}
+        </div>
+        <div class="custom-modal-footer">
+            <button class="custom-btn custom-btn-secondary" id="modalCloseBtn">Cancelar</button>
+            <button class="custom-btn custom-btn-danger" id="{{idConfirm}}">Confirmar</button>
+        </div>
+    </div>
+</div>

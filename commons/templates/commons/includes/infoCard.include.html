@@ -1,0 +1,26 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/include/infoCard.include.css' %}">
+<div class="user-card">
+    <!-- Foto del usuario -->
+    <div class="user-image">
+        <img src="{{ image_url|default:'/static/fotosPerfil/default.jpg' }}" alt="User" />
+    </div>
+
+    <!-- Contenedor superior (Acciones) -->
+    <div class="top-actions">
+        {% if top_action_left %}
+            <div>{{ top_action_left }}</div>
+        {% endif %}
+        {% if top_action_right %}
+            <div class="ml-auto">{{ top_action_right }}</div>
+        {% endif %}
+    </div>
+
+    <!-- Título (Nombre del usuario) -->
+    <h2 class="user-name">{{ title }}</h2>
+
+    <!-- Contenedor inferior (Acciones específicas) -->
+    <div class="bottom-actions">
+        {{ bottom_actions|safe }}
+    </div>
+</div>

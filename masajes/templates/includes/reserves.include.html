@@ -1,0 +1,32 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/reserves.include.css' %}">
+<div class="reserva" style="background-image: url('{% static imagen %}'); background-size: cover; background-position: center;">
+    <div class="Title">
+    {% comment %} Se tiene que hacer dos conversiones para qe no llore. Pasar el int a string  i luego la concatenacion  {% endcomment %}
+        {% with id=reserva.id|stringformat:"s" %} 
+            {% with reservaid="?reservaid="|add:id %}
+                {% include "commons/includes/imgBoton.include.html" with src="/pen.svg" alt="Pen Icon" url="reservar_cambio" data=reservaid %}
+            {% endwith %}
+
+            <div>{{nombre}}</div>
+
+            {% with accionAHacer="showConfirmModal("|add:id|add:")" %}
+                {% include "commons/includes/imgBoton.include.html" with src="/trash.svg" alt="Trash Icon" action=accionAHacer  %}
+            {% endwith %}
+        {% endwith %}
+
+    </div>
+    <div class="textarea" name="{{nombre}} description" id="{{nombre}}Desc">
+        <div>{{ reserva.fecha|date:"d-m-Y" }}</div>
+        <div>{{ reserva.fecha|date:"H:i" }}</div>
+        <div>{{ reserva.duracion_formatada }}h</div>
+        <div>{{ reserva.precio_final }}€</div>
+        <div>
+            <label>
+            <p>Pagado:</p> 
+            <input type="checkbox" {% if reserva.pagado %}checked{% endif %} disabled>
+            </label>
+        </div>
+    </div>
+    <script defer src="{% static 'js/modal.include.js' %}"></script>
+</div>

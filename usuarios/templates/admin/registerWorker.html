@@ -1,0 +1,126 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+{% load static %}
+
+{% include "commons/includes/title.include.html" with Titulo="Crear trabajador" Subtitulo="Crea los datos del trabajador" %}
+
+<link rel="stylesheet" href="{% static 'css/workerData.css' %}">
+
+<div class="worker-form">
+    <form method="POST" enctype="multipart/form-data" action="{% url 'createWorker' %}">
+        {% csrf_token %}
+        <!-- Campo para la foto -->
+        <div class="form-group">
+            <label for="{{ form.foto.id_for_label }}">Foto de perfil:</label>
+            <!-- |default:'/static/fotosPerfil/default.jpg' -->
+            <!-- Mostrar imagen predeterminada -->
+            <div class="current-photo">
+                <label for="id_foto">
+                    <img id="fotoUser" src="{% static 'fotosPerfil/default.jpg' %}" alt="Seleccionar foto de perfil" class="profile-image">
+                    <img src="{% static '/pen-black.svg' %}" alt="Añadir foto">
+                </label>
+                <p class="help-text">Selecciona una foto</p>
+            </div>
+            
+            <input type="file" hidden name="foto" class="form-control" accept="image/*" id="id_foto">
+            
+            {% if form.foto.errors %}
+                <div class="error-text">{{ form.foto.errors }}</div>
+            {% endif %}
+        </div>
+        <div class="form-row">
+            <!-- Primera columna -->
+            <div class="form-column">
+
+                
+                <!-- Username -->
+                <div class="form-group">
+                    <label for="{{ form.username.id_for_label }}">Nombre de usuario:</label>
+                    {{ form.username }}
+                    {% if form.username.errors %}
+                        <div class="error-text">{{ form.username.errors }}</div>
+                    {% endif %}
+                </div>
+                
+                <!-- Email -->
+                <div class="form-group">
+                    <label for="{{ form.email.id_for_label }}">Email:</label>
+                    {{ form.email }}
+                    {% if form.email.errors %}
+                        <div class="error-text">{{ form.email.errors }}</div>
+                    {% endif %}
+                </div>
+                
+                <!-- Contraseña -->
+                <div class="form-group">
+                    <label for="{{ form.password1.id_for_label }}">Contraseña:</label>
+                    {{ form.password1 }}
+                    {% if form.password1.errors %}
+                        <div class="error-text">{{ form.password1.errors }}</div>
+                    {% endif %}
+                </div>
+                
+                <!-- Confirmar contraseña -->
+                <div class="form-group">
+                    <label for="{{ form.password2.id_for_label }}">Confirmar contraseña:</label>
+                    {{ form.password2 }}
+                    {% if form.password2.errors %}
+                        <div class="error-text">{{ form.password2.errors }}</div>
+                    {% endif %}
+                    <div class="help-text">La constraseña debe seguir los mismos criterios que con el resto de usuarios </div>
+                </div>
+            </div>
+            
+            <!-- Segunda columna (a partir de DNI) -->
+            <div class="form-column">
+                <!-- DNI -->
+                <div class="form-group">
+                    <label for="{{ form.dni.id_for_label }}">DNI:</label>
+                    {{ form.dni }}
+                    {% if form.dni.errors %}
+                        <div class="error-text">{{ form.dni.errors }}</div>
+                    {% endif %}
+                </div>
+                
+                <!-- Número de teléfono -->
+                <div class="form-group">
+                    <label for="{{ form.phone_number.id_for_label }}">Número de teléfono:</label>
+                    {{ form.phone_number }}
+                    {% if form.phone_number.errors %}
+                        <div class="error-text">{{ form.phone_number.errors }}</div>
+                    {% endif %}
+                </div>
+                
+                <!-- Fecha de inicio -->
+                <div class="form-group">
+                    <label for="{{ form.start_date.id_for_label }}">Fecha de inicio:</label>
+                    {{ form.start_date }}
+                    {% if form.start_date.errors %}
+                        <div class="error-text">{{ form.start_date.errors }}</div>
+                    {% endif %}
+                </div>
+                
+                <!-- Horario -->
+                <div class="form-group">
+                    <label for="{{ form.horario.id_for_label }}">Horario (formato: HH:MM - HH:MM):</label>
+                    {{ form.horario }}
+                    {% if form.horario.errors %}
+                        <div class="error-text">{{ form.horario.errors }}</div>
+                    {% endif %}
+                    <div class="help-text">Solo se permiten horas en punto (:00) o y media (:30)</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Botones al final del formulario -->
+        <div class="form-actions">
+            <a href="{% url 'workerList' %}" class="btn btn-cancel">Cancelar</a>
+            <button type="submit" class="btn btn-primary">Crear trabajador</button>
+        </div>
+    </form>
+</div>
+<script src="{% static 'js/changeImageWorkerForm.js' %}"></script>
+
+{% endblock %}

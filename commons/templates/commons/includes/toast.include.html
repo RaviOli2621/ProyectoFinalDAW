@@ -1,0 +1,91 @@
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+
+<script>
+function colorToast(type) {
+    let color = type === "error" ? "#ff4d4d" : 
+        type === "info" ? "#2f319e" : "#008000"; 
+    return color;
+}
+
+function removeToasts(animated = false, type = "") {
+    const toastElements = document.querySelectorAll(".toastify");
+    
+    // Si no hay toasts, no hacer nada
+    if (toastElements.length === 0) return;
+    
+    if (!animated) {
+        toastElements.forEach(toast => {
+            if (type === "" || toast.style.backgroundColor === colorToast(type)) {
+                // Asegurarse de que se elimina del DOM
+                if (toast.parentNode) {
+                    toast.parentNode.removeChild(toast);
+                } else {
+                    toast.remove();
+                }
+            }            
+        });
+        return;
+    }
+    
+    toastElements.forEach(toast => {
+        // Aplicar una transición rápida para desaparecer gradualmente
+        toast.style.transition = "opacity 300ms ease";
+        toast.style.opacity = "0";
+        
+        // Eliminar del DOM después de que termine la transición
+        setTimeout(() => {
+            if (type === "" || toast.style.backgroundColor === colorToast(type)) {
+                // Asegurarse de que se elimina del DOM
+                if (toast.parentNode) {
+                    toast.parentNode.removeChild(toast);
+                } else {
+                    toast.remove();
+                }
+            }
+        }, 300);
+    });
+}
+
+// Corrección para la función showToast que evita duplicados
+function showToast(message, type, time=5000) {
+    // Primero elimina cualquier toast existente para evitar duplicados
+    removeToasts(false);
+    
+    let color = colorToast(type);
+    Toastify({
+        text: message,
+        duration: time,
+        gravity: "top",
+        position: "center",
+        style: {
+            background: color
+        },
+        stopOnFocus: true, // Añadido para que los toasts se paren cuando el usuario enfoca
+        onClick: function() { 
+            // Al hacer clic en un toast, se elimina
+            this.removeElement();
+        }
+    }).showToast();
+}
+
+    document.addEventListener("DOMContentLoaded", function() {
+        // Verificar si hay un mensaje guardado en sessionStorage
+        let toastMessage = sessionStorage.getItem("toastMessage");
+        let toastType = sessionStorage.getItem("toastType");
+
+        if (toastMessage) {
+            showToast(toastMessage, toastType);
+            sessionStorage.removeItem("toastMessage"); // Borrar después de mostrarlo
+            sessionStorage.removeItem("toastType");
+        }
+
+        // También mostrar el mensaje si se pasó desde Django
+        let errorMessage = "{{ toastTxt|escapejs }}".trim();
+        let type = "{{ toastType|escapejs }}".trim();
+
+        if (errorMessage !== "") { 
+            showToast(errorMessage, type);
+        }
+    });
+</script>

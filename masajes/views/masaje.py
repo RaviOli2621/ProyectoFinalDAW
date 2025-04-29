@@ -1,7 +1,14 @@
-from django.shortcuts import redirect, render
-from .models import Masaje, TipoMasaje
+from datetime import datetime, time, timedelta
+from django.http import JsonResponse
+from django.shortcuts import get_object_or_404, redirect, render
+
+from usuarios.forms import ReservaForm, TarjetaForm
+from usuarios.models import Fiestas, Reserva, Worker
+from masajes.models import Masaje, TipoMasaje
 from commons.utils import get_filename  # Importamos la función de utilidad
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User  # Import User model
+from django.utils.timezone import make_aware, is_naive
 
 # decorador para cuando no estas logado
 def notAdmin_user(view_func):
@@ -12,21 +19,11 @@ def notAdmin_user(view_func):
             return view_func(request, *args, **kwargs)
     return wrapper_func
 
-@notAdmin_user
-def calendari(request):
-    return render(request,"masajes.html")
+def safe_aware(dt):
+    if is_naive(dt):
+        return make_aware(dt)
+    return dt
 
-@login_required
-def reserves(request):
-    return render(request,"masajes.html",{
-        "id":request.user.id
-    })
-
-@login_required
-def reservar(request):
-    return render(request,"masajes.html",{
-        "id":1
-    })
 
 def masajes(request):
     tipo_id = request.GET.get('tipo')
@@ -64,5 +61,3 @@ def masaje(request):
         })  
     else:
         return redirect('home')
-
-

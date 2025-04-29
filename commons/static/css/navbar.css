@@ -15,9 +15,14 @@
     gap:20px
 }
 
-/* Agregar margen superior al contenido para que no quede tapado por el navbar */
 body {
-    padding-top: 70px; /* Ajusta según la altura del navbar */
+    padding-top: 70px; 
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    margin: 0;
+    box-sizing: border-box;
+    
 }
 .navbar .userIcon{
     margin-left: auto;

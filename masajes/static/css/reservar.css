@@ -1,0 +1,63 @@
+.reservation-container {
+    background-color: var(--dark-transparent);
+    border-radius: 0.625rem;
+    padding: 1.25rem;
+    width: 41.75rem;
+    height: 31.25rem;
+    margin: 1.25rem auto;
+    box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.2);
+}
+
+.reservation-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.9375rem;
+}
+
+.form-group {
+    align-items: center;
+    display: flex;
+    width: 16.1875rem;
+    flex-direction: column;
+}
+.input-group{
+    display: flex;
+    align-items: center;
+    width: 90%;
+    justify-content: center;
+    background-color: rgba(255, 255, 255);
+    border-radius: 1rem;
+}
+.input-group input {
+    border: solid 0 #ccc;
+    text-align: center;
+    width: 8.125rem;
+}
+.form-group label {
+    color: white;
+    margin-bottom: 0.3125rem;
+    font-weight: bold;
+}
+
+.form-control {
+    padding: 0.625rem;
+    border-radius: 0.3125rem;
+    border: 0.0625rem solid #ccc;
+    background-color: rgba(255, 255, 255, 0.9);
+}
+
+.btn-primary {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 0.625rem;
+    border-radius: 0.3125rem;
+    cursor: pointer;
+    margin-top: 0.625rem;
+    font-weight: bold;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+}

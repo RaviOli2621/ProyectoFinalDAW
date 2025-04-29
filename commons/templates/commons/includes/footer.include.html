@@ -1,4 +1,24 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/include/footer.include.css' %}">
 <footer>
-    <p>Author: Xavi Rubio<br>
-    <a href="mailto:ravirubio@gmail.com">ravirubio@gmail.com</a></p>
+
+    <div>
+        <a href="{% url 'masajes' %}">Masajes</a><br>
+        {% for tipo in tipos_masajes %}    
+            <a href="{% url 'masajes' %}?tipo={{ tipo.id }}">{{ tipo.nombre }}</a><br>
+        {% endfor %}
+    </div>
+    <div>
+        {% if user.is_authenticated and request.user.is_staff %}
+            <a href="{% url 'calendari' %}">Calendari</a><br>
+            <a href="{% url 'reservas' %}">Reservas</a>
+        {% else %} 
+            <a href="{% url 'reservas' %}">Reservas</a>
+        {% endif %}
+    </div>    
+    <div>    
+        <p>Author: Xavi Rubio<br>
+        <a href="{% url 'enviar_correo' %}">ravirubio@gmail.com</a></p>
+    </div>
+    <div></div>
 </footer>

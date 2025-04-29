@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% block content %}
+    {% load capture_tags %}
+    {% load static %}
+
+    {% include 'commons/includes/changeBackground.include.html' with imagen='reservaBackground.svg' %}
+
+            {% include "commons/includes/title.include.html" with Titulo="Reservar" Subtitulo="Algo" %}
+
+    <div class="reservation-container">
+        <form method="post" class="reservation-form">
+            {% csrf_token %}
+            
+            <!-- Hidden original datetime field for form submission -->
+            <input type="hidden" id="id_fecha" name="fecha" required value="{{ reserva_form.fecha.value|date:'Y-m-d\TH:i' }}">
+            
+            <div class="form-group">
+                <label for="id_fecha_date">Fecha:</label>
+                <div class="input-group">
+                    <input type="date" id="id_fecha_date" readonly class="form-control" 
+                           value="{{ reserva_form.fecha.value|date:'Y-m-d' }}" onchange="syncDateTime()">
+                    {% include "commons/includes/imgBoton.include.html" with src="/calendar.svg" alt="Calendar Icon" action='showCalendarModal()' %}
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="id_fecha_time">Hora:</label>
+                <div class="input-group">
+                    <input type="time" id="id_fecha_time" readonly class="form-control" 
+                           value="{{ reserva_form.fecha.value|date:'H:i' }}" onchange="syncDateTime()">
+                    {% include "commons/includes/imgBoton.include.html" with src="/hour.svg" alt="Clock Icon" action='showHourModal()' %}
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="id_duracion">Duración:</label>
+                <div class="input-group">
+                    <input type="text" id="id_duracion" name="duracion" readonly class="form-control" value="{{ reserva_form.duracion.value }}">
+                    <script>
+                        function minutosAHHMMSS(minutos) {
+                            minutos = parseInt(minutos);
+                            if (isNaN(minutos)) return minutos; // Si ya está en formato hh:mm:ss, no tocar
+                            const h = Math.floor(minutos / 60);
+                            const m = Math.floor(minutos % 60);
+                            return (h < 10 ? "0" : "") + h + ":" +
+                                (m < 10 ? "0" : "") + m + ":00";
+                        }
+
+                        document.addEventListener('DOMContentLoaded', function() {
+                            const inputDuracion = document.getElementById('id_duracion');
+                            if (inputDuracion && inputDuracion.value && !inputDuracion.value.includes(':')) {
+                                inputDuracion.value = minutosAHHMMSS(inputDuracion.value);
+                            }
+                        });
+                    </script>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="id_metodo_pago">Método de pago:</label>
+                <select id="id_metodo_pago" name="metodo_pago" required class="form-control">
+                    <option value="efectivo" {% if reserva_form.metodo_pago.value == 'efectivo' %}selected{% endif %}>Efectivo</option>
+                    <option value="targeta" {% if reserva_form.metodo_pago.value == 'targeta' %}selected{% endif %}>Tarjeta</option>
+                </select>
+            </div>
+            
+            <button type="submit" class="btn btn-primary">Guardar</button>
+        </form>
+    </div>
+    
+    {% comment %} Modal para mostrar el calendario y horas disponibles {% endcomment %}
+    {% capture as calendario silent %}
+        <div id="calendar"></div>
+    {% endcapture %}
+    {% include "commons/includes/modal.include.html" with Titulo="Calendario" Contenido=calendario idConfirm="modalConfirmCalendario" modalId="CalendarioMD" %}
+
+
+    {% include "commons/includes/modal.include.html" with Titulo="Horas" Contenido="Cargando..." idConfirm="modalConfirmHoras" modalId="HorasMD" %}
+
+    <link rel="stylesheet" href="{% static 'css/reservar.css' %}">
+    <script defer src="{% static 'js/modal.include.js' %}"></script>
+    <script defer src="{% static 'js/calendarModal.js' %}"></script>
+{% endblock %}

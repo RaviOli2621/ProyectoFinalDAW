@@ -1,0 +1,25 @@
+
+{% extends "base.html" %}
+
+{% block content %}
+
+{% load static %}
+
+{% include "commons/includes/title.include.html" with Titulo="Crear usuari" Subtitulo="Algo" %}
+
+{% comment %} {{ request.user.userprofile.foto|cut:'usuarios' }} {% endcomment %}
+<div class="contentList">
+{% for user in usuarios %}
+    {% for group in user.groups.all %}
+        {% if group.name == "Administradores" %}
+            {% include "includes/userItem.include.html" with img=user.userprofile.foto|cut:'usuarios' name=user.username id=user.id texto="Quitar admin" %}
+        {% endif %}
+    {% empty %}
+        {% include "includes/userItem.include.html" with img=user.userprofile.foto|cut:'usuarios' name=user.username id=user.id texto="Poner admin" %}
+    {% endfor %}
+{% endfor %}
+</div>
+{% csrf_token %}
+
+
+{% endblock %}

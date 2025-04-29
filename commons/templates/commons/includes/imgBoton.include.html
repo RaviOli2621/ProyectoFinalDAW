@@ -1,0 +1,29 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/include/imgBoton.include.css' %}">
+
+{% load capture_tags %}
+{% if color %}
+  {% capture as estiloBtn silent %}
+    background-color:{{ color }};
+  {% endcapture %}
+{% else %}
+  {% capture as estiloBtn silent %}
+    background-color:rgba(255,255,255,0);
+  {% endcapture %}
+{% endif %}
+
+<!-- Usar la variable capturada después -->
+
+{% if url %}
+<a class="buttonA" href="{% url url %}{{data}}">
+    <button type="button" style={{estiloBtn}} class="boton" onclick={{action}}>
+        <img src="{% static src %}" alt="{{alt}}">
+    </button>
+</a>
+{% else %}
+<a class="buttonA">
+    <button type="button" style={{estiloBtn}} class="boton" onclick={{action}}>
+        <img src="{% static src %}" alt="{{alt}}">
+    </button>
+</a>
+{% endif %}

@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+{% csrf_token %}
+        {% include "commons/includes/title.include.html" with Titulo="Reservas" Subtitulo="Algo" %}
+        {% include "commons/includes/modal.include.html" with Titulo="Reservas" Contenido="Seguro que quieres borrar la reserva?" idConfirm="modalConfirmDeleteResBtn" %}
+        {% if reserves %}
+            <div class="contentList">
+                {% for reserva in reserves %}
+                        {% include "includes/reserves.include.html" with imagen=reserva.foto_nombre nombre=reserva.idMasaje.nombre description="Mondongo" %}
+                {% endfor %}
+            </div>
+        {%else%}
+            No tienes reservas :(
+        {% endif %}
+{{toastTxt}}
+{% endblock %}

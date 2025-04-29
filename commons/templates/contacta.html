@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% load static %}
+
+{% include "commons/includes/title.include.html" with Titulo="Contacta con nosotros" Subtitulo="Algo" %}
+
+<!-- Incluir la hoja de estilos -->
+<link rel="stylesheet" href="{% static 'css/contacta.css' %}">
+
+<form method="post" class="signup-form">
+    {% csrf_token %}
+    
+    <!-- Renderizar el formulario con clases personalizadas -->
+    <div class="form-group">
+    <p>
+        <label for="id_correo_usuario">Tu correo:</label>
+        {{ form.correo_usuario }}
+    </p>
+    <p>
+        <label for="id_titulo">Titulo:</label>
+        {{ form.titulo }}
+    </p>
+    <p>
+        <label for="id_asunto">Asunto:</label>
+        {{ form.asunto }}
+    </p>
+    <p>
+        <label for="id_cuerpo">Cuerpo del mensaje:</label>
+        {{ form.cuerpo }}
+    </p>
+    </div>
+    
+    <button type="submit" class="btn-submit">Enviar correo</button>
+</form>
+{% endblock %}

@@ -2,16 +2,83 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1>SignUp</h1>
 
-{{error}}
+{% load static %}
 
-<form method="POST">
+<!-- <form method="POST">
     {% csrf_token %}
     {{form.as_p}}
     <button>
         SignUp
     </button>
 
-</form>
+</form> -->
+
+<link rel="stylesheet" href="{% static 'css/signin.css' %}">
+{% include "commons/includes/title.include.html" with Titulo="Crear usuari" Subtitulo="Algo" %}
+
+
+
+
+<div class="form">
+    <form method="post">
+        {% csrf_token %}
+        
+        <!-- Renderizado manual del campo username -->
+        <div class="form-group flex-column">
+            <label for="{{ form.username.id_for_label }}">Nombre de usuario</label>
+            <div class="inputForm">
+                <img src="{% static '/user.svg' %}" alt="Candado" class="icon">
+                {{ form.username }}
+            </div>
+            <!-- Mostrar errores del campo -->
+        </div>
+        <!-- Renderizado manual del campo gmail -->
+        <div class="form-group flex-column">
+            <label for="{{ form.gmail.id_for_label }}">Nombre de usuario</label>
+            <div class="inputForm">
+                <img src="{% static '/arroba.svg' %}" alt="Candado" class="icon">
+                {{ form.gmail }}
+            </div>
+            <!-- Mostrar errores del campo -->
+        </div>
+        
+        <!-- Renderizado manual del campo password -->
+        <div class="form-group flex-column">
+            <label for="{{ form.password.id_for_label }}">Contraseña</label>
+            <div class="inputForm">
+                <img src="{% static '/candado.svg' %}" alt="Candado" class="icon">
+                {{ form.password1 }}
+            </div>
+            <!-- Mostrar errores del campo -->
+        </div>
+        <!-- Renderizado manual del campo verificar password -->
+        <div class="form-group flex-column">
+            <label for="{{ form.password.id_for_label }}">Verifique contraseña</label>
+            <div class="inputForm">
+                <img src="{% static '/candado.svg' %}" alt="Candado" class="icon">
+                {{ form.password2 }}
+            </div>
+            <!-- Mostrar errores del campo -->
+        </div>
+        <!-- Botón de inicio de sesión -->
+        <button type="submit" class="button-submit">Crear cuenta</button>
+        <p class="signup-link">
+            Tienes cuenta?   <a href="{% url 'signin' %}">Login</a>
+        </p>
+        <p class="signup-link">
+            o tambien <a></a>
+        </p>
+    </form>
+        <div class="flex-row">
+      <button class="btn google">
+        <img src="{% static 'google.svg' %}" alt="logo">
+        Google 
+      </button><button class="btn apple">
+        <img src="{% static 'apple.svg' %}" alt="logo">
+        Apple 
+</button></div>
+</div>
+
+
 {% endblock %}

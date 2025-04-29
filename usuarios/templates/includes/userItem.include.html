@@ -1,0 +1,17 @@
+{% load static %}
+{% load capture_tags %}
+
+{% comment %} {% capture as boton_right silent %}
+    {% include "commons/includes/imgBoton.include.html" with src="/trash-black.svg" alt="Trash Icon" action=accionAHacer %}
+{% endcapture %} {% endcomment %}
+
+
+{% capture as accionAHacer silent %}cambiarPriv({{ id }},this){% endcapture %}
+
+{% capture as bottom_content silent %}
+    {% include "commons/includes/boton.include.html" with text=texto action=accionAHacer %}
+{% endcapture %}
+
+{% include "commons/includes/infoCard.include.html" with top_action_left=" " top_action_right="" title=name bottom_actions=bottom_content image_url=img %}
+
+<script defer src="{% static 'js/changeAdmin.js' %}"></script>

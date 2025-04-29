@@ -5,8 +5,8 @@
         <img src="{% static imagen %}" alt="asa" srcset="">
     </div>
     <div class="masajeInfo">
-        <input type="text" name="Title" class="Title" value="{{nombre}}">
-        <div class="textarea" name="{{nombre}} description" id="{{nombre}}Desc"><b></b><br>{{description}}</div>
-        {% include "commons/includes/boton.include.html" with text="Hola" redirect="reservar" get="" %}
+        <input type="text" name="Title" class="Title" value="{{ nombre }}">
+        <div class="textarea" name="{{ nombre }} description" id="{{ nombre }}Desc"><b></b><br>{{ description }}</div>
+        {% include "commons/includes/boton.include.html" with text="Reservar" redirect="reservar" getTxt="?masajeId=" getValor=id %}
     </div>
 </div>

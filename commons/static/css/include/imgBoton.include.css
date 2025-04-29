@@ -1,0 +1,27 @@
+.boton {
+    background-color: transparent;
+    border: none;
+    padding: 0.5rem;
+    cursor: pointer;
+    display: flex; /* Para centrar los iconos */
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+
+}
+
+
+.boton:active {
+    filter: brightness(0.8);
+    transition: all 0.3s ease;
+}
+.buttonA {
+    display: inline-flex; /* Mantiene la alineación en línea */
+    align-items: center; /* Centra el contenido */
+    text-decoration: none; /* Quita el subrayado */
+}
+.boton:hover{
+    transform: scale(102%);
+    filter: drop-shadow(5px 5px 5px rgba(0, 0, 0, 0.25));
+    transition: 0.1s;
+}

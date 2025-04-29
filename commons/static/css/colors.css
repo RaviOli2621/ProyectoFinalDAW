@@ -7,5 +7,7 @@
 	--strong-color: #D2C38D;
 	--dark-color: #40281C;
 	--light-shine: #f4faef6c;
+	--dark-transparent: rgba(64, 40, 28, 0.75);
+	/* Texto */
 	--font-text: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif
 }
