@@ -41,7 +41,7 @@
 },
 {
     "model": "auth.user",
-    "pk": 20,
+    "pk": 2000,
     "fields": {
         "password": "pbkdf2_sha256$870000$zbDdJUDaovla6i6JJmcIzo$f0ZdcTw0lx+wQ12PlobYZiTIzAjYVVIcunCtc9ACXLA=",
         "last_login": "2025-04-24T16:17:07.877Z",
@@ -151,7 +151,7 @@
     "model": "usuarios.userprofile",
     "pk": 1,
     "fields": {
-        "user": 20,
+        "user": 2000,
         "foto": ""
     }
 },
