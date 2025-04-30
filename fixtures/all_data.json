@@ -1,0 +1,419 @@
+[
+{
+    "model": "auth.group",
+    "pk": 1,
+    "fields": {
+        "name": "Administradores",
+        "permissions": [
+            25,
+            26,
+            27,
+            29,
+            30,
+            31,
+            32,
+            41,
+            42,
+            43,
+            44
+        ]
+    }
+},
+{
+    "model": "auth.user",
+    "pk": 1,
+    "fields": {
+        "password": "pbkdf2_sha256$870000$7vQt0N6sGacaXW2vBUb3Qu$OC98F3NKk6vja9Z/hiLHWN5iEYSpadANwH2fKWDSu2k=",
+        "last_login": "2025-04-29T14:18:51Z",
+        "is_superuser": true,
+        "username": "Xavi",
+        "first_name": "",
+        "last_name": "",
+        "email": "ravirubio2621@gmail.com",
+        "is_staff": true,
+        "is_active": true,
+        "date_joined": "2025-03-20T17:20:24Z",
+        "groups": [
+            1
+        ],
+        "user_permissions": []
+    }
+},
+{
+    "model": "auth.user",
+    "pk": 2,
+    "fields": {
+        "password": "pbkdf2_sha256$870000$zbDdJUDaovla6i6JJmcIzo$f0ZdcTw0lx+wQ12PlobYZiTIzAjYVVIcunCtc9ACXLA=",
+        "last_login": "2025-04-24T16:17:07.877Z",
+        "is_superuser": false,
+        "username": "Ravi",
+        "first_name": "",
+        "last_name": "",
+        "email": "j.rubio2@sapalomera.cat",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2025-03-20T18:20:57Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "auth.user",
+    "pk": 3,
+    "fields": {
+        "password": "pbkdf2_sha256$870000$JgQixGvhjFhpehfMSK78oN$LnAhhWv4rtSN5SEq/eCRGMSPxplX614IdUDFRmuslDY=",
+        "last_login": "2025-03-31T15:58:24.537Z",
+        "is_superuser": false,
+        "username": "asd",
+        "first_name": "",
+        "last_name": "",
+        "email": "j.rubio3@sapalomera.cata",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2025-03-20T18:22:28Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "auth.user",
+    "pk": 4,
+    "fields": {
+        "password": "pbkdf2_sha256$870000$BoDygdZZrg2gLXwSTJYfgT$FifbwaJHtcE2RCFTpFpXmQjItMjfYWx9HMzmrg3Mi+w=",
+        "last_login": "2025-03-31T14:06:44.027Z",
+        "is_superuser": false,
+        "username": "j.rubio2",
+        "first_name": "",
+        "last_name": "",
+        "email": "a@a.com",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2025-03-31T14:06:43.756Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "auth.user",
+    "pk": 5,
+    "fields": {
+        "password": "pbkdf2_sha256$870000$roAF0dXjtiRWwliGZjzZ7h$W/F1ciRUV2w03iS+qoWtRN7YHB9msUDvB+hzoFBsY80=",
+        "last_login": "2025-04-03T16:59:30.754Z",
+        "is_superuser": false,
+        "username": "Babatunde",
+        "first_name": "",
+        "last_name": "",
+        "email": "babatunde@gmail.com",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2025-04-03T16:58:05.100Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "auth.user",
+    "pk": 9,
+    "fields": {
+        "password": "pbkdf2_sha256$870000$CdZAtIqfvegR67SePCA1wD$+3RngFzlz0QRQ62EnVuktsAIJszFfcZMMNv6u1Z/9Cc=",
+        "last_login": null,
+        "is_superuser": false,
+        "username": "juanperez",
+        "first_name": "",
+        "last_name": "",
+        "email": "juan@example.com",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2025-04-07T15:35:30.725Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "auth.user",
+    "pk": 10,
+    "fields": {
+        "password": "pbkdf2_sha256$870000$EPdDk6p051BQVeFvdYLoXY$e1z3lJsUYBYLZuY/pIxenk8M/jZvapNkpDbX+UdZYVM=",
+        "last_login": null,
+        "is_superuser": false,
+        "username": "Eustakio",
+        "first_name": "",
+        "last_name": "",
+        "email": "eustakio@gmail.com",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2025-04-24T16:05:29.367Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "usuarios.userprofile",
+    "pk": 1,
+    "fields": {
+        "user": 2,
+        "foto": ""
+    }
+},
+{
+    "model": "usuarios.userprofile",
+    "pk": 2,
+    "fields": {
+        "user": 1,
+        "foto": "usuarios/static/fotosPerfil/crayones_jpg_U6zctLL.jpg"
+    }
+},
+{
+    "model": "usuarios.userprofile",
+    "pk": 3,
+    "fields": {
+        "user": 3,
+        "foto": ""
+    }
+},
+{
+    "model": "usuarios.userprofile",
+    "pk": 4,
+    "fields": {
+        "user": 4,
+        "foto": ""
+    }
+},
+{
+    "model": "usuarios.userprofile",
+    "pk": 5,
+    "fields": {
+        "user": 5,
+        "foto": "usuarios/static/fotosPerfil/Unity.png"
+    }
+},
+{
+    "model": "usuarios.userprofile",
+    "pk": 9,
+    "fields": {
+        "user": 9,
+        "foto": "usuarios/static/fotosPerfil/crayones_jpg_6Fgz7Fl.jpg"
+    }
+},
+{
+    "model": "usuarios.userprofile",
+    "pk": 10,
+    "fields": {
+        "user": 10,
+        "foto": ""
+    }
+},
+{
+    "model": "usuarios.worker",
+    "pk": 2,
+    "fields": {
+        "user_profile": 4,
+        "dni": "39939393J",
+        "phone_number": "111111111",
+        "start_date": "2025-04-01",
+        "start_time": "08:00:00",
+        "end_time": "12:00:00",
+        "delete_date": null
+    }
+},
+{
+    "model": "usuarios.worker",
+    "pk": 3,
+    "fields": {
+        "user_profile": 5,
+        "dni": "36363636J",
+        "phone_number": "656565656",
+        "start_date": "2025-04-11",
+        "start_time": "13:00:00",
+        "end_time": "22:00:00",
+        "delete_date": null
+    }
+},
+{
+    "model": "usuarios.worker",
+    "pk": 7,
+    "fields": {
+        "user_profile": 9,
+        "dni": "12345678A",
+        "phone_number": "600123456",
+        "start_date": "2024-01-15",
+        "start_time": "12:00:00",
+        "end_time": "13:00:00",
+        "delete_date": null
+    }
+},
+{
+    "model": "usuarios.worker",
+    "pk": 8,
+    "fields": {
+        "user_profile": 10,
+        "dni": "39939391J",
+        "phone_number": "656565656",
+        "start_date": "2025-04-24",
+        "start_time": "13:00:00",
+        "end_time": "22:00:00",
+        "delete_date": null
+    }
+},
+{
+    "model": "usuarios.reserva",
+    "pk": 29,
+    "fields": {
+        "fecha": "2025-04-30T15:00:00Z",
+        "idCliente": 1,
+        "idMasaje": 5,
+        "duracion": "01:00:00",
+        "pagado": true,
+        "metodo_pago": "targeta"
+    }
+},
+{
+    "model": "usuarios.reserva",
+    "pk": 34,
+    "fields": {
+        "fecha": "2025-04-30T15:00:00Z",
+        "idCliente": 1,
+        "idMasaje": 4,
+        "duracion": "01:00:00",
+        "pagado": false,
+        "metodo_pago": "efectivo"
+    }
+},
+{
+    "model": "usuarios.fiestas",
+    "pk": 397,
+    "fields": {
+        "fecha": "2025-08-14",
+        "general": true,
+        "empleado": null
+    }
+},
+{
+    "model": "usuarios.fiestas",
+    "pk": 571,
+    "fields": {
+        "fecha": "2025-03-30",
+        "general": true,
+        "empleado": null
+    }
+},
+{
+    "model": "usuarios.fiestas",
+    "pk": 572,
+    "fields": {
+        "fecha": "2025-03-30",
+        "general": true,
+        "empleado": null
+    }
+},
+{
+    "model": "masajes.tipomasaje",
+    "pk": 1,
+    "fields": {
+        "nombre": "Masajes Terapéuticos",
+        "description": "",
+        "foto": ""
+    }
+},
+{
+    "model": "masajes.tipomasaje",
+    "pk": 2,
+    "fields": {
+        "nombre": "Masajes Relajantes",
+        "description": "",
+        "foto": ""
+    }
+},
+{
+    "model": "masajes.tipomasaje",
+    "pk": 3,
+    "fields": {
+        "nombre": "Masajes Orientales",
+        "description": "",
+        "foto": ""
+    }
+},
+{
+    "model": "masajes.tipomasaje",
+    "pk": 4,
+    "fields": {
+        "nombre": "Masajes Estéticos y Anticelulíticos",
+        "description": "",
+        "foto": ""
+    }
+},
+{
+    "model": "masajes.tipomasaje",
+    "pk": 5,
+    "fields": {
+        "nombre": "Masajes Especiales y Sensoriales",
+        "description": "Es un masaje sensorial",
+        "foto": ""
+    }
+},
+{
+    "model": "masajes.masaje",
+    "pk": 1,
+    "fields": {
+        "nombre": "Masaje Descontracturante",
+        "descriptionSh": "",
+        "description": "Alivia contracturas y nudos musculares.",
+        "foto": "",
+        "precio": "50.00",
+        "tipo": 1,
+        "duracion": "01:00:00"
+    }
+},
+{
+    "model": "masajes.masaje",
+    "pk": 2,
+    "fields": {
+        "nombre": "Masaje Sueco",
+        "descriptionSh": "",
+        "description": "Relajante y suave, con movimientos largos y fluidos.",
+        "foto": "",
+        "precio": "45.00",
+        "tipo": 2,
+        "duracion": "01:00:00"
+    }
+},
+{
+    "model": "masajes.masaje",
+    "pk": 3,
+    "fields": {
+        "nombre": "Masaje Shiatsu",
+        "descriptionSh": "",
+        "description": "Técnica japonesa basada en presión con los dedos en puntos energéticos.",
+        "foto": "",
+        "precio": "60.00",
+        "tipo": 3,
+        "duracion": "01:00:00"
+    }
+},
+{
+    "model": "masajes.masaje",
+    "pk": 4,
+    "fields": {
+        "nombre": "Masaje Reductor",
+        "descriptionSh": "",
+        "description": "Ayuda a eliminar grasa localizada y moldear el cuerpo.",
+        "foto": "",
+        "precio": "55.00",
+        "tipo": 4,
+        "duracion": "01:00:00"
+    }
+},
+{
+    "model": "masajes.masaje",
+    "pk": 5,
+    "fields": {
+        "nombre": "Masaje con Ventosas (Cupping)",
+        "descriptionSh": "Masaje :)",
+        "description": "Uso de ventosas para mejorar la circulación y aliviar tensión.",
+        "foto": "masajes/static/masajes-con-ventosas-chinas.jpg",
+        "precio": "50.00",
+        "tipo": 5,
+        "duracion": "01:00:00"
+    }
+}
+]
