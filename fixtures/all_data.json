@@ -41,7 +41,7 @@
 },
 {
     "model": "auth.user",
-    "pk": 2000,
+    "pk": 20,
     "fields": {
         "password": "pbkdf2_sha256$870000$zbDdJUDaovla6i6JJmcIzo$f0ZdcTw0lx+wQ12PlobYZiTIzAjYVVIcunCtc9ACXLA=",
         "last_login": "2025-04-24T16:17:07.877Z",
@@ -149,18 +149,18 @@
 },
 {
     "model": "usuarios.userprofile",
-    "pk": 1,
-    "fields": {
-        "user": 2000,
-        "foto": ""
-    }
-},
-{
-    "model": "usuarios.userprofile",
     "pk": 2,
     "fields": {
         "user": 1,
         "foto": "usuarios/static/fotosPerfil/crayones_jpg_U6zctLL.jpg"
+    }
+},
+{
+    "model": "usuarios.userprofile",
+    "pk": 1,
+    "fields": {
+        "user": 20,
+        "foto": ""
     }
 },
 {
