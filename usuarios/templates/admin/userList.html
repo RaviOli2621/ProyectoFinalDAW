@@ -12,10 +12,10 @@
 {% for user in usuarios %}
     {% for group in user.groups.all %}
         {% if group.name == "Administradores" %}
-            {% include "includes/userItem.include.html" with img=user.userprofile.foto|cut:'usuarios' name=user.username id=user.id texto="Quitar admin" %}
+            {% include "includes/userItem.include.html" with img=user.userprofile.foto.url name=user.username id=user.id texto="Quitar admin" %}
         {% endif %}
     {% empty %}
-        {% include "includes/userItem.include.html" with img=user.userprofile.foto|cut:'usuarios' name=user.username id=user.id texto="Poner admin" %}
+        {% include "includes/userItem.include.html" with img=user.userprofile.foto.url name=user.username id=user.id texto="Poner admin" %}
     {% endfor %}
 {% endfor %}
 </div>

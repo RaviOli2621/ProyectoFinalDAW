@@ -29,7 +29,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get("SECRET_KEY",default="django-insecure-4@#)8v3!$&*j1g2@5^9bq0r7x6c3z5f1+8@#)8v3!$&*j1g2@5^9bq0r7x6c3z5f1+")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = Path(__file__).resolve().parent.parent
+DEBUG = os.environ.get('DEBUG', 'False').lower() == 'true'
 
 ALLOWED_HOSTS = []
 
@@ -50,7 +50,22 @@ INSTALLED_APPS = [
     'commons',
     'masajes',
     'capture_tag',
+    'cloudinary', 
+    'cloudinary_storage'
 ]
+
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': os.getenv('CLOUD_NAME'),
+    'API_KEY': os.getenv('CLOUD_API_KEY'),
+    'API_SECRET': os.getenv('CLOUD_API_SECRET'),
+}
+
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+
+# Variables disponibles en los templates
+ENV_VARS_FOR_TEMPLATES = {
+    # 'ENABLE_WORKER_MANAGEMENT': os.environ.get('ENABLE_WORKER_MANAGEMENT', 'False').lower() == 'true',
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -76,7 +91,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'commons.context_processors.tipos_masajes', 
+                'commons.context_processors.tipos_masajes',
+                'commons.context_processors.env_vars',  # Nuevo context processor para variables de entorno
             ],
         },
     },

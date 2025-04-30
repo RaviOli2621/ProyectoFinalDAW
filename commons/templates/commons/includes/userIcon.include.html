@@ -1,13 +1,15 @@
 <div class="userIcon">
     {% if user.is_authenticated %}
         <div class="contenedorFoto">
-            {%if request.user.userprofile.foto%} <img src="{{ request.user.userprofile.foto|cut:'usuarios' }}" alt="">
-            {% else %} <img src="/static/fotosPerfil/noImg.png" alt="">
+            {%if request.user.userprofile.foto%}
+                <img src="{{ request.user.userprofile.foto.url }}" alt="ImagenDePerfil">
+            {% else %}
+                <img src="/static/fotosPerfil/noImg.png" alt="ImagenDePerfil">
             {% endif %}
         </div>
         <div class="dropdown-content">
             <a href="{% url 'editUser' %}">Editar usuario</a>
-            {% if perms.auth.change_user %}
+            {% if perms.auth.change_user%}
                 <a href="{% url 'userList' %}">Lista de usuarios</a>
                 <a href="{% url 'workerList' %}">Lista de trabajadores</a>
             {% endif %}

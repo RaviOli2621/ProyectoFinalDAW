@@ -119,7 +119,8 @@ def editUser(request):
             if 'foto' in request.FILES:
                 user.userprofile.foto = request.FILES['foto']
                 user.userprofile.save()
-            
+                print(f"URL de la imagen guardada: {user.userprofile.foto.url}")
+
             # Mantener la sesión del usuario después de cambiar la contraseña
             if password1:
                 login(request, user)
