@@ -1,0 +1,42 @@
+[
+{
+    "model": "auth.group",
+    "pk": 1,
+    "fields": {
+        "name": "Administradores",
+        "permissions": [
+            25,
+            26,
+            27,
+            29,
+            30,
+            31,
+            32,
+            41,
+            42,
+            43,
+            44
+        ]
+    }
+},
+{
+    "model": "auth.user",
+    "pk": 1,
+    "fields": {
+        "password": "pbkdf2_sha256$870000$7vQt0N6sGacaXW2vBUb3Qu$OC98F3NKk6vja9Z/hiLHWN5iEYSpadANwH2fKWDSu2k=",
+        "last_login": "2025-04-29T14:18:51Z",
+        "is_superuser": true,
+        "username": "Xavi",
+        "first_name": "",
+        "last_name": "",
+        "email": "ravirubio2621@gmail.com",
+        "is_staff": true,
+        "is_active": true,
+        "date_joined": "2025-03-20T17:20:24Z",
+        "groups": [
+            1
+        ],
+        "user_permissions": []
+    }
+}
+]

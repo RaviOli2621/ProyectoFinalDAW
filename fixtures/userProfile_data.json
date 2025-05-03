@@ -1,0 +1,112 @@
+[
+    {
+        "model": "masajes.tipomasaje",
+        "pk": 1,
+        "fields": {
+            "nombre": "Masajes Terapéuticos",
+            "description": "",
+            "foto": ""
+        }
+    },
+    {
+        "model": "masajes.tipomasaje",
+        "pk": 2,
+        "fields": {
+            "nombre": "Masajes Relajantes",
+            "description": "",
+            "foto": ""
+        }
+    },
+    {
+        "model": "masajes.tipomasaje",
+        "pk": 3,
+        "fields": {
+            "nombre": "Masajes Orientales",
+            "description": "",
+            "foto": ""
+        }
+    },
+    {
+        "model": "masajes.tipomasaje",
+        "pk": 4,
+        "fields": {
+            "nombre": "Masajes Estéticos y Anticelulíticos",
+            "description": "",
+            "foto": ""
+        }
+    },
+    {
+        "model": "masajes.tipomasaje",
+        "pk": 5,
+        "fields": {
+            "nombre": "Masajes Especiales y Sensoriales",
+            "description": "Es un masaje sensorial",
+            "foto": ""
+        }
+    },
+    {
+        "model": "masajes.masaje",
+        "pk": 1,
+        "fields": {
+            "nombre": "Masaje Descontracturante",
+            "descriptionSh": "",
+            "description": "Alivia contracturas y nudos musculares.",
+            "foto": "",
+            "precio": "50.00",
+            "tipo": 1,
+            "duracion": "01:00:00"
+        }
+    },
+    {
+        "model": "masajes.masaje",
+        "pk": 2,
+        "fields": {
+            "nombre": "Masaje Sueco",
+            "descriptionSh": "",
+            "description": "Relajante y suave, con movimientos largos y fluidos.",
+            "foto": "",
+            "precio": "45.00",
+            "tipo": 2,
+            "duracion": "01:00:00"
+        }
+    },
+    {
+        "model": "masajes.masaje",
+        "pk": 3,
+        "fields": {
+            "nombre": "Masaje Shiatsu",
+            "descriptionSh": "",
+            "description": "Técnica japonesa basada en presión con los dedos en puntos energéticos.",
+            "foto": "",
+            "precio": "60.00",
+            "tipo": 3,
+            "duracion": "01:00:00"
+        }
+    },
+    {
+        "model": "masajes.masaje",
+        "pk": 4,
+        "fields": {
+            "nombre": "Masaje Reductor",
+            "descriptionSh": "",
+            "description": "Ayuda a eliminar grasa localizada y moldear el cuerpo.",
+            "foto": "",
+            "precio": "55.00",
+            "tipo": 4,
+            "duracion": "01:00:00"
+        }
+    },
+    {
+        "model": "masajes.masaje",
+        "pk": 5,
+        "fields": {
+            "nombre": "Masaje con Ventosas (Cupping)",
+            "descriptionSh": "Masaje :)",
+            "description": "Uso de ventosas para mejorar la circulación y aliviar tensión.",
+            "foto": "masajes/static/masajes-con-ventosas-chinas.jpg",
+            "precio": "50.00",
+            "tipo": 5,
+            "duracion": "01:00:00"
+        }
+    }
+]

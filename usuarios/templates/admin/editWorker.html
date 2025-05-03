@@ -22,7 +22,7 @@
             {% if worker.user_profile.foto %}
             <div class="current-photo">
                 <label for="id_foto">
-                    <img id="fotoUser" src="{{ worker.user_profile.foto|cut:'usuarios' }}" alt="Foto de perfil actual" class="profile-image">
+                    <img id="fotoUser" src="{{ worker.user_profile.foto.url }}" alt="Foto de perfil actual" class="profile-image">
                     <img src="{% static '/pen-black.svg' %}" alt="Añadir foto">
                 </label>
                 <p class="help-text">Foto actual</p>

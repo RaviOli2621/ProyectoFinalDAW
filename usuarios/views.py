@@ -136,8 +136,16 @@ def editUser(request):
 @permission_required('auth.change_user')
 def userList(request,user_id=""):
     if request.method == "GET":
-        users = User.objects.all()
-
+        all_users = User.objects.all()
+        
+        # Obtener los IDs de usuarios que ya son trabajadores
+        worker_user_ids = Worker.objects.filter(
+            delete_date__isnull=False  # Solo trabajadores activos
+        ).values_list('user_profile__user', flat=False)
+        
+        # Filtrar para obtener solo usuarios que NO son trabajadores
+        users = all_users.exclude(id__in=worker_user_ids)
+        
         return render(request, "admin/userList.html",{
             "usuarios":users
         })

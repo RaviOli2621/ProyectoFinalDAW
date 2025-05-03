@@ -21,7 +21,11 @@
 
 <div class="contentList">
 {% for worker in workers %}
-    {% include "includes/workerItem.include.html" with img=worker.user_profile.foto|cut:'usuarios' name=worker.user_profile.user.username id=worker.id texto="Calendario" %}
+    {% if worker.user_profile.foto.url %}
+        {% include "includes/workerItem.include.html" with img=worker.user_profile.foto.url name=worker.user_profile.user.username id=worker.id texto="Calendario" %}
+    {% else %}
+        {% include "includes/workerItem.include.html" with img="" name=worker.user_profile.user.username id=worker.id texto="Calendario" %}
+    {% endif %}
 {% endfor %}
 </div>
 {% csrf_token %}

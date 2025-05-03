@@ -149,18 +149,18 @@
 },
 {
     "model": "usuarios.userprofile",
-    "pk": 2,
-    "fields": {
-        "user": 1,
-        "foto": "usuarios/static/fotosPerfil/crayones_jpg_U6zctLL.jpg"
-    }
-},
-{
-    "model": "usuarios.userprofile",
     "pk": 1,
     "fields": {
         "user": 20,
         "foto": ""
+    }
+},
+{
+    "model": "usuarios.userprofile",
+    "pk": 2,
+    "fields": {
+        "user": 1,
+        "foto": "usuarios/static/fotosPerfil/crayones_jpg_U6zctLL.jpg"
     }
 },
 {
