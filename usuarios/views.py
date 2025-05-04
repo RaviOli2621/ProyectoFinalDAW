@@ -10,6 +10,11 @@ from django.shortcuts import redirect
 from django.contrib.auth.decorators import permission_required
 from django.contrib.auth.models import Group
 from django.views.decorators.csrf import csrf_exempt
+from django.core.mail import send_mail
+from django.contrib.auth.hashers import make_password
+from django.contrib.auth import get_user_model
+import random
+import string
 
 from usuarios.forms import CustomLoginForm, CustomSignInForm, UserEditForm, WorkeCreaterForm, WorkerEditForm
 from usuarios.models import UserProfile, Worker
@@ -57,8 +62,11 @@ def signout(request):
 @unauthenticated_user
 def signin(request):
     if request.method == "GET": 
+        remembered_username = request.COOKIES.get('remembered_username', '')
         form = CustomLoginForm()  # Instancia vacía
-        return render(request, "signin.html", {'form': form})
+        if remembered_username:
+            form.fields['username'].initial = remembered_username
+        return render(request, "signin.html", {'form': form,'remembered_username': remembered_username if 'remembered_username' in locals() else ''})
 
     elif request.method == "POST":
         form = CustomLoginForm(data=request.POST)  # IMPORTANTE: Usa "data=request.POST"
@@ -77,8 +85,16 @@ def signin(request):
             })
         else: 
             login(request, user)
-            return redirect("home")
-    
+            if request.POST.get('remember_me', False):
+                print(f"modongo")
+                max_age = 30 * 24 * 60 * 60  # 30 días en segundos
+                response = redirect('home')  # Reemplaza 'home' con tu nombre de URL para la página de inicio
+                response.set_cookie('remembered_username', user.username, max_age=max_age)
+                return response
+            else:
+                response = redirect('home')
+                response.delete_cookie('remembered_username')
+                return response    
 @login_required
 def editUser(request):
     if request.method == 'GET':
@@ -389,3 +405,48 @@ def importar_workers(request):
         return JsonResponse(resultados)
 
     return JsonResponse({'error': 'Método no permitido'}, status=405)
+
+def forgot_username(request):
+    context = {}
+    
+    if request.method == 'POST':
+        email = request.POST.get('email', '')
+        
+        User = get_user_model()
+        try:
+            user = User.objects.get(email=email)
+            
+            # Generar una nueva contraseña temporal
+            temp_password = ''.join(random.choices(string.ascii_letters + string.digits, k=10))
+            
+            # Actualizar la contraseña del usuario
+            user.password = make_password(temp_password)
+            user.save()
+            
+            # Enviar email con la información
+            subject = 'Recuperación de datos de acceso'
+            message = f'''
+            Hola {user.first_name},
+            
+            Has solicitado la recuperación de tus datos de acceso.
+            
+            Tu nombre de usuario: {user.username}
+            Tu contraseña temporal: {temp_password}
+            
+            Por favor, cambia tu contraseña tan pronto como inicies sesión.
+            
+            Saludos,
+            El equipo de soporte
+            '''
+            
+            from_email = 'noreply@tudominio.com'
+            recipient_list = [email]
+            
+            send_mail(subject, message, from_email, recipient_list, fail_silently=False)
+            
+            context['success'] = 'Se ha enviado un correo electrónico con tus datos de acceso'
+            
+        except User.DoesNotExist:
+            context['error'] = 'No existe ningún usuario con ese correo electrónico'
+    
+    return render(request, 'forgot_username.html', context)

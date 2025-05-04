@@ -8,8 +8,8 @@ class Command(BaseCommand):
 
     def handle(self, *args, **kwargs):
         # Tarea diaria para ejecutar a medianoche (00:00)
-        Schedule.objects.update_or_create(
-            name='enviar_correo_diario',
+        task, created = Schedule.objects.update_or_create(
+            name='manage_reservations',
             defaults={
                 'func': 'commons.tasks.manage_reservations',
                 'schedule_type': Schedule.DAILY,
@@ -21,8 +21,11 @@ class Command(BaseCommand):
         )
         
         # Ejecutar la tarea inmediatamente al iniciar
-        async_task('commons.tasks.manage_reservations')
-        self.stdout.write(self.style.SUCCESS('Tarea ejecutada inmediatamente'))
+        if created:
+            async_task('commons.tasks.manage_reservations')
+            self.stdout.write(self.style.SUCCESS('Tarea ejecutada inmediatamente por primera vez'))
+        
+        self.stdout.write(self.style.SUCCESS('Tareas programadas configuradas correctamente'))
         
         # Puedes descomentar esta sección si necesitas la tarea adicional
         # Schedule.objects.update_or_create(

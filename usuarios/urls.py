@@ -17,4 +17,6 @@ urlpatterns = [
     path('editWorker/', views.editar_worker,name="editWorker"),
     path('createWorker/', views.crear_worker,name="createWorker"),
     path('importar-workers/', views.importar_workers,name="importar-workers"),
+    path('forgot-username/', views.forgot_username, name='forgot_username'),
+
 ]

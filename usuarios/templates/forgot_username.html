@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+{% load static %}
+
+<link rel="stylesheet" href="{% static 'css/signin.css' %}">
+{% include "commons/includes/title.include.html" with Titulo="Recuperar Usuario" Subtitulo="Introduce tu correo electrónico" %}
+
+<div class="form">
+    <form method="post">
+        {% csrf_token %}
+        
+        <div class="form-group flex-column">
+            <label for="email">Correo Electrónico</label>
+            <div class="inputForm">
+                <img src="{% static '/arroba.svg' %}" alt="Email" class="icon">
+                <input type="email" name="email" id="email" placeholder="Introduce tu correo electrónico" required>
+            </div>
+            
+            {% if error %}
+                <div class="error-message">
+                    <p>{{ error }}</p>
+                </div>
+            {% endif %}
+            
+            {% if success %}
+                <div class="success-message">
+                    <p>{{ success }}</p>
+                </div>
+            {% endif %}
+        </div>
+        
+        <button type="submit" class="button-submit">Recuperar Usuario</button>
+        
+        <p class="signup-link">
+            <a href="{% url 'signin' %}">Volver al inicio de sesión</a>
+        </p>
+    </form>
+</div>
+
+{% endblock %}

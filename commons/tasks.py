@@ -9,11 +9,14 @@ def manage_reservations():
     # Notificar reservas de mañana
     usuarios_mañana = notificar_usuarios_reservas_mañana()
     
+    trabajadoresEl = eliminar_trabajadores_vencidos()
+
     # Eliminar reservas antiguas
     eliminadas = eliminar_reservas_pasadas()
     
     return f"Se notificaron {len(usuarios_mañana)} usuarios con reservas para mañana " \
-           f"y se eliminaron {eliminadas} reservas antiguas."
+           f"y se eliminaron {eliminadas} reservas antiguas." \
+           f" Trabajadores eliminados: {trabajadoresEl['trabajadores_eliminados']}." 
 
 def notificar_usuarios_reservas_mañana():
     """Notifica a usuarios con reservas programadas para el día siguiente"""
