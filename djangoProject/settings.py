@@ -32,6 +32,8 @@ SECRET_KEY = os.environ.get("SECRET_KEY",default="django-insecure-4@#)8v3!$&*j1g
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DEBUG', 'False').lower() == 'true'
 
+DAILY_TASK_TOKEN = os.environ.get('DAILY_TASK_TOKEN', 'token_por_defecto_no_seguro')
+
 ALLOWED_HOSTS = []
 
 RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
