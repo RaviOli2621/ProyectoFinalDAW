@@ -21,9 +21,11 @@ def send_email(
     # Añadir firma si se solicita
     if add_signature and signature_email:
         message += f"\n\nFirmado,\n{signature_email}"
+        html_message += f"<br><br>Firmado,<br>{signature_email}" if html_message else f"\n\nFirmado,\n{signature_email}"
     
     # Asegurarse de que to_emails sea una lista
     recipient_list = to_emails if isinstance(to_emails, list) else [to_emails]
+    print(message,html_message)
     
     try:
         # Usar la función send_mail de Django

@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 import os
+import ssl
 import dj_database_url
 from dotenv import load_dotenv
 
@@ -51,8 +52,21 @@ INSTALLED_APPS = [
     'masajes',
     'capture_tag',
     'cloudinary', 
-    'cloudinary_storage'
+    'cloudinary_storage',
+    'django_q',
 ]
+
+
+Q_CLUSTER = {
+    'name': 'DailyTasks',
+    'workers': 2,
+    'timeout': 300,
+    'retry': 600,
+    'queue_limit': 500,
+    'bulk': 10,
+    'orm': 'default',  # Usa tu base de datos actual
+    'sync': False,     # True para desarrollo local (ejecuta tareas de inmediato)
+}
 
 CLOUDINARY_STORAGE = {
     'CLOUD_NAME': os.getenv('CLOUD_NAME'),

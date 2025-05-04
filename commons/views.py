@@ -1,7 +1,11 @@
+import datetime
+from django.utils import timezone  
+from django.http import HttpResponse
 from django.shortcuts import render
 from commons.forms import EnviarCorreoForm
 from commons.services.email_service import send_email
 from djangoProject.settings import EMAIL_SERVICE
+from usuarios.models import Reserva
 
 def home(request):
     return render(request, 'home.html')
@@ -12,26 +16,9 @@ def enviar_correo(request):
         if form.is_valid():
             titulo = form.cleaned_data['titulo']
             cuerpo = form.cleaned_data['cuerpo']
-            
+            success = correo(titulo,cuerpo,form.cleaned_data['asunto'],form.cleaned_data['correo_usuario'],EMAIL_SERVICE)
             # Versión de texto plano
-            mensaje_texto = f"{titulo}\n\n{cuerpo}"
-            
-            # Versión HTML con formato
-            contenido_formateado = cuerpo.replace('\n', '<br>')
-            mensaje_html = f"""
-                <h1>{titulo}</h1>
-                <div>{contenido_formateado}</div>
-                """
-            
-            success = send_email(
-                subject=form.cleaned_data['asunto'],
-                message=mensaje_texto,
-                html_message=mensaje_html,  # Añadir versión HTML
-                to_emails=[EMAIL_SERVICE],
-                signature_email=form.cleaned_data['correo_usuario'],
-                add_signature=True
-            )
-            
+
             context = {
                 'form': form,
                 'toastType': 'success' if success else 'error',
@@ -51,3 +38,31 @@ def enviar_correo(request):
         form = EnviarCorreoForm()
 
     return render(request, 'contacta.html', {'form': form})
+
+def correo(titulo, cuerpo, asunto, loEnvia, destinatario):
+    # Versión de texto plano
+    mensaje_texto = f"{titulo}\n\n{cuerpo}"
+    
+    # Versión HTML con formato
+    contenido_formateado = cuerpo.replace('\n', '<br>')
+    mensaje_html = f"""
+        <h1>{titulo}</h1>
+        <div>{contenido_formateado}</div>
+        """
+    
+    success = send_email(
+        subject=asunto,
+        message=mensaje_texto,
+        html_message=mensaje_html,  # Añadir versión HTML
+        to_emails=[destinatario],
+        from_email=loEnvia,
+        signature_email=loEnvia,
+        add_signature=True
+    )
+    
+    return success
+
+def test_daily(request):
+
+    return HttpResponse("Siu")
+    
