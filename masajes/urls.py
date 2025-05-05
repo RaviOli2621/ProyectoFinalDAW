@@ -5,6 +5,10 @@ urlpatterns = [
     path('masaje/', views.masaje,name="masaje"),
     path('reservas/', views.reserves,name="reservas"),
     path('reservar/', views.reservar,name="reservar"),
+
+    path('worker_ver_masaje/', views.workerReserves,name="woker_reservas"),
+    path('get_reserva_by_id/', views.getReservaById,name="get_reserva_by_id"),
+
     path('pago_tarjeta/', views.pago_tarjeta, name='pago_tarjeta'),
     path('reservar_cambio/', views.editar_reserva,name="reservar_cambio"),
     path('pago_tarjeta_cambio/', views.editar_pago_tarjeta, name='pago_tarjeta_cambio'),

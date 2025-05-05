@@ -13,7 +13,9 @@ from .reserva import (
     pago_tarjeta,
     editar_reserva,
     editar_pago_tarjeta,
-    borrar_reserva
+    borrar_reserva,
+    workerReserves,
+    getReservaById
 )
 
 # Import functions from views.calendar

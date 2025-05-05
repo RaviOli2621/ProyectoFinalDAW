@@ -9,6 +9,17 @@ from commons.utils import get_filename  # Importamos la función de utilidad
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User  # Import User model
 from django.utils.timezone import make_aware, is_naive
+import json
+
+def worker_required(view_func):
+    def _wrapped_view(request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect('login')
+        # Verifica si existe un Worker asociado al usuario
+        if not Worker.objects.filter(user_profile_id=request.user.id).exists():
+            return redirect('home')
+        return view_func(request, *args, **kwargs)
+    return _wrapped_view
 
 # decorador para cuando no estas logado
 def notAdmin_user(view_func):
@@ -36,6 +47,40 @@ def reserves(request):
     return render(request,"reserves.html",{
         "reserves": reserves
     })
+
+# @worker_required
+def workerReserves(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            idReserva = data.get('idReserva')
+            pagado = data.get('pagado')
+            reserva = get_object_or_404(Reserva, id=idReserva)
+            reserva.pagado = pagado
+            reserva.save()
+            return JsonResponse({'success': True})
+        except Exception as e:
+            return JsonResponse({'success': False, 'error': str(e)})
+    else:
+        return render(request,"workerReservas.html",{
+        })
+
+def getReservaById(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        reserva_id = data.get('reserva_id')
+        reserva = get_object_or_404(Reserva, id=reserva_id)
+        print("Siu"+reserva.idMasaje.foto.name)
+        return JsonResponse({
+            'fecha': reserva.fecha.strftime('%Y-%m-%d %H:%M:%S'),
+            'masajePrecio': reserva.idMasaje.precio,
+            'duracion': reserva.duracion.total_seconds(),
+            'metodo_pago': reserva.metodo_pago,
+            'pagado': reserva.pagado,
+            'id': reserva_id,
+            'titulo': reserva.idMasaje.nombre,
+            'foto': reserva.idMasaje.foto.name
+        })
 
 @login_required
 def reservar(request):

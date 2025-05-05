@@ -105,7 +105,7 @@ def notificar_usuarios_reservas_mañana():
     for usuario, reservas in usuarios.items():
         # Construir el mensaje con detalles de las reservas
         detalles_reservas = "\n".join([
-            f"- {reserva.idMasaje.nombre} a las {reserva.fecha.strftime('%H:%M')}" 
+            f"- Masaje número {reserva.id} llamado {reserva.idMasaje.nombre} a las {reserva.fecha.strftime('%H:%M')}" 
             for reserva in reservas
         ])
         
