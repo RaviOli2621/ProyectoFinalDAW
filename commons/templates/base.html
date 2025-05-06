@@ -13,19 +13,34 @@
     </script>
     <link href='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css' rel='stylesheet' />
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js'></script>
+    <script src="{% static 'js/dropdown-mobile.js' %}"></script>
+    <script>
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+    </script>
 </head>
 <body>
 
     <nav class="navbar">
-        <a href="{% url 'home' %}">
+        <a class="logoA" href="{% url 'home' %}">
             <img src="{% static 'logo.png' %}" alt="logo">
         </a>
         
         <ul>
             <div class="dropdown">
-                <a href="{% url 'masajes' %}">
-                    <button class="dropbtn">Masajes</button>
-                </a>
+                <button class="dropbtn dropdown-toggle" data-href="{% url 'masajes' %}">Masajes</button>
                 <div class="dropdown-content">
                     <li>
                     {% for tipo in tipos_masajes %}    
@@ -38,7 +53,7 @@
 
             {% if user.is_authenticated and request.user.is_staff %}
                 <div class="dropdown">
-                    <button class="dropbtn">Reservas</button>
+                    <button class="dropbtn dropdown-toggle">Reservas</button>
                     <div class="dropdown-content">
                         <li>
                             <a href="{% url 'calendari' %}">Calendari</a>
@@ -51,7 +66,7 @@
                     <button>Reservas</button>
                 </a>
             {% endif %}
-            <a href="{% url 'enviar_correo' %}">
+            <a tabindex="1" href="{% url 'enviar_correo' %}">
                 <button class="dropbtn">Contacta con nosotros</button>
             </a>            
         </ul>

@@ -187,7 +187,7 @@ def userList(request,user_id=""):
 
 @permission_required('auth.change_user')
 def workerList(request):
-    workers = Worker.objects.filter(delete_date__isnull=True)
+    workers = Worker.objects.filter(delete_date__isnull=True).order_by('id')
 
     return render(request, "admin/workerList.html", {
         "workers": workers
@@ -202,6 +202,7 @@ def borrar_worker(request, worker_id):
         try:
             # Eliminar la reserva
             worker.delete_date = datetime.date.today() + datetime.timedelta(days=30)
+            worker.delete_hour = datetime.datetime.now().time()
             worker.save()
             # worker.delete()
             return JsonResponse({'success': True})
@@ -230,6 +231,23 @@ def crear_worker(request):
             return render(request, "admin/registerWorker.html", {
                 "form": form,
             })
+    return JsonResponse({'success': False, 'error': 'Método no permitido'}, status=405)
+
+@permission_required('auth.change_user')
+def restore_worker(request):
+    if request.method == 'POST':
+        # Invertir el orden para que el último eliminado sea el primero en restaurarse
+        workers = Worker.objects.filter(delete_date__isnull=False).order_by('-delete_date',"-delete_hour")
+        worker = workers.first()
+        if worker == None:
+            return JsonResponse({'success': False, 'error': 'No hay trabajadores para restaurar'}, status=404)
+        try:
+            worker.delete_date = None
+            worker.delete_hour = None
+            worker.save()
+            return JsonResponse({'success': True})
+        except Exception as e:
+            return JsonResponse({'success': False, 'error': str(e)})
     return JsonResponse({'success': False, 'error': 'Método no permitido'}, status=405)
 
 @permission_required('auth.change_user')

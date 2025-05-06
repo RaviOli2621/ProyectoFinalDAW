@@ -45,6 +45,7 @@ class Worker(models.Model):
     start_time = models.TimeField()
     end_time = models.TimeField()
     delete_date = models.DateField(null=True, blank=True)  # Campo para almacenar la fecha de eliminación lógica
+    delete_hour = models.TimeField(null=True, blank=True)  # Campo para almacenar la hora de eliminación lógica
 
     def __str__(self):
         return f"{self.user_profile.user.username} - {self.dni}"

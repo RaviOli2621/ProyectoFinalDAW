@@ -6,7 +6,7 @@
     display: flex; /* Para centrar los iconos */
     align-items: center;
     justify-content: center;
-    border-radius: 10px;
+    border-radius: 0.625rem;
 
 }
 
@@ -22,6 +22,6 @@
 }
 .boton:hover{
     transform: scale(102%);
-    filter: drop-shadow(5px 5px 5px rgba(0, 0, 0, 0.25));
+    filter: drop-shadow(0.3125rem 0.3125rem 0.3125rem rgba(0, 0, 0, 0.25));
     transition: 0.1s;
 }

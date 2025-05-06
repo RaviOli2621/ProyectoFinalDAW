@@ -61,3 +61,56 @@
 .btn-primary:hover {
     background-color: #0056b3;
 }
+
+@media (max-width: 900px) {
+    .reservation-container {
+        width: 98vw;
+        height: auto;
+        padding: 1rem;
+        margin: 1rem auto;
+    }
+    .form-group {
+        width: 95vw;
+        max-width: 22rem;
+    }
+    .input-group {
+        width: 100%;
+        /* Mantenemos flex-direction: row */
+        flex-direction: row;
+        gap: 0.5rem;
+    }
+    .input-group input {
+        width: 100%;
+        min-width: 0;
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 600px) {
+    .reservation-container {
+        width: 95vw;
+        max-width: 22rem;
+        padding: 0.4rem 0.6rem;
+        margin: 0.7rem auto;
+        border-radius: 0.5rem;
+        box-sizing: border-box;
+    }
+    .form-group {
+        width: 100%;
+        max-width: 100%;
+    }
+    .input-group {
+        flex-direction: row; /* ¡Importante! Mantén en fila */
+        gap: 0.2rem;
+        border-radius: 0.7rem;
+    }
+    .input-group input {
+        width: 100%;
+        font-size: 0.95rem;
+    }
+    .btn-primary {
+        width: 100%;
+        padding: 0.6rem;
+        font-size: 1rem;
+    }
+}

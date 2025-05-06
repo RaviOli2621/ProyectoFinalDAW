@@ -6,17 +6,17 @@
     left: 0; /* Se asegura de que comience desde el extremo izquierdo */
     right: 0; /* Se extiende hasta el extremo derecho */
     background-color: var(--dark-color); /* Color de fondo */
-    padding: 15px 20px;
+    padding: 0.9375rem 1.25rem;
     display: flex;
     align-items: center;
     justify-content: flex-start; /* Alinea los elementos a la izquierda */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 0.125rem 0.3125rem rgba(0, 0, 0, 0.2);
     z-index: 1000; /* Se asegura de que esté por encima de otros elementos */
-    gap:20px
+    gap:1.25rem
 }
 
 body {
-    padding-top: 70px; 
+    padding-top: 4.375rem; 
     display: flex;
     flex-direction: column;
     min-height: 100vh;
@@ -28,13 +28,27 @@ body {
     margin-left: auto;
     transform: translateX(-70%);
 }
+.userIcon:focus-within .dropdown-content{
+    display: block;
+}
 .userIcon:hover .dropdown-content {
     display: block;
 }
 
 /* Ajustar la imagen del logo */
+
+.navbar .logoA {
+    background-color: #ededef;
+    border-radius: 50%;
+    width: 3rem;
+    display: flex;
+    justify-content: center;
+} 
+.navbar .logoA:hover {
+    background-color: var(--light-color);
+} 
 .navbar img {
-    height: 50px;  /* Ajusta el tamaño */
+    height: 3.125rem;  /* Ajusta el tamaño */
     width: auto;
 }
 
@@ -43,7 +57,7 @@ body {
     list-style: none;
     display: flex;
     align-items: center;
-    gap: 20px;
+    gap: 1.25rem;
     margin: 0;
     padding: 0;
 }
@@ -67,20 +81,24 @@ body {
     position: relative;
     display: inline-block;
 }
+.dropdown:focus-within .dropdown-content{
+    display: block;
+}
 
 /* Botón del Dropdown */
 .navbar button {
     background-color: var(--dark-color);
     color: white;
-    padding: 10px 15px;
+    padding: 0.625rem 0.9375rem;
     font-size: 1rem;
     border: none;
     cursor: pointer;
     transition: background 0.3s;
+    border-radius: 1rem;
 }
 
 .navbar button:hover {
-    background-color: var(--strong-color);
+    background-color: var(--hover-dark-color);
 }
 
 /* Contenedor de las opciones del Dropdown */
@@ -88,20 +106,31 @@ body {
     display: none;
     position: absolute;
     background-color: var(--light-color);
-    min-width: 150px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    min-width: 9.375rem;
+    box-shadow: 0rem 0.25rem 0.5rem rgba(0, 0, 0, 0.2);
     z-index: 1000;
-    border-radius: 5px;
+    border-radius: 0.3125rem;
     overflow: hidden;
 }
 .userIcon .dropdown-content{
     transform: translateX(-65%);
 
 }
+.userIcon .contenedorFoto:hover img {
+    border: 0.20rem solid var(--light-color);
+    width: 2.9rem;
+    height: 2.9rem;
+} 
+.userIcon .contenedorFoto img{
+    border-radius: 50%;
+    width: 3rem;
+    height: 3rem;
+    border: 0.15rem solid #ededef;
+}
 /* Estilo de cada opción dentro del Dropdown */
 .dropdown-content a {
     color: var(--dark-color) !important;
-    padding: 10px 15px;
+    padding: 0.625rem 0.9375rem;
     text-decoration: none;
     display: block;
     transition: background 0.3s;
@@ -117,25 +146,50 @@ body {
 }
 
 /* Responsive: Cuando la pantalla es pequeña */
-@media (max-width: 768px) {
+@media (max-width: 48rem) {
     .navbar {
-        flex-direction: column;
-        align-items: flex-start;
+        flex-direction: row;         /* Mantén los elementos en fila */
+        align-items: center;
+        padding: 0.3rem 0.5rem;
+        gap: 0.3rem;
     }
 
     .navbar ul {
-        flex-direction: column;
-        width: 100%;
-        gap: 10px;
+        flex-direction: row;         /* Mantén los enlaces en fila */
+        width: auto;
+        gap: 0.3rem;
+        padding: 0;
+        margin: 0;
+    }
+
+    .navbar .logoA,
+    .navbar img,
+    .userIcon .contenedorFoto img {
+        width: 1.7rem;
+        height: 1.7rem;
+    }
+
+    .navbar ul li a,
+    .navbar button,
+    .dropbtn {
+        font-size: 0.9rem;
+        padding: 0.3rem 0.5rem;
+    }
+
+    .navbar .userIcon {
+        margin-left: 0.5rem;
+        transform: none;
+        align-self: center;
     }
 
     .dropdown-content {
-        position: relative;
-        width: 100%;
+        min-width: 8rem;
+        font-size: 0.9rem;
     }
 
-    .dropbtn {
-        width: 100%;
-        text-align: left;
+    .userIcon .contenedorFoto:hover img {
+        border: 0.15rem solid #ededef;
+        width: 1.7rem;
+        height: 1.7rem;
     }
 }

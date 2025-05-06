@@ -92,8 +92,41 @@ $('#modalConfirmImportWork').click(function() {
             location.reload(); // Recargar la página
         })
         .catch(err => {
-            console.error('Error details:', xhr.responseText);  
-            sessionStorage.setItem("toastMessage", "Hubo un error al importar los trabajadores: " + error);
+            console.error('Error details:', err);  
+            sessionStorage.setItem("toastMessage", "Hubo un error al importar los trabajadores: " + err);
+            sessionStorage.setItem("toastType", "error");
+            location.reload(); // Recargar la página
+        });
+    }
+});
+//Modal para confirmar la importación de trabajadores
+$('#modalConfirmRecoverWork').click(function() { 
+    if (currentReservationId !== null) {
+        const formData = new FormData();
+        formData.append('file', currentReservationId); // currentReservationId es el archivo que se va a importar
+        showToast("Importando trabajadores...","info",999999999); // Mostrar un toast de información
+        fetch('/restore_worker/', {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': getCookie('csrftoken'),
+            },
+            body: formData,
+        })
+        .then(res => res.json())
+        .then(data => {
+            console.log(data);
+            if (data.error) {
+                showToast(data.error,"error",5000); // Mostrar un toast de error
+                $('.custom-modal').hide();
+                return;
+            }
+            sessionStorage.setItem("toastMessage", "Ultimo trabajador eliminado restaurado con éxito");
+            sessionStorage.setItem("toastType", "success");
+            location.reload(); // Recargar la página
+        })
+        .catch(err => {
+            console.error('Error details:', err);  
+            sessionStorage.setItem("toastMessage", "Hubo un error al restaurar el trabajador: " + err);
             sessionStorage.setItem("toastType", "error");
             location.reload(); // Recargar la página
         });

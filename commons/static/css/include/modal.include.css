@@ -10,19 +10,19 @@
     z-index: 1000;
     justify-content: center; /* Centrado horizontal */
     align-items: center; /* Centrado vertical */
-    padding: 20px; /* Espaciado para evitar que el contenido toque los bordes */
+    padding: 1.25rem; /* Espaciado para evitar que el contenido toque los bordes */
     box-sizing: border-box; /* Incluye el padding en el tamaño total */
 }
 
 /* Estilos del Contenido del Modal */
 .custom-modal-content {
     background: #fff;
-    border-radius: 8px;
-    width: 500px;
+    border-radius: 0.5rem;
+    width: 31.25rem;
     max-width: 90%;
-    padding: 20px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    margin-top: -15%;
+    padding: 1.25rem;
+    box-shadow: 0 0.25rem 0.625rem rgba(0, 0, 0, 0.1);
+    margin-top: -5%;
 }
 
 /* Estilos del Header */
@@ -36,10 +36,10 @@
 
 .custom-modal-close {
     position: absolute; /* Posiciona la cruz de forma independiente */
-    right: 10px; /* Ajusta la posición a la derecha */
+    right: 0.625rem; /* Ajusta la posición a la derecha */
     top: 50%; /* Centra verticalmente */
     transform: translateY(-50%); /* Ajusta el centrado vertical */
-    font-size: 30px;
+    font-size: 1.875rem;
     cursor: pointer;
     color: #888;
 }
@@ -50,14 +50,14 @@
 
 /* Título del Modal */
 #modalTitle {
-    font-size: 20px;
+    font-size: 1.25rem;
     margin: 0;
 }
 
 /* Cuerpo del Modal */
 .custom-modal-body {
-    margin: 20px 0;
-    font-size: 16px;
+    margin: 1.25rem 0;
+    font-size: 1rem;
     line-height: 1.5;
     color: #333;
 }
@@ -66,15 +66,15 @@
 .custom-modal-footer {
     display: flex;
     justify-content: flex-end;
-    gap: 10px;
+    gap: 0.625rem;
 }
 
 /* Estilos de los botones */
 .custom-btn {
-    padding: 8px 16px;
+    padding: 0.5rem 1rem;
     border: none;
-    border-radius: 5px;
-    font-size: 16px;
+    border-radius: 0.3125rem;
+    font-size: 1rem;
     cursor: pointer;
     transition: background 0.3s;
 }
@@ -105,4 +105,31 @@
 
 .custom-btn-danger:hover {
     background-color: #c82333; /* Rojo más oscuro */
+}
+
+@media (max-width: 600px) {
+    .custom-modal-content {
+        width: 100%;
+        padding: 0.7rem;
+        margin-top: 0;
+        border-radius: 0.5rem;
+        box-sizing: border-box;
+    }
+    .custom-modal-header {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    .custom-modal-footer {
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        justify-content: center;
+    }
+    .custom-btn {
+        width: auto;
+        min-width: 40%;
+        font-size: 1rem;
+        padding: 0.5rem 0.7rem;
+        box-sizing: border-box;
+    }
 }

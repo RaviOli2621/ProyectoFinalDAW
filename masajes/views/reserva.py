@@ -48,7 +48,7 @@ def reserves(request):
         "reserves": reserves
     })
 
-# @worker_required
+@worker_required
 def workerReserves(request):
     if request.method == 'POST':
         try:

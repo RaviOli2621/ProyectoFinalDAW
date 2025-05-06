@@ -8,7 +8,7 @@ footer {
     align-items: flex-start;
     flex-wrap: wrap;
     font-size: 1rem;
-    border-top: 2px solid #333;
+    border-top: 0.125rem solid #333;
     position: relative;
     box-sizing: border-box;
     z-index: 100;
@@ -28,14 +28,14 @@ footer a:hover {
 
 footer div {
     margin: 0 1.5rem;
-    min-width: 150px;
+    min-width: 9.375rem;
 }
 
 footer p {
     margin: 0 0 0.5rem 0;
 }
 
-@media (max-width: 700px) {
+@media (max-width: 43.75rem) {
     footer {
         flex-direction: column;
         align-items: center;
