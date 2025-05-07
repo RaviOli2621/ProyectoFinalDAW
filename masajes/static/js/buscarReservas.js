@@ -66,7 +66,7 @@ document.addEventListener('DOMContentLoaded', function () {
             checkbox.disabled = false;
             container.children[5].innerHTML = "id: " + data.id;
             title.innerHTML = data.titulo
-            reservaEl.style.backgroundImage = `url('/static/${data.foto.split("/static/")[1]}')`;
+            reservaEl.style.backgroundImage = `url('/static/masajes/${data.foto.split("/static/")[1]}')`;
             reservaEl.style.visibility = 'visible';
             showToast("Reserva encontrada", "succes", 5000);
             idReserva = data.id

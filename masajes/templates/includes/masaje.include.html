@@ -2,11 +2,12 @@
 <link rel="stylesheet" href="{% static 'css/masaje.include.css' %}">
 <div class="masajeGande">
     <div>
-        <img src="{% static imagen %}" alt="asa" srcset="">
+        <img src="{% static 'masajes/' %}{{ imagen }}" alt="asa" srcset="">
     </div>
     <div class="masajeInfo">
         <input type="text" name="Title" class="Title" value="{{ nombre }}">
         <div class="textarea" name="{{ nombre }} description" id="{{ nombre }}Desc"><b></b><br>{{ description }}</div>
         {% include "commons/includes/boton.include.html" with text="Reservar" redirect="reservar" getTxt="?masajeId=" getValor=id %}
     </div>
+    <script defer src="{% static 'js/masajeComandosDescripcion.js' %}"></script>
 </div>

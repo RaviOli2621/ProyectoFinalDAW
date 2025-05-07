@@ -1,6 +1,6 @@
 {% load static %}
 <link rel="stylesheet" href="{% static 'css/reserves.include.css' %}">
-<div class="reserva" style="background-image: url('{% static imagen %}'); background-size: cover; background-position: center;">
+<div class="reserva" style="background-image: url('{% static 'masajes/' %}{{ imagen }}'); background-size: cover; background-position: center;">
     <div class="Title">
     {% comment %} Se tiene que hacer dos conversiones para qe no llore. Pasar el int a string  i luego la concatenacion  {% endcomment %}
         {% with id=reserva.id|stringformat:"s" %} 

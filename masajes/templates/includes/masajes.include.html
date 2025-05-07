@@ -2,9 +2,13 @@
 <link rel="stylesheet" href="{% static 'css/masajes.include.css' %}">
 <div class="masaje">
     <div class="imgDiv">
-        <img src="{% static imagen %}" alt="{{nombre}}">
+        <img src="{% static 'masajes/' %}{{ imagen }}" alt="{{nombre}}" srcset="">
+
     </div>
     <div>
         <div class="textarea" name="{{nombre}} description" id="{{nombre}}Desc"><b>{{nombre}}</b><br>{{description}}</div>
     </div>
 </div>
+<style>
+
+</style>

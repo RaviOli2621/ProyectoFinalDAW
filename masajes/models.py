@@ -4,7 +4,7 @@ from django.db import models
 class TipoMasaje(models.Model):
     nombre = models.CharField(max_length=50)
     description = models.TextField(blank=True,max_length=200)
-    foto = models.ImageField(blank=True,upload_to="masajes/static/",default="default.jpg")
+    foto = models.ImageField(blank=True,upload_to="masajes/static/masajes/",default="default.jpg")
     # user = models.ForeignKey(User,on_delete=models.CASCADE)
 
     def __str__(self):
@@ -13,9 +13,9 @@ class TipoMasaje(models.Model):
 # Create your models here.
 class Masaje(models.Model):
     nombre = models.CharField(max_length=50)
-    descriptionSh = models.TextField(blank=True,max_length=100,default="")
-    description = models.TextField(blank=True,max_length=500,default="")
-    foto = models.ImageField(blank=True,upload_to="masajes/static/",default="default.jpg")
+    descriptionSh = models.TextField(blank=True,max_length=250,default="")
+    description = models.TextField(blank=True,max_length=750,default="")
+    foto = models.ImageField(blank=True,upload_to="masajes/static/masajes/",default="default.jpg")
     precio = models.DecimalField(max_digits=6, decimal_places=2,default=0.00)
     tipo = models.ForeignKey(TipoMasaje, on_delete=models.CASCADE,null=True)
     duracion = models.DurationField(default=datetime.timedelta(hours=1))  # Campo para almacenar la duración del masaje

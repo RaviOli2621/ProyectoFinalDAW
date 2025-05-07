@@ -35,3 +35,21 @@
 .masaje div .textarea:focus{
     outline: none;
 }
+a{
+    text-decoration: none;
+}
+.textarea {
+    background: #f6f6fa;
+    font-size: 1.05rem;
+    color: #222;
+    box-shadow: 0 2px 8px rgba(44,62,80,0.07);
+    border: 1px solid #e0e0e0;
+    line-height: 1.6;
+    word-break: break-word;
+}
+
+.textarea b {
+    color: #2f319e;
+    font-size: 1.15rem;
+    text-decoration: none;
+}
