@@ -1,15 +1,24 @@
 {% extends "base.html" %}
 {% block content %}
+    {% load static %}
+
     {% include 'commons/includes/changeBackground.include.html' with imagen='reservaBackground.svg' %}
     {% include "commons/includes/title.include.html" with Titulo="Pago con Tarjeta" Subtitulo="Prefieres sangrar ya, eh" %}
-    
 
-    <form method="post">
-        {% csrf_token %}
-        {{ tarjeta_form.as_p }}
-        <button type="submit">Pagar y Guardar</button>
-    </form>
-    
-
-
+    <div class="reservation-container">
+        <form method="post" class="reservation-form">
+            {% csrf_token %}
+            {% for field in tarjeta_form %}
+                <div class="form-group">
+                    <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                    {{ field }}
+                    {% if field.errors %}
+                        <div class="form-error">{{ field.errors }}</div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+            <button type="submit" class="btn btn-primary">Pagar y Guardar</button>
+        </form>
+    </div>
+    <link rel="stylesheet" href="{% static 'css/reservar.css' %}">
 {% endblock %}

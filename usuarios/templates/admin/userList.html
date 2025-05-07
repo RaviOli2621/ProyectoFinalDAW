@@ -15,7 +15,11 @@
             {% include "includes/userItem.include.html" with img=user.userprofile.foto.url name=user.username id=user.id texto="Quitar admin" %}
         {% endif %}
     {% empty %}
-        {% include "includes/userItem.include.html" with img=user.userprofile.foto.url name=user.username id=user.id texto="Poner admin" %}
+        {% if user.userprofile.foto %}
+            {% include "includes/userItem.include.html" with img=user.userprofile.foto.url name=user.username id=user.id texto="Poner admin" %}
+        {% else %}
+            {% include "includes/userItem.include.html" with img="" name=user.username id=user.id texto="Poner admin" %}
+        {% endif %}
     {% endfor %}
 {% endfor %}
 </div>

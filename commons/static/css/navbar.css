@@ -117,15 +117,13 @@ body {
 
 }
 .userIcon .contenedorFoto:hover img {
-    border: 0.20rem solid var(--light-color);
-    width: 2.9rem;
-    height: 2.9rem;
+    border: 0.15rem solid var(--hover-dark-color);
 } 
 .userIcon .contenedorFoto img{
     border-radius: 50%;
     width: 3rem;
     height: 3rem;
-    border: 0.15rem solid #ededef;
+    border: 0.15rem solid #ffffff;
 }
 /* Estilo de cada opción dentro del Dropdown */
 .dropdown-content a {

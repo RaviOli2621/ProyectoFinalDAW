@@ -1,15 +1,19 @@
 :root{
 
-	--hover-dark-color: #6f513b;
-	--light-color: #F1ece2;
+	--hover-dark-color: #7a41c5;
+	--light-color: #ebe0f5;
 	--strong-color: #ced3b1;
-	--dark-color: #5a3e29;
+	--dark-color: #6a994e;
 	--light-shine: #f4faef6c;
 	--dark-transparent: rgba(64, 40, 28, 0.75);
 	/* Texto */
 	--font-text: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif
 }
 /* 
---light-color: #F4FAEF;
---strong-color: #D2C38D;
---dark-color: #40281C; */
+	--hover-dark-color: #6f513b;
+	--light-color: #F1ece2;
+	--strong-color: #ced3b1;
+	--dark-color: #5a3e29;
+	--light-shine: #f4faef6c;
+	--dark-transparent: rgba(64, 40, 28, 0.75);
+*/

@@ -152,7 +152,7 @@ def editUser(request):
 @permission_required('auth.change_user')
 def userList(request,user_id=""):
     if request.method == "GET":
-        all_users = User.objects.all()
+        all_users = User.objects.all().order_by('id')
         
         # Obtener los IDs de usuarios que ya son trabajadores
         worker_user_ids = Worker.objects.filter(
@@ -167,7 +167,7 @@ def userList(request,user_id=""):
         })
     elif request.method == 'POST':
         # Obtiene la reserva con el ID proporcionado, o devuelve un 404 si no existe.
-        user = get_object_or_404(User, id=user_id)
+        user = User.objects.filter(id=user_id).first()
         grupo = Group.objects.get(name="Administradores")
         if user.groups.filter(name="Administradores").exists():
             print("Si")
@@ -204,7 +204,6 @@ def borrar_worker(request, worker_id):
             worker.delete_date = datetime.date.today() + datetime.timedelta(days=30)
             worker.delete_hour = datetime.datetime.now().time()
             worker.save()
-            # worker.delete()
             return JsonResponse({'success': True})
         except Exception as e:
             # En caso de error al eliminar

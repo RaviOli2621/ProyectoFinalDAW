@@ -1,6 +1,8 @@
 function cambiarPriv(currentUserId,elemento){
     if (currentUserId !== null) {
     // Hacer la solicitud AJAX para eliminar la reserva
+    showToast('Cargando...', 'info', 3000);
+
         $.ajax({
             url: '/userChangePriv/' + currentUserId + '/',  // URL de tu vista para borrar
             type: 'POST',
@@ -8,12 +10,12 @@ function cambiarPriv(currentUserId,elemento){
                 'X-CSRFToken': csrfToken,  // Añadir el token CSRF en el encabezado
             },
             success: function(response) {
-                alert('Accion ejecutada con éxito');
+                showToast('Acción ejecutada con éxito', 'succes', 3000);
                 location.reload();  // Recargar la página (o actualizar el listado)
             },
             error: function(xhr, status, error) {
-                alert('Hubo un error al realizar la accion: ' + error);
-                console.error('Error details:', xhr.responseText);
+                showToast('Hubo un error al realizar la acción: ' + error, 'error', 5000);
+                console.log('Error details:', xhr.responseText);
             }
         });
     }
