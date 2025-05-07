@@ -1,5 +1,6 @@
 import datetime
 from functools import wraps
+import os
 from django.conf import settings
 from django.utils import timezone  
 from django.http import HttpResponse, HttpResponseForbidden
@@ -8,6 +9,7 @@ from commons.forms import EnviarCorreoForm
 from commons.services.email_service import send_email
 from djangoProject.settings import EMAIL_SERVICE
 from usuarios.models import Reserva
+from masajes.models import Masaje  # Asegúrate de importar tu modelo Masaje
 
 def token_required(view_func):
     @wraps(view_func)
@@ -29,7 +31,29 @@ def token_required(view_func):
     return wrapped_view
 
 def home(request):
-    return render(request, 'home.html')
+    from django.templatetags.static import static
+
+    # Ruta de imágenes en static/masajes
+    imagen_default = 'masajes/crayones.jpg'  # Cambia la extensión si tu imagen es png
+
+    # Recoge todos los masajes
+    masajes = Masaje.objects.all()
+    carrusel_items = []
+    for masaje in masajes:
+        # Si el masaje tiene imagen, úsala; si no, usa la de crayones
+        if masaje.foto:  # Ajusta el campo según tu modelo
+            img_url = f"masajes/{os.path.basename(str(masaje.foto))}"
+        else:
+            img_url = imagen_default
+        carrusel_items.append({
+            "id": masaje.id,
+            "titulo": masaje.nombre,
+            "img_url": img_url,
+        })
+
+    return render(request, "home.html", {
+        "carrusel_items": carrusel_items,
+    })
 
 def enviar_correo(request):
     if request.method == 'POST':
@@ -208,4 +232,3 @@ def eliminar_trabajadores_vencidos():
         "usuarios_eliminados": usuarios_eliminados,
         "mensaje": mensaje
     }
-    

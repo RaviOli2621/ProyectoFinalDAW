@@ -3,9 +3,10 @@
 {% load static %}
 
 {% include "commons/includes/title.include.html" with Titulo="Calendario" Subtitulo="Para poner y quitar dias de fiesta" %}
-<div style="width: 50rem; height: 100%; justify-content: center; align-items: center; flex-direction: column;">
-    <div class="calendar" id="calendar"></div>
-</div>
+
+    <div class="calendar-outer">
+        <div class="calendar" id="calendar"></div>
+    </div>
     {% csrf_token %}
 
 {% include "commons/includes/modal.include.html" with Titulo="Horas" Contenido="Cargando..." idConfirm="modalConfirmHoras" modalId="HorasMD" %}

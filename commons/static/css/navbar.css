@@ -37,14 +37,14 @@ body {
 
 /* Ajustar la imagen del logo */
 
-.navbar .logoA {
+.logoA {
     background-color: #ededef;
     border-radius: 50%;
     width: 3rem;
     display: flex;
     justify-content: center;
 } 
-.navbar .logoA:hover {
+.logoA:hover {
     background-color: var(--light-color);
 } 
 .navbar img {
@@ -160,13 +160,10 @@ body {
         margin: 0;
     }
 
-    .navbar .logoA,
-    .navbar img,
-    .userIcon .contenedorFoto img {
-        width: 1.7rem;
-        height: 1.7rem;
-    }
 
+    .logoA:hover {
+        background-color: var(--light-color);
+    } 
     .navbar ul li a,
     .navbar button,
     .dropbtn {
@@ -175,7 +172,7 @@ body {
     }
 
     .navbar .userIcon {
-        margin-left: 0.5rem;
+        margin-right: 1rem;
         transform: none;
         align-self: center;
     }
@@ -186,8 +183,8 @@ body {
     }
 
     .userIcon .contenedorFoto:hover img {
-        border: 0.15rem solid #ededef;
-        width: 1.7rem;
-        height: 1.7rem;
+        border: 0.15rem solid var(--hover-dark-color);
+        width: 3rem;
+        height: 3rem;
     }
 }

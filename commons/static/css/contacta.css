@@ -66,3 +66,28 @@ h1 {
     list-style: none;
     padding: 0;
 }
+
+@media (max-width: 600px) {
+    .signup-form {
+        width: 95vw;
+        min-width: unset;
+        max-width: 99vw;
+        padding: 1rem;
+        border-radius: 0.7rem;
+        box-sizing: border-box;
+    }
+    .signup-form input,
+    .signup-form textarea,
+    .signup-form select {
+        width: 100% !important;
+        min-width: unset !important;
+        max-width: 100% !important;
+        box-sizing: border-box;
+        font-size: 1rem;
+    }
+    .signup-form textarea {
+        width: 100% !important;
+        min-width: unset !important;
+        max-width: 100% !important;
+    }
+}

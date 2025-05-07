@@ -3,16 +3,16 @@ footer {
     background-color: var(--dark-color);
     color: #f1f1f1;
     padding: 2rem 0 1rem 0;
-    display: flex;
-    justify-content: space-around;
-    align-items: flex-start;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr); /* 3 columnas iguales */
+    gap: 2rem 0; /* Espacio entre filas */
     font-size: 1rem;
-    border-top: 0.125rem solid #333;
     position: relative;
     box-sizing: border-box;
     z-index: 100;
-    margin-top: 1rem; /* Reducido de 2rem a 1rem */
+    margin-top: 1rem;
+    justify-items: center; /* Centra los elementos en el eje X */
+    align-items: start;
 }
 
 footer a {
@@ -27,22 +27,60 @@ footer a:hover {
 }
 
 footer div {
-    margin: 0 1.5rem;
     min-width: 9.375rem;
+    width: 100%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    margin: 0;
+}
+
+footer div span, footer div a {
+    margin-bottom: 0.3rem;
 }
 
 footer p {
     margin: 0 0 0.5rem 0;
 }
 
-@media (max-width: 43.75rem) {
+
+.logoA img{
+    height: 3rem;
+}
+
+.footer-title {
+    font-weight: bold;
+    color: #fff;
+    margin-bottom: 0.5rem;
+    font-size: 1.1rem;
+    letter-spacing: 0.03em;
+}
+
+/* Responsive: 2 columnas en tablet */
+@media (max-width: 900px) {
     footer {
-        flex-direction: column;
-        align-items: center;
-        text-align: center;
-        width: 100%;
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* Responsive: 1 columna en móvil */
+@media (max-width: 600px) {
+    footer {
+        grid-template-columns: 1fr;
+        gap: 1rem 0;
     }
     footer div {
-        margin: 1rem 0;
+        margin: 1rem 0 0 0;
     }
+}
+
+/* Agrega este bloque al final de tu footer.include.css */
+footer div:first-child {
+    margin-left: 1.5rem;
+    margin-right: 1.5rem; /* Mantén el margen derecho si lo deseas */
+}
+
+footer div {
+    max-width: 60%;
 }

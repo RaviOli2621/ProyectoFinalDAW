@@ -49,23 +49,35 @@ function removeToasts(animated = false, type = "") {
 
 // Corrección para la función showToast que evita duplicados
 function showToast(message, type, time=5000) {
-    // Primero elimina cualquier toast existente para evitar duplicados
     removeToasts(false);
-    
+
     let color = colorToast(type);
+    let toastId = "toast-" + Date.now();
+
+    // El botón de cerrar ahora elimina el toastify más cercano
+    let closeBtn = `<span class="toast-close" style="margin-left:1rem;cursor:pointer;font-weight:bold;font-size:1.2em;"
+        onclick="this.closest('.toastify').remove()"
+    >&#10005;</span>`;
+
+    let html = `<span>${message}</span>${closeBtn}`;
+
     Toastify({
-        text: message,
+        node: (() => {
+            let div = document.createElement("div");
+            div.id = toastId;
+            div.innerHTML = html;
+            return div;
+        })(),
         duration: time,
         gravity: "top",
         position: "center",
         style: {
-            background: color
+            background: color,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between"
         },
-        stopOnFocus: true, // Añadido para que los toasts se paren cuando el usuario enfoca
-        onClick: function() { 
-            // Al hacer clic en un toast, se elimina
-            this.removeElement();
-        }
+        stopOnFocus: true,
     }).showToast();
 }
 
