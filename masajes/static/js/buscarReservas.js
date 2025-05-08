@@ -7,31 +7,38 @@ document.addEventListener('DOMContentLoaded', function () {
     title = document.getElementsByClassName('Title')[0].children[2];
     reservaEl.style.visibility = 'hidden';
     checkbox = container.children[4].children[0].children[1]
-    checkbox.addEventListener('change', function () {
+    checkbox.addEventListener('change', function(){queCambiado="pagado"; consultar();});
+    queCambiado = "";
+
+    function consultar() {
         showToast("Cambiando pagado", "info", 50000);
         checkbox.disabled = true;
+        container.children[5].children[0].children[1].disabled = true;
         fetch(`/worker_ver_masaje/`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'X-CSRFToken': getCookie('csrftoken'),
             },
-            body: JSON.stringify({ reserva_id: idReserva, pagado: checkbox.checked })
+            body: JSON.stringify({ reserva_id: idReserva, pagado: checkbox.checked, hecho: container.children[5].children[0].children[1].checked })
         })
         .then(response => {
-            if (!response.ok) throw new Error('Error al actualizar el estado de pagado');
+            if (!response.ok) throw new Error('Error al actualizar los datos');
             return response.json();
         })
         .then(data => {
-            showToast("Estado de pagado actualizado", "succes", 5000);
+            showToast("Datos actualizados", "succes", 5000);
             checkbox.disabled = false;
+            container.children[5].children[0].children[1].disabled = false;
         })
         .catch(error => {
-            showToast("Error al actualizar el estado de pagado" + error, "error", 5000);
-            checkbox.checked = !checkbox.checked;
+            showToast("Error al actualizar los datos" + error, "error", 5000);
+            if(queCambiado == "pagado") checkbox.checked = !checkbox.checked;
             checkbox.disabled = false;
+            if(queCambiado == "hecho") container.children[5].children[0].children[1].checked = !container.children[5].children[0].children[1].checked;
+            container.children[5].children[0].children[1].disabled = false;
         });
-    });
+    }
 
     form.addEventListener('submit', function (e) {
         e.preventDefault();
@@ -64,12 +71,16 @@ document.addEventListener('DOMContentLoaded', function () {
             container.children[3].innerHTML = Number(data.masajePrecio).toFixed(1).replace('.', ',') + '€';
             checkbox.checked = data.pagado;
             checkbox.disabled = false;
-            container.children[5].innerHTML = "id: " + data.id;
+            // container.children[5].innerHTML = "id: " + data.id;
+            container.children[5].innerHTML = '<label><p>Hecha:</p><input type="checkbox" id="hecho"></label>';
+            container.children[5].children[0].children[1].checked = data.hecho;
             title.innerHTML = data.titulo
-            reservaEl.style.backgroundImage = `url('/static/masajes/${data.foto.split("/static/")[1]}')`;
+            reservaEl.style.backgroundImage = `url('/static/${data.foto.split("/static/")[1]}')`;
             reservaEl.style.visibility = 'visible';
             showToast("Reserva encontrada", "succes", 5000);
             idReserva = data.id
+
+            container.children[5].children[0].children[1].addEventListener('change', function(){queCambiado="hecho"; consultar();});
         })
         .catch(error => {
             showToast("Reserva no encontrada o error en la búsqueda." + error, "error", 5000);

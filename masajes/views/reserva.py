@@ -53,13 +53,16 @@ def workerReserves(request):
     if request.method == 'POST':
         try:
             data = json.loads(request.body)
-            idReserva = data.get('idReserva')
+            idReserva = data.get('reserva_id')
             pagado = data.get('pagado')
-            reserva = get_object_or_404(Reserva, id=idReserva)
+            hecho = data.get('hecho')
+            reserva = Reserva.objects.get(id=idReserva)
             reserva.pagado = pagado
+            reserva.hecho = hecho
             reserva.save()
-            return JsonResponse({'success': True})
+            return JsonResponse({'success': False})
         except Exception as e:
+            print(e)
             return JsonResponse({'success': False, 'error': str(e)})
     else:
         return render(request,"workerReservas.html",{
@@ -70,7 +73,6 @@ def getReservaById(request):
         data = json.loads(request.body)
         reserva_id = data.get('reserva_id')
         reserva = get_object_or_404(Reserva, id=reserva_id)
-        print("Siu"+reserva.idMasaje.foto.name)
         return JsonResponse({
             'fecha': reserva.fecha.strftime('%Y-%m-%d %H:%M:%S'),
             'masajePrecio': reserva.idMasaje.precio,
@@ -79,7 +81,8 @@ def getReservaById(request):
             'pagado': reserva.pagado,
             'id': reserva_id,
             'titulo': reserva.idMasaje.nombre,
-            'foto': reserva.idMasaje.foto.name
+            'foto': reserva.idMasaje.foto.name,
+            'hecho': reserva.hecho,
         })
 
 @login_required

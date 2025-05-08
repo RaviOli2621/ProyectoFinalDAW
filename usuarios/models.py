@@ -62,6 +62,7 @@ class Reserva(models.Model):
     idMasaje = models.ForeignKey(Masaje, on_delete=models.CASCADE)
     duracion = models.DurationField(null=True, blank=True)  # Eliminamos el default problemático
     pagado = models.BooleanField(default=False)
+    hecho = models.BooleanField(default=False)
     metodo_pago = models.CharField(max_length=10, choices=[('efectivo', 'Efectivo'), ('targeta', 'Tarjeta')], default="efectivo")
 
     def save(self, *args, **kwargs):
