@@ -15,7 +15,6 @@
         <div class="form-group">
             <label for="{{ form.foto.id_for_label }}">Foto de perfil:</label>
             
-            <!-- Mostrar imagen actual si existe -->
             {% if user.userprofile.foto %}
             <div class="current-photo">
                 <label for="id_foto">
@@ -46,7 +45,6 @@
         
         <div class="form-row">
             <div class="form-column">
-                <!-- Username -->
                 <div class="form-group">
                     <label for="{{ form.username.id_for_label }}">Nombre de usuario:</label>
                     {{ form.username }}
@@ -55,7 +53,6 @@
                     {% endif %}
                 </div>
                 
-                <!-- Email -->
                 <div class="form-group">
                     <label for="{{ form.email.id_for_label }}">Email:</label>
                     {{ form.email }}
@@ -64,7 +61,6 @@
                     {% endif %}
                 </div>
                 
-                <!--Contraseña nueva-->
                 <div class="form-group">
                     <label for="{{ form.password1.id_for_label }}">Nueva Contraseña:</label>
                     {{ form.password1 }}
@@ -74,7 +70,6 @@
                     <div class="help-text">Deja en blanco si no quieres cambiar la contraseña</div>
                 </div>
                 
-                <!-- Confirmar contraseña nueva -->
                 <div class="form-group">
                     <label for="{{ form.password2.id_for_label }}">Confirmar Nueva Contraseña:</label>
                     {{ form.password2 }}
@@ -85,7 +80,6 @@
             </div>
         </div>
         
-        <!-- Botones al final del formulario -->
         <div class="form-actions">
             <a href="{% url 'home' %}" class="btn btn-cancel">Cancelar</a>
             <button type="submit" class="btn btn-primary">Guardar cambios</button>

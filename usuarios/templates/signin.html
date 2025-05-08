@@ -14,14 +14,12 @@
     <form method="post">
         {% csrf_token %}
         
-        <!-- Renderizado manual del campo username -->
         <div class="form-group flex-column">
             <label for="{{ form.username.id_for_label }}">Nombre de usuario</label>
             <div class="inputForm">
                 <img src="{% static '/user.svg' %}" alt="Candado" class="icon">
                 {{ form.username }}
             </div>
-            <!-- Mostrar errores del campo -->
             {% if form.username.errors %}
                 <div class="error-message">
                     {% for error in form.username.errors %}
@@ -31,14 +29,12 @@
             {% endif %}
         </div>
         
-        <!-- Renderizado manual del campo password -->
         <div class="form-group flex-column">
             <label for="{{ form.password.id_for_label }}">Contraseña</label>
             <div class="inputForm">
                 <img src="{% static '/candado.svg' %}" alt="Candado" class="icon">
                 {{ form.password }}
             </div>
-            <!-- Mostrar errores del campo -->
             {% if form.password.errors %}
                 <div class="error-message">
                     {% for error in form.password.errors %}
@@ -54,7 +50,6 @@
             </div>
             <a href="{% url 'forgot_username' %}" class="span">Usuario olvidado?</a>
         </div>
-        <!-- Botón de inicio de sesión -->
         <button type="submit" class="button-submit">Iniciar sesión</button>
         <p class="signup-link">
             No tienes cuenta?   <a href="{% url 'signup' %}">SignUp</a>

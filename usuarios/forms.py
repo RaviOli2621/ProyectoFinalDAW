@@ -1,6 +1,6 @@
 from django import forms
-from .models import Masaje, Reserva, UserProfile, Worker  # Importa tu modelo
-from django.contrib.auth.models import User  # Importa el modelo User
+from .models import Masaje, Reserva, UserProfile, Worker  
+from django.contrib.auth.models import User  
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.forms import UserCreationForm
 
@@ -55,8 +55,8 @@ class TuModeloForm(forms.ModelForm):
     metodo_pago = forms.ChoiceField(choices=METODOS_PAGO, required=True)
 
 class Meta:
-        model = Masaje  # Aquí se asocia el modelo Masaje
-        fields = ['fecha', 'duracion', 'metodo_pago']  # Campos que quieres incluir en el formulario
+        model = Masaje 
+        fields = ['fecha', 'duracion', 'metodo_pago']  
 
 class ReservaForm(forms.ModelForm):
     class Meta:
@@ -69,7 +69,6 @@ class ReservaForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         
-        # Asegurar que el campo duración tenga un valor predeterminado si es necesario
         if self.instance and self.instance.pk and hasattr(self.instance, 'duracion'):
             self.initial['duracion'] = self.instance.duracion
         elif 'initial' in kwargs and 'duracion' in kwargs['initial']:
@@ -83,25 +82,20 @@ class ReservaForm(forms.ModelForm):
         
         if fecha:
             try:
-                # Convertir a formato de fecha YYYY-MM-DD para la API
                 fecha_str = fecha.strftime('%Y-%m-%d')
                 
-                # Mejor enfoque: Acceder directamente a la vista sin HTTP
                 from django.urls import reverse
                 from django.http import HttpRequest
-                from masajes.views.calendar import horas_api  # Importar la vista directamente
+                from masajes.views.calendar import horas_api  
                 
                 print(f"DEBUG - Consultando horas disponibles para: {fecha_str}")
                 
-                # Simulamos la petición directamente
                 request = HttpRequest()
                 request.method = 'GET'
                 request.GET = {'fecha': fecha_str}
                 
-                # Llamar directamente a la vista
                 from django.http import JsonResponse
                 try:
-                    # Intentar llamar a la vista API directamente
                     response = horas_api(request)
 
                     if isinstance(response, JsonResponse):
@@ -117,7 +111,6 @@ class ReservaForm(forms.ModelForm):
                         if hora_objeto["color"] == 'red' and reserva != fecha:
                             self.add_error('fecha', "No hay horas disponibles para esta fecha")
                         
-                        # Guardar las horas disponibles en el formulario para uso posterior
                         self._horas_disponibles = horas_disponibles
                     else:
                         print(f"DEBUG - Respuesta inesperada de la API: {type(response)}")
@@ -135,7 +128,6 @@ class TarjetaForm(forms.Form):
     fecha_expiracion = forms.CharField(max_length=5, label="Fecha de expiración (MM/YY)")
     cvv = forms.CharField(max_length=3, label="CVV")
 
-# LOGIN Y SIGNUP
 
 
 class CustomLoginForm(AuthenticationForm):
@@ -147,12 +139,11 @@ class CustomLoginForm(AuthenticationForm):
 
 class CustomSignInForm(UserCreationForm):
     gmail = forms.EmailField(
-        required=True,  # No obligatorio si solo es informativo
+        required=True,  
         label="Gmail",
         widget=forms.EmailInput(attrs={ 'class': 'form-control'})
     )
 
-# Formulario para trabajador
 
 class WorkeCreaterForm(UserCreationForm):
     email = forms.EmailField(
@@ -198,7 +189,6 @@ class WorkeCreaterForm(UserCreationForm):
     
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        # Aplicar estilos a los campos
         self.fields['username'].widget.attrs.update({'class': 'form-control', 'placeholder': 'Nombre de usuario'})
         self.fields['password1'].widget.attrs.update({'class': 'form-control', 'placeholder': 'Contraseña'})
         self.fields['password2'].widget.attrs.update({'class': 'form-control', 'placeholder': 'Confirmar contraseña'})
@@ -221,7 +211,6 @@ class WorkeCreaterForm(UserCreationForm):
             raise forms.ValidationError("Este campo es obligatorio")
         
         try:
-            # Dividir el horario en inicio y fin
             partes = horario.split('-')
             if len(partes) != 2:
                 raise forms.ValidationError("El formato debe ser 'HH:MM - HH:MM'")
@@ -229,7 +218,6 @@ class WorkeCreaterForm(UserCreationForm):
             start_time = partes[0].strip()
             end_time = partes[1].strip()
             
-            # Validar formato de hora (HH:MM)
             import re
             time_pattern = re.compile(r'^([01]?[0-9]|2[0-3]):(30|00)$')
             
@@ -239,14 +227,12 @@ class WorkeCreaterForm(UserCreationForm):
             if not time_pattern.match(end_time):
                 raise forms.ValidationError(f"La hora de fin '{end_time}' no tiene un formato válido (HH:MM)")
             
-            # Podríamos añadir más validaciones si quisiéramos (por ejemplo, que end_time > start_time)
+    
             
             return {'start_time': start_time, 'end_time': end_time}
         except forms.ValidationError as e:
-            # Re-lanzamos excepciones de validación específicas
             raise e
         except Exception as e:
-            # Para otros errores, mostramos un mensaje más detallado
             raise forms.ValidationError(f"Error en el formato del horario: {str(e)}")
     
     def save(self, commit=True):
@@ -258,7 +244,6 @@ class WorkeCreaterForm(UserCreationForm):
             
             user_profile = UserProfile.objects.get_or_create(user=user)[0]
 
-            #Si hay foto, la guardamos
             if self.cleaned_data.get('foto'):
                 user_profile.foto = self.cleaned_data['foto']
                 user_profile.save()
@@ -315,7 +300,6 @@ class WorkerEditForm(forms.Form):
         widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': '09:00 - 17:00'})
     )
     
-    # (opcionales)
     password1 = forms.CharField(
         required=False,
         label="Nueva Contraseña",
@@ -336,17 +320,13 @@ class WorkerEditForm(forms.Form):
     )
 
     def __init__(self, *args, **kwargs):
-        # Extraer el worker para inicializar campos
         self.worker_instance = kwargs.pop('worker', None)
         super().__init__(*args, **kwargs)
         
-        # Si tenemos una instancia de worker, inicializar los campos
         if self.worker_instance:
-            # Inicializar campos del User
             self.fields['username'].initial = self.worker_instance.user_profile.user.username
             self.fields['email'].initial = self.worker_instance.user_profile.user.email
             
-            # Inicializar campos del Worker (no UserProfile)
             self.fields['dni'].initial = self.worker_instance.dni
             self.fields['phone_number'].initial = self.worker_instance.phone_number
             self.fields['start_date'].initial = self.worker_instance.start_date.strftime('%Y-%m-%d')
@@ -355,9 +335,7 @@ class WorkerEditForm(forms.Form):
     def clean_username(self):
         username = self.cleaned_data.get('username')
         
-        # Si tenemos una instancia, verificamos que no haya otro usuario con este nombre
         if self.worker_instance:
-            # Excluimos al usuario actual de la validación de unicidad
             user_actual = self.worker_instance.user_profile.user
             if User.objects.filter(username=username).exclude(pk=user_actual.pk).exists():
                 raise forms.ValidationError("Ya existe un usuario con este nombre.")
@@ -367,7 +345,6 @@ class WorkerEditForm(forms.Form):
     def clean_dni(self):
         dni = self.cleaned_data.get('dni')
         
-        # Si tenemos una instancia, verificamos que no haya otro worker con este DNI
         if self.worker_instance:
             if Worker.objects.filter(dni=dni).exclude(pk=self.worker_instance.pk).exists():
                 raise forms.ValidationError("Ya existe un trabajador con este DNI.")
@@ -380,7 +357,6 @@ class WorkerEditForm(forms.Form):
             raise forms.ValidationError("Este campo es obligatorio")
         
         try:
-            # Dividir el horario en inicio y fin
             partes = horario.split('-')
             if len(partes) != 2:
                 raise forms.ValidationError("El formato debe ser 'HH:MM - HH:MM'")
@@ -388,7 +364,6 @@ class WorkerEditForm(forms.Form):
             start_time = partes[0].strip()
             end_time = partes[1].strip()
             
-            # Validar formato de hora (HH:MM)
             import re
 
             time_pattern = re.compile(r'^([01]?[0-9]|2[0-3]):(30|00)$')
@@ -399,14 +374,11 @@ class WorkerEditForm(forms.Form):
             if not time_pattern.match(end_time):
                 raise forms.ValidationError(f"La hora de fin '{end_time}' no tiene un formato válido (HH:MM)")
             
-            # Podríamos añadir más validaciones si quisiéramos (por ejemplo, que end_time > start_time)
             
             return {'start_time': start_time, 'end_time': end_time}
         except forms.ValidationError as e:
-            # Re-lanzamos excepciones de validación específicas
             raise e
         except Exception as e:
-            # Para otros errores, mostramos un mensaje más detallado
             raise forms.ValidationError(f"Error en el formato del horario: {str(e)}")
 
     def clean(self):
@@ -414,7 +386,6 @@ class WorkerEditForm(forms.Form):
         password1 = cleaned_data.get("password1")
         password2 = cleaned_data.get("password2")
 
-        # Validar que las contraseñas coincidan (solo si se ha proporcionado al menos una)
         if password1 or password2:
             if password1 != password2:
                 self.add_error('password2', "Las contraseñas no coinciden")
@@ -425,17 +396,14 @@ class WorkerEditForm(forms.Form):
         if not self.worker_instance:
             raise ValueError("No se puede actualizar un trabajador sin proporcionar una instancia")
         
-        # Actualizar User
         user = self.worker_instance.user_profile.user
         user.username = self.cleaned_data['username']
         user.email = self.cleaned_data['email']
         
-        # Cambiar la contraseña si se proporcionó una nueva
         password1 = self.cleaned_data.get('password1')
         if password1:
             user.set_password(password1)
         
-        # Actualizar Worker directamente
         worker = self.worker_instance
         worker.dni = self.cleaned_data['dni']
         worker.phone_number = self.cleaned_data['phone_number']
@@ -445,13 +413,12 @@ class WorkerEditForm(forms.Form):
         worker.start_time = horario['start_time']
         worker.end_time = horario['end_time']
         
-        # Actualizar foto si se proporcionó una nueva
         if self.cleaned_data.get('foto'):
             worker.user_profile.foto = self.cleaned_data['foto']
         
         if commit:
             user.save()
-            worker.user_profile.save()  # Guardar el perfil para la foto
+            worker.user_profile.save()  
             worker.save()
         
         return worker

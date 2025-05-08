@@ -7,9 +7,8 @@ from cloudinary_storage.storage import MediaCloudinaryStorage as CloudinaryStora
 
 from masajes.models import Masaje
 
-# Modal datos extra usuario
 class UserProfile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)  # Relación 1 a 1 con User
+    user = models.OneToOneField(User, on_delete=models.CASCADE)  
     foto = models.ImageField(upload_to="usuarios/fotosPerfil/",storage=CloudinaryStorage(), blank=True, null=True)
 
     def __str__(self):
@@ -18,21 +17,18 @@ class UserProfile(models.Model):
         try:
             old = UserProfile.objects.get(pk=self.pk)
             if old.foto and old.foto != self.foto:
-                # Borra la imagen anterior en Cloudinary
-                public_id = old.foto.name.rsplit('.', 1)[0]  # Quita la extensión
+                public_id = old.foto.name.rsplit('.', 1)[0]  
                 cloudinary.uploader.destroy(public_id)
         except UserProfile.DoesNotExist:
-            pass  # Es un nuevo objeto, no hay nada que borrar
+            pass  
 
         super().save(*args, **kwargs)
 
-# Cuando se crea un nuevo usuario, genera un perfil vinculado.   
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):
     if created:
         UserProfile.objects.create(user=instance)
 
-# Cada vez que el usuario se guarda, también se guarda su perfil.
 @receiver(post_save, sender=User)
 def save_user_profile(sender, instance, **kwargs):
     instance.userprofile.save()
@@ -44,8 +40,8 @@ class Worker(models.Model):
     start_date = models.DateField()
     start_time = models.TimeField()
     end_time = models.TimeField()
-    delete_date = models.DateField(null=True, blank=True)  # Campo para almacenar la fecha de eliminación lógica
-    delete_hour = models.TimeField(null=True, blank=True)  # Campo para almacenar la hora de eliminación lógica
+    delete_date = models.DateField(null=True, blank=True)  
+    delete_hour = models.TimeField(null=True, blank=True) 
 
     def __str__(self):
         return f"{self.user_profile.user.username} - {self.dni}"
@@ -60,13 +56,12 @@ class Reserva(models.Model):
     fecha = models.DateTimeField()
     idCliente = models.ForeignKey(User, on_delete=models.CASCADE)
     idMasaje = models.ForeignKey(Masaje, on_delete=models.CASCADE)
-    duracion = models.DurationField(null=True, blank=True)  # Eliminamos el default problemático
+    duracion = models.DurationField(null=True, blank=True)  
     pagado = models.BooleanField(default=False)
     hecho = models.BooleanField(default=False)
     metodo_pago = models.CharField(max_length=10, choices=[('efectivo', 'Efectivo'), ('targeta', 'Tarjeta')], default="efectivo")
 
     def save(self, *args, **kwargs):
-        # Si no hay duración establecida, obtenerla del masaje
         if not self.duracion and self.idMasaje_id:
             self.duracion = self.idMasaje.duracion
         super().save(*args, **kwargs)
@@ -76,8 +71,8 @@ class Reserva(models.Model):
     
 class Fiestas(models.Model):
     fecha = models.DateField()
-    general = models.BooleanField(default=False)  # Si es festivo general o un dia de fiesta de un empleado
-    empleado = models.ForeignKey(Worker, on_delete=models.CASCADE, null=True, blank=True)  # Relación 1 a 1 con Worker
+    general = models.BooleanField(default=False)  
+    empleado = models.ForeignKey(Worker, on_delete=models.CASCADE, null=True, blank=True)  
 
     def __str__(self):
         if(self.general):

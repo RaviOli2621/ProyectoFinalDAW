@@ -5,9 +5,9 @@ from django.shortcuts import get_object_or_404, redirect, render
 from usuarios.forms import ReservaForm, TarjetaForm
 from usuarios.models import Fiestas, Reserva, Worker
 from masajes.models import Masaje, TipoMasaje
-from commons.utils import get_filename  # Importamos la función de utilidad
+from commons.utils import get_filename  
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import User  # Import User model
+from django.contrib.auth.models import User  
 from django.utils.timezone import make_aware, is_naive
 
 # decorador para cuando no estas logado
@@ -36,14 +36,13 @@ def masajes(request):
 
     else:
         masajes = Masaje.objects.all()
-        tipos = TipoMasaje.objects.all()  # Obtener todos los tipos de masajes
+        tipos = TipoMasaje.objects.all()  
 
-    # Aplicar `get_filename()` a cada objeto
     for masaje in masajes:
-        masaje.foto_nombre = get_filename(masaje.foto)  # Extrae solo el nombre de la imagen
+        masaje.foto_nombre = get_filename(masaje.foto)  
 
     for tipo in tipos:
-        tipo.foto_nombre = get_filename(tipo.foto)  # También extrae el nombre de la imagen de TipoMasaje
+        tipo.foto_nombre = get_filename(tipo.foto)  
 
     return render(request, 'masajes.html', {
         'masajes': masajes,

@@ -7,7 +7,6 @@
 
 {% include "commons/includes/title.include.html" with Titulo="Crear usuari" Subtitulo="Algo" %}
 
-{% comment %} {{ request.user.userprofile.foto|cut:'usuarios' }} {% endcomment %}
 <div class="contentList">
 {% for user in usuarios %}
     {% for group in user.groups.all %}

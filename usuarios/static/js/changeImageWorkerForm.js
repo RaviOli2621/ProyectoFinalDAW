@@ -8,3 +8,9 @@ document.getElementById('id_foto').addEventListener('change', function() {
         reader.readAsDataURL(file);
     }
 });
+document.querySelector('.current-photo').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        document.getElementById('id_foto').click();
+    }
+});

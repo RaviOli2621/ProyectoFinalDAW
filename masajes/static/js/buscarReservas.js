@@ -62,7 +62,6 @@ document.addEventListener('DOMContentLoaded', function () {
             return response.json();
         })
         .then(data => {
-            // Aquí puedes mostrar los datos como prefieras
             document.getElementsByClassName('Title')[0].children[1].innerHTML = "";
             document.getElementsByClassName('Title')[0].children[4].innerHTML = "";
             container.children[0].innerHTML = formatearFecha(data.fecha);        
@@ -71,7 +70,6 @@ document.addEventListener('DOMContentLoaded', function () {
             container.children[3].innerHTML = Number(data.masajePrecio).toFixed(1).replace('.', ',') + '€';
             checkbox.checked = data.pagado;
             checkbox.disabled = false;
-            // container.children[5].innerHTML = "id: " + data.id;
             container.children[5].innerHTML = '<label><p>Hecha:</p><input type="checkbox" id="hecho"></label>';
             container.children[5].children[0].children[1].checked = data.hecho;
             title.innerHTML = data.titulo
@@ -88,21 +86,6 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
-    // Función para obtener el CSRF token de las cookies
-    // function getCookie(name) {
-    //     let cookieValue = null;
-    //     if (document.cookie && document.cookie !== '') {
-    //         const cookies = document.cookie.split(';');
-    //         for (let i = 0; i < cookies.length; i++) {
-    //             const cookie = cookies[i].trim();
-    //             if (cookie.substring(0, name.length + 1) === (name + '=')) {
-    //                 cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-    //                 break;
-    //             }
-    //         }
-    //     }
-    //     return cookieValue;
-    // }
 });
 function formatearFecha(fechaIso) {
     const fechaObj = new Date(fechaIso);
@@ -123,7 +106,6 @@ function formatearDuracion(segundos) {
     if (minutos === 0) {
         return `${horas}.0h`;
     }
-    // Mostrar solo el primer dígito de los minutos (por ejemplo, 30 minutos -> 1.5h, 20 minutos -> 1.3h)
     const minutosDecimal = Math.floor(minutos / 6);
     return `${horas}.${minutosDecimal}h`;
 }

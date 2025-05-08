@@ -11,7 +11,6 @@
     box-shadow: 0 0.125rem 0.5rem rgba(0, 0, 0, 0.1);
 }
 
-/* Añadimos la estructura de dos columnas */
 .form-row {
     display: flex;
     flex-wrap: wrap;
@@ -24,7 +23,6 @@
     min-width: 45%;
 }
 
-/* Para dispositivos móviles */
 @media (max-width: 48rem) {
     .form-row {
         flex-direction: column;
@@ -73,7 +71,6 @@
     margin-top: 0.25rem;
 }
 
-/* Ajuste para asegurar que los botones queden abajo */
 .form-actions {
     display: flex;
     justify-content: space-between;
@@ -112,7 +109,6 @@
     background-color: #252727;
 }
 
-/* File upload styling */
 input[type="file"] {
     border: 0.09375rem dashed #ededef;
     padding: 1rem;
@@ -135,12 +131,10 @@ input[type="file"]::-webkit-file-upload-button:hover {
     background-color: #252727;
 }
 
-/* Date picker styling */
 input[type="date"] {
     padding-right: 0.5rem;
 }
 
-/* Estilos para mostrar la foto actual */
 .current-photo {
     margin-bottom: 1rem;
     display: flex;
@@ -163,7 +157,6 @@ input[type="date"] {
     margin-bottom: 0.5rem;
 }
 
-/* Estilo para el icono del bolígrafo */
 .current-photo label img:nth-child(2) {
     position: absolute;
     bottom: 0.625rem;

@@ -36,23 +36,7 @@
                 <label for="id_duracion">Duración:</label>
                 <div class="input-group">
                     <input type="text" id="id_duracion" name="duracion" readonly class="form-control" value="{{ reserva_form.duracion.value }}">
-                    <script>
-                        function minutosAHHMMSS(minutos) {
-                            minutos = parseInt(minutos);
-                            if (isNaN(minutos)) return minutos; // Si ya está en formato hh:mm:ss, no tocar
-                            const h = Math.floor(minutos / 60);
-                            const m = Math.floor(minutos % 60);
-                            return (h < 10 ? "0" : "") + h + ":" +
-                                (m < 10 ? "0" : "") + m + ":00";
-                        }
-
-                        document.addEventListener('DOMContentLoaded', function() {
-                            const inputDuracion = document.getElementById('id_duracion');
-                            if (inputDuracion && inputDuracion.value && !inputDuracion.value.includes(':')) {
-                                inputDuracion.value = minutosAHHMMSS(inputDuracion.value);
-                            }
-                        });
-                    </script>
+                    <script>defer src="{% static 'js/reservar.js' %}"</script>
                 </div>
             </div>
             

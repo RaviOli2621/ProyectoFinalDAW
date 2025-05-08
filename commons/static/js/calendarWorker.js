@@ -57,7 +57,6 @@ function showCalendarModal(id) {
                 }
                 colorSeleccionado = backgroundColor;
 
-                // Normalizar color
                 let color = colorSeleccionado;
                 if (color.startsWith('#')) {
                     if (color.toLowerCase() === "#4caf50") color = "green";
@@ -74,14 +73,12 @@ function showCalendarModal(id) {
                 }
                 color = color.toLowerCase();
 
-                // Si es gris o rojo, mostrar error y no seleccionar
                 if (color === "gray") {
                     showToast("Dia completo/festivo", "error", 5000);
                     return;
                 }
 
 
-                // Si ya está seleccionado, deselecciona
                 let fechaSeleccionada = info.dateStr + "T00:00";
                 let index = diasSeleccionados.indexOf(fechaSeleccionada);
                 if (index !== -1) {
@@ -105,11 +102,9 @@ function showCalendarModal(id) {
     }
 
     calendar.on('datesSet', function(info) {
-        // Limpiar todos los filtros primero
         document.querySelectorAll('.fc-daygrid-day').forEach(cell => {
             cell.style.filter = "";
         });
-        // Volver a aplicar el efecto solo a los días seleccionados que estén en el mes visible
         diasSeleccionados.forEach(dia => {
             const fechaSinHora = dia.split('T')[0];
             const celda = Array.from(document.querySelectorAll('.fc-daygrid-day')).find(
@@ -131,7 +126,6 @@ $('#modalConfirmCalendario').off('click').on('click', function() {
         return;
     }
 
-    // Comprobar si hay algún día rojo
     let hayRojo = false;
     let diasRojos = [];
     diasSeleccionados.forEach(dia => {
@@ -152,7 +146,6 @@ $('#modalConfirmCalendario').off('click').on('click', function() {
     });
 
     if (hayRojo) {
-        // Mostrar modal de advertencia
         showConfirmModal(10, "WarningWorkerMD");
         setTimeout(() => {
             const confirmBtn = document.getElementById("modalConfirmWarningWorker");
@@ -160,13 +153,11 @@ $('#modalConfirmCalendario').off('click').on('click', function() {
                 confirmBtn.onclick = function() {
                     $('#WarningWorkerMD').hide();
                     $('.custom-modal').hide();
-                    // Procesar todos los días seleccionados
                     procesarDiasSeleccionados();
                 };
             }
         }, 100);
     } else {
-        // Si no hay días rojos, procesar directamente
         procesarDiasSeleccionados();
     }
 });
@@ -186,7 +177,6 @@ function procesarDiasSeleccionados() {
             }
         );
     });
-    // Limpiar selección visual
     dayCellsSeleccionadas.forEach(cell => cell.style.filter = "");
     dayCellsSeleccionadas = [];
     diasSeleccionados = [];

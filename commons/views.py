@@ -9,23 +9,19 @@ from commons.forms import EnviarCorreoForm
 from commons.services.email_service import send_email
 from djangoProject.settings import EMAIL_SERVICE
 from usuarios.models import Reserva
-from masajes.models import Masaje  # Asegúrate de importar tu modelo Masaje
+from masajes.models import Masaje  
 
 def token_required(view_func):
     @wraps(view_func)
     def wrapped_view(request, *args, **kwargs):
-        # Intentar obtener el token desde parámetros GET o encabezados
         token = request.GET.get('token') or request.headers.get('Authorization')
         
-        # Limpiar el token si viene en formato "Bearer <token>"
         if token and token.startswith('Bearer '):
             token = token.split(' ')[1]
         
-        # Validar el token
         if token != settings.DAILY_TASK_TOKEN:
             return HttpResponseForbidden("Acceso denegado: token no válido")
         
-        # Si el token es válido, ejecutar la vista original
         return view_func(request, *args, **kwargs)
     
     return wrapped_view
@@ -33,15 +29,12 @@ def token_required(view_func):
 def home(request):
     from django.templatetags.static import static
 
-    # Ruta de imágenes en static/masajes
-    imagen_default = 'masajes/crayones.jpg'  # Cambia la extensión si tu imagen es png
+    imagen_default = 'masajes/crayones.jpg'  
 
-    # Recoge todos los masajes
     masajes = Masaje.objects.all()
     carrusel_items = []
     for masaje in masajes:
-        # Si el masaje tiene imagen, úsala; si no, usa la de crayones
-        if masaje.foto:  # Ajusta el campo según tu modelo
+        if masaje.foto:  
             img_url = f"masajes/{os.path.basename(str(masaje.foto))}"
         else:
             img_url = imagen_default
@@ -62,8 +55,6 @@ def enviar_correo(request):
             titulo = form.cleaned_data['titulo']
             cuerpo = form.cleaned_data['cuerpo']
             success = correo(titulo,cuerpo,form.cleaned_data['asunto'],form.cleaned_data['correo_usuario'],EMAIL_SERVICE)
-            # Versión de texto plano
-
             context = {
                 'form': form,
                 'toastType': 'success' if success else 'error',
@@ -85,10 +76,8 @@ def enviar_correo(request):
     return render(request, 'contacta.html', {'form': form})
 
 def correo(titulo, cuerpo, asunto, loEnvia, destinatario):
-    # Versión de texto plano
     mensaje_texto = f"{titulo}\n\n{cuerpo}"
     
-    # Versión HTML con formato
     contenido_formateado = cuerpo.replace('\n', '<br>')
     mensaje_html = f"""
         <h1>{titulo}</h1>
@@ -98,7 +87,7 @@ def correo(titulo, cuerpo, asunto, loEnvia, destinatario):
     success = send_email(
         subject=asunto,
         message=mensaje_texto,
-        html_message=mensaje_html,  # Añadir versión HTML
+        html_message=mensaje_html,  
         to_emails=[destinatario],
         from_email=loEnvia,
         signature_email=loEnvia,
@@ -110,12 +99,10 @@ def correo(titulo, cuerpo, asunto, loEnvia, destinatario):
 @token_required
 def test_daily(request):
     """Tarea principal que ejecuta las subtareas programadas"""
-    # Notificar reservas de mañana
     usuarios_mañana = notificar_usuarios_reservas_mañana()
     
     trabajadoresEl = eliminar_trabajadores_vencidos()
 
-    # Eliminar reservas antiguas
     eliminadas = eliminar_reservas_pasadas()
     
     return HttpResponse(f"Se notificaron {len(usuarios_mañana)} usuarios con reservas para mañana " \
@@ -127,7 +114,6 @@ def notificar_usuarios_reservas_mañana():
     usuarios = get_usuarios_reservas_mañana()
     
     for usuario, reservas in usuarios.items():
-        # Construir el mensaje con detalles de las reservas
         detalles_reservas = "\n".join([
             f"- Masaje número {reserva.id} llamado {reserva.idMasaje.nombre} a las {reserva.fecha.strftime('%H:%M')}" 
             for reserva in reservas
@@ -148,13 +134,10 @@ def notificar_usuarios_reservas_mañana():
     return usuarios
 
 def eliminar_reservas_pasadas(dias=0):
-    # Calcular la fecha límite (por defecto, hoy)
     fecha_limite = timezone.now().date() - timezone.timedelta(days=dias)
     
-    # Eliminar reservas anteriores a la fecha límite
     resultado = Reserva.objects.filter(fecha__lt=fecha_limite).delete()
     
-    # El resultado es una tupla (número_de_elementos_eliminados, {diccionario_con_detalles})
     return resultado[0] if resultado and isinstance(resultado, tuple) else 0
 
 def get_usuarios_reservas_mañana():
@@ -178,38 +161,28 @@ def get_usuarios_reservas_mañana():
     return usuarios_reservas
 
 def eliminar_trabajadores_vencidos():
-    """
-    Elimina los trabajadores y sus usuarios asociados cuya fecha de borrado
-    (delete_date) sea igual o anterior a la fecha actual.
-    """
     from usuarios.models import Worker
     from django.contrib.auth.models import User
     
-    # Obtener la fecha actual
     hoy = timezone.now().date()
     
     print(f"Buscando trabajadores con fecha de eliminación vencida (hoy es {hoy})")
     
-    # Encontrar todos los trabajadores con delete_date <= hoy
     trabajadores_vencidos = Worker.objects.filter(delete_date__lte=hoy)
     cantidad_trabajadores = trabajadores_vencidos.count()
     print(f"Encontrados {cantidad_trabajadores} trabajadores a eliminar")
     
-    # Variables para llevar el conteo
     usuarios_eliminados = 0
     trabajadores_eliminados = 0
     
-    # Procesar cada trabajador vencido
     for trabajador in trabajadores_vencidos:
         print(f"Procesando trabajador: {trabajador.id} - {trabajador.user_profile.user.username}")
         
-        # Si hay una relación con un usuario, eliminarlo primero
         if hasattr(trabajador, 'idUsuario') and trabajador.idUsuario:
             usuario = trabajador.idUsuario
             print(f"  → Eliminando usuario asociado: {usuario.username}")
             
             try:
-                # Eliminar el usuario
                 usuario.delete()
                 usuarios_eliminados += 1
                 print(f"  ✓ Usuario eliminado correctamente")
@@ -217,7 +190,6 @@ def eliminar_trabajadores_vencidos():
                 print(f"  ✗ Error al eliminar usuario: {str(e)}")
         
         try:
-            # Eliminar el trabajador
             trabajador.delete()
             trabajadores_eliminados += 1
             print(f"  ✓ Trabajador eliminado correctamente")

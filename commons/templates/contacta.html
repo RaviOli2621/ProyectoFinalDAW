@@ -5,13 +5,11 @@
 
 {% include "commons/includes/title.include.html" with Titulo="Contacta con nosotros" Subtitulo="Algo" %}
 
-<!-- Incluir la hoja de estilos -->
 <link rel="stylesheet" href="{% static 'css/contacta.css' %}">
 
 <form method="post" class="signup-form">
     {% csrf_token %}
     
-    <!-- Renderizar el formulario con clases personalizadas -->
     <div class="form-group">
     <p>
         <label for="id_correo_usuario">Tu correo:</label>

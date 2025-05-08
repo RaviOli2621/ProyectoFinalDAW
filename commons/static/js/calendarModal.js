@@ -75,30 +75,25 @@ function showCalendarModal() {
 }
 
 function showHourModal() {
-    // Use the date from the date field instead of datetime field
     dia = document.getElementById("id_fecha_date").value;
     duracion = document.getElementById("id_duracion").value;
     
     if(dia){
         showConfirmModal(10,"HorasMD");
         document.getElementById("modalConfirmHoras")?.remove();
-        // Give time for the modal to render in the DOM
         setTimeout(() => {
             fetch(`/api/horas/?fecha=${dia}&duracion=${duracion}`)
                 .then(response => response.json())
                 .then(data => {
                     console.log("Horas disponibles:", data);
                     
-                    // Try different approaches to find modal container
                     let modalBody = document.querySelector('#HorasMD .custom-modal-body');
                     if(!modalBody) modalBody = document.querySelector('#HorasMD .modal-body');
                     if(!modalBody) modalBody = document.getElementById('HorasMD').querySelector('div');
                     
                     if(modalBody) {
-                        // Clear previous content
                         modalBody.innerHTML = "";
                         
-                        // Use the createHours function to generate the hours UI
                         const hoursContainer = createHours(data);
                         modalBody.appendChild(hoursContainer);
                     } else {
@@ -110,7 +105,7 @@ function showHourModal() {
                     console.error("Error al cargar las horas:", err);
                     showToast("Error al cargar las horas", "error", 5000);
                 });
-        }, 200); // Increased delay to ensure modal is fully rendered
+        }, 200); 
     } else {
         showToast("No hay día seleccionado", "error", 5000);
     }
@@ -119,26 +114,21 @@ function showHourModal() {
 function selectHour(dateTime) {
     console.log('Selected datetime:', dateTime);
     
-    // Extract time portion from the datetime string
     let timePart = dateTime.split('T')[1];
     if (timePart) {
-        // Remove seconds if present
         timePart = timePart.substring(0, 5);
         
-        // Update the time field
         const timeField = document.getElementById('id_fecha_time');
         timeField.value = timePart;
         console.log('Set time to:', timePart);
         
-        // Sync with the hidden datetime field
         syncDateTime();
     }
     
-    $('.custom-modal').hide();  // Hide the modal
+    $('.custom-modal').hide(); 
 }
 
 function createHours(data){
-    // Create a container for the hours with styling
     const hoursContainer = document.createElement('div');
     hoursContainer.className = 'hours-container';
     hoursContainer.style.display = 'flex';
@@ -149,14 +139,12 @@ function createHours(data){
     
     data.forEach(hora => {
         const horaElement = document.createElement('div');
-        horaElement.textContent = hora.fecha.split('T')[1].substring(0, 5); // Extraer solo la hora HH:MM
+        horaElement.textContent = hora.fecha.split('T')[1].substring(0, 5); 
         
-        // Add explicit styles to make hours visible
         horaElement.style.padding = '10px 15px';
         horaElement.style.borderRadius = '5px';
         horaElement.style.cursor = 'pointer';
         
-        // Set background color based on availability
         if(hora.color === 'green') {
             horaElement.style.backgroundColor = '#4CAF50';
             horaElement.style.color = 'white';
@@ -183,19 +171,16 @@ function createHours(data){
 
 $('#modalConfirmCalendario').click(function() { 
     if (diaSeleccionado != "") {
-        // Extract date part from diaSeleccionado
         const datePart = diaSeleccionado.split('T')[0];
         
-        // Update the date field
         document.getElementById('id_fecha_date').value = datePart;
         
-        // Get current time value and update the hidden datetime field
         const currentTime = document.getElementById('id_fecha_time').value || "00:00";
         document.getElementById('id_fecha').value = `${datePart}T${currentTime}`;
         
         diaSeleccionado = "";
-        dayCellG.style.filter = ""; // Resetear el filtro de brillo
-        $('.custom-modal').hide();  // Ocultar el modal
+        dayCellG.style.filter = ""; 
+        $('.custom-modal').hide(); 
         showHourModal();
     }
 });
@@ -205,31 +190,26 @@ function syncDateTime() {
     const timeField = document.getElementById('id_fecha_time');
     const datetimeField = document.getElementById('id_fecha');
     
-    // Only proceed if both fields have values
     if (dateField.value && timeField.value) {
         datetimeField.value = `${dateField.value}T${timeField.value}`;
         console.log('Synchronized datetime:', datetimeField.value);
     }
 }
 
-// Initialize fields on page load
 document.addEventListener('DOMContentLoaded', function() {
     const timeField = document.getElementById('id_fecha_time');
     const dateField = document.getElementById('id_fecha_date');
     const datetimeField = document.getElementById('id_fecha');
     
-    // If date field has value but time field is empty, extract time from datetime
     if (dateField.value && !timeField.value && datetimeField.value) {
         const timePart = datetimeField.value.split('T')[1];
         if (timePart) {
             timeField.value = timePart.substring(0, 5);
         } else {
-            // Set default time
             timeField.value = '09:00';
         }
     }
     
-    // Log initial values for debugging
     console.log('Initial date:', dateField.value);
     console.log('Initial time:', timeField.value);
     console.log('Initial datetime:', datetimeField.value);

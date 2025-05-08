@@ -5,9 +5,9 @@ from django.shortcuts import get_object_or_404, redirect, render
 from usuarios.forms import ReservaForm, TarjetaForm
 from usuarios.models import Fiestas, Reserva, Worker
 from masajes.models import Masaje, TipoMasaje
-from commons.utils import get_filename  # Importamos la función de utilidad
+from commons.utils import get_filename  
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import User  # Import User model
+from django.contrib.auth.models import User  
 from django.utils.timezone import make_aware, is_naive
 from django.views.decorators.http import require_http_methods
 from django.db.models import F, ExpressionWrapper, DateTimeField, DurationField
@@ -47,14 +47,12 @@ def calcDiaCalendario(dia_evento, current_date, workers, delta,blue,duracion):
     horas_ocupadas = 0
     ocupacionGeneral = 0
     for franja_inicio in franjas:
-        duracionFormated = 30  # Default value
+        duracionFormated = 30  
         
         if duracion:
             if isinstance(duracion, str) and duracion.isdigit():
-            # If it's a numeric string
                 duracionFormated = int(duracion)
             else:
-            # Try to parse as time format "HH:MM:SS"
                 try:
                     time_parts = duracion.split(":")
                     hours = int(time_parts[0]) if len(time_parts) > 0 else 0
@@ -64,14 +62,12 @@ def calcDiaCalendario(dia_evento, current_date, workers, delta,blue,duracion):
                 except (ValueError, AttributeError, TypeError):
                     pass
         franja_fin = franja_inicio + timedelta(minutes=duracionFormated if duracion else 30)
-        duracionFormated = 30  # Default value
+        duracionFormated = 30  
         
         if duracion:
             if isinstance(duracion, str) and duracion.isdigit():
-            # If it's a numeric string
                 duracionFormated = int(duracion)
             else:
-            # Try to parse as time format "HH:MM:SS"
                 try:
                     time_parts = duracion.split(":")
                     hours = int(time_parts[0]) if len(time_parts) > 0 else 0
@@ -88,7 +84,7 @@ def calcDiaCalendario(dia_evento, current_date, workers, delta,blue,duracion):
         )
         total_workers = workersThisHour.count()
 
-        # Festivos personales SOLO de los que trabajan en esta franja
+        # Festivos personales de los que trabajan en esta franja
         festivos_personales = Fiestas.objects.filter(
             fecha=current_date,
             general=False,
@@ -122,7 +118,6 @@ def calcDiaCalendario(dia_evento, current_date, workers, delta,blue,duracion):
     return dia_evento
 def calendario_api(request):
     eventos = []
-    # Obtener año y mes del request, o usar los actuales por defecto
     year = int(request.GET.get('year', request.GET['year']))
     month = int(request.GET.get('month', request.GET['month']))
     blue = request.GET.get('blue', request.GET.get('blue', True))
@@ -132,7 +127,6 @@ def calendario_api(request):
     end_date = (start_date.replace(day=28) + timedelta(days=10)).replace(day=1)
     delta = timedelta(days=1)
 
-    # Obtener información de trabajadores
     workers = Worker.objects.filter(delete_date__isnull=True)
 
     current_date = start_date
@@ -146,12 +140,10 @@ def calendario_api(request):
 
     return JsonResponse(eventos, safe=False)
 def horas_api(request):
-    # Obtener el día seleccionado del calendario
     fecha_seleccionada = request.GET.get('fecha')
     duracion = request.GET.get('duracion')
     fecha = datetime.strptime(fecha_seleccionada, '%Y-%m-%d').date()
 
-    # Crear un diccionario para almacenar las horas ocupadas
     horas_ocupadas = []
 
     franjas = [
@@ -161,15 +153,12 @@ def horas_api(request):
     workers = Worker.objects.filter(delete_date__isnull=True)
     franjas = quitarHorasDeDescanso(franjas)
     for franja_inicio in franjas:
-        # Process duration value based on its type
-        duracionFormated = 30  # Default value
+        duracionFormated = 30  
         
         if duracion:
             if isinstance(duracion, str) and duracion.isdigit():
-            # If it's a numeric string
                 duracionFormated = int(duracion)
             else:
-            # Try to parse as time format "HH:MM:SS"
                 try:
                     time_parts = duracion.split(":")
                     hours = int(time_parts[0]) if len(time_parts) > 0 else 0
@@ -181,7 +170,7 @@ def horas_api(request):
         franja_fin = franja_inicio + timedelta(minutes=duracionFormated if duracion else 30)
         reservas = Reserva.objects.filter(
             fecha__lte=franja_inicio,
-            fecha__gte=franja_inicio - timedelta(hours=3)  # margen para masajes largos
+            fecha__gte=franja_inicio - timedelta(hours=3)  
         )
         workersThisHour = workers.filter(
             start_time__lt=franja_fin.time(),
@@ -215,11 +204,9 @@ def gestionarDiasFiesta(request):
     dia = request.GET.get('fecha')
 
     if request.method == "PUT":
-        # Handle the PUT method
         reservas = Reserva.objects.filter(fecha__date=dia)
         for reserva in reservas:
-            # Enviar correo a los usuarios con reservas
-            from commons.services.email_service import send_email  # Importar el servicio de correo
+            from commons.services.email_service import send_email  
             try:
                 send_email(
                 to_emails=reserva.idCliente.email,
@@ -234,7 +221,6 @@ def gestionarDiasFiesta(request):
         reservas.delete()
         Fiestas.objects.create(fecha=dia, general=True)
     elif request.method == "DELETE":
-        # Handle the DELETE method
         Fiestas.objects.filter(fecha=dia).delete()
     return JsonResponse({"status": "success"}, status=200)
 @notAdmin_user
@@ -243,16 +229,13 @@ def calendari(request):
 
 def fiestaTrabajador(request):
     eventos = []
-    # Obtener año y mes del request, o usar los actuales por defecto
     year = int(request.GET.get('year', request.GET['year']))
     month = int(request.GET.get('month', request.GET['month']))
 
-    # Calcular rango de días a mostrar (incluyendo días del mes anterior/siguiente)
     start_date = datetime(year, month, 1).date()
     end_date = (start_date.replace(day=28) + timedelta(days=10)).replace(day=1)
     delta = timedelta(days=1)
 
-    # Obtener información de trabajadores
     workers = Worker.objects.filter(delete_date__isnull=True)
 
     worker = Worker.objects.filter(id=request.GET.get('idTrabajador')).first()
@@ -291,14 +274,12 @@ def calcFiestaTrabajador(dia_evento, current_date, workers, delta, worker):
     franjas = quitarHorasDeDescanso(franjas)
 
     for franja_inicio in franjas:
-        duracionFormated = 30  # Default value
+        duracionFormated = 30 
         
         if duracion:
             if isinstance(duracion, str) and duracion.isdigit():
-            # If it's a numeric string
                 duracionFormated = int(duracion)
             else:
-            # Try to parse as time format "HH:MM:SS"
                 try:
                     time_parts = duracion.split(":")
                     hours = int(time_parts[0]) if len(time_parts) > 0 else 0
@@ -360,7 +341,7 @@ def cambiarFiestatrabajador(request,idTrabajador):
             fin_reserva__gt=hora_inicio
         ).last()
             # Enviar correo a los usuarios con reservas
-        from commons.services.email_service import send_email  # Importar el servicio de correo
+        from commons.services.email_service import send_email  
         try:
             send_email(
             to_emails=reserva.idCliente.email,

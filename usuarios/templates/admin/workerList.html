@@ -35,18 +35,7 @@
 {% include "commons/includes/modal.include.html" with Titulo="Borrar trabajador" Contenido="Seguro que quieres borrar este trabajador?" idConfirm="modalConfirmDeleteWorkBtn" modalId="DeleteWorkerMD" %}
 {% include "commons/includes/modal.include.html" with Titulo="Importar trabajadores" Contenido="Seguro que quieres importar los trabajadores? Se sobreescriviran todos los datos" idConfirm="modalConfirmImportWork" modalId="ConfirmImportMD" %}
 {% include "commons/includes/modal.include.html" with Titulo="Restaurar trabajador" Contenido="Seguro que quieres restaurar el ultimo trabajador borrado?" idConfirm="modalConfirmRecoverWork" modalId="ConfirmRecoverMD" %}
-<script>
-    document.getElementById('file-input').addEventListener('change', function() {
-        
-        const file = this.files[0];
-        if (!file) return;
-        showConfirmModal(file,idModal="ConfirmImportMD");
-
-    });
-    function retsoreModal() {
-        showConfirmModal("",idModal="ConfirmRecoverMD");
-    }
-</script>
+<script defer src="{% static 'js/workerList.js' %}"></script>
 <script defer src="{% static 'js/modal.include.js' %}"></script>
 
 {% endblock %}

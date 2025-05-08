@@ -2,7 +2,7 @@
 <link rel="stylesheet" href="{% static 'css/reserves.include.css' %}">
 <div class="reserva" style="background-image: url('{% static 'masajes/' %}{{ imagen }}'); background-size: cover; background-position: center;">
     <div class="Title">
-    {% comment %} Se tiene que hacer dos conversiones para qe no llore. Pasar el int a string  i luego la concatenacion  {% endcomment %}
+    {% comment %} Se tiene que hacer dos conversiones para que no llore. Pasar el int a string y luego la concatenacion  {% endcomment %}
         {% with id=reserva.id|stringformat:"s" %} 
             {% with reservaid="?reservaid="|add:id %}
                 {% include "commons/includes/imgBoton.include.html" with src="/pen.svg" alt="Pen Icon" url="reservar_cambio" data=reservaid %}

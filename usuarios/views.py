@@ -19,8 +19,6 @@ import string
 from usuarios.forms import CustomLoginForm, CustomSignInForm, UserEditForm, WorkeCreaterForm, WorkerEditForm
 from usuarios.models import UserProfile, Worker
 
-# Create your views here.
-
 # decorador para cuando no estas logado
 def unauthenticated_user(view_func):
     def wrapper_func(request, *args, **kwargs):
@@ -63,13 +61,13 @@ def signout(request):
 def signin(request):
     if request.method == "GET": 
         remembered_username = request.COOKIES.get('remembered_username', '')
-        form = CustomLoginForm()  # Instancia vacía
+        form = CustomLoginForm()  
         if remembered_username:
             form.fields['username'].initial = remembered_username
         return render(request, "signin.html", {'form': form,'remembered_username': remembered_username if 'remembered_username' in locals() else ''})
 
     elif request.method == "POST":
-        form = CustomLoginForm(data=request.POST)  # IMPORTANTE: Usa "data=request.POST"
+        form = CustomLoginForm(data=request.POST)  
 
         user = authenticate(
             request,
@@ -79,7 +77,7 @@ def signin(request):
 
         if user is None:
             return render(request, "signin.html", {
-                'form': form,  # Ahora mantiene los datos ingresados
+                'form': form,  
                 'toastTxt': "Usuario o contraseña incorrecta",
                 "toastType": "error"
             })
@@ -87,8 +85,8 @@ def signin(request):
             login(request, user)
             if request.POST.get('remember_me', False):
                 print(f"modongo")
-                max_age = 30 * 24 * 60 * 60  # 30 días en segundos
-                response = redirect('home')  # Reemplaza 'home' con tu nombre de URL para la página de inicio
+                max_age = 30 * 24 * 60 * 60  
+                response = redirect('home')  
                 response.set_cookie('remembered_username', user.username, max_age=max_age)
                 return response
             else:
@@ -98,10 +96,8 @@ def signin(request):
 @login_required
 def editUser(request):
     if request.method == 'GET':
-        # Usar el usuario actual en lugar de buscar un Worker
         user = request.user
         
-        # Inicializar el formulario con los datos del usuario actual
         initial_data = {
             'username': user.username,
             'email': user.email,
@@ -111,33 +107,28 @@ def editUser(request):
         
         return render(request, "editUser.html", {
             "form": form,
-            # El usuario y su perfil ya están disponibles en el template como request.user
         })
     elif request.method == 'POST':
         user = request.user
         form = UserEditForm(request.POST, request.FILES, instance=user)
         
         if form.is_valid():
-            # Guardar cambios en el usuario
             user = form.save(commit=False)
             
             user.email = user._original_email if hasattr(user, '_original_email') else User.objects.get(id=user.id).email
 
 
-            # Manejar la contraseña si se proporcionó una nueva
             password1 = form.cleaned_data.get('password1')
             if password1:
                 user.set_password(password1)
                 
             user.save()
             
-            # Actualizar foto de perfil si se proporcionó
             if 'foto' in request.FILES:
                 user.userprofile.foto = request.FILES['foto']
                 user.userprofile.save()
                 print(f"URL de la imagen guardada: {user.userprofile.foto.url}")
 
-            # Mantener la sesión del usuario después de cambiar la contraseña
             if password1:
                 login(request, user)
                 
@@ -148,25 +139,21 @@ def editUser(request):
             })
     return JsonResponse({'success': False, 'error': 'Método no permitido'}, status=405)
 
-# Admin users
 @permission_required('auth.change_user')
 def userList(request,user_id=""):
     if request.method == "GET":
         all_users = User.objects.all().order_by('id')
         
-        # Obtener los IDs de usuarios que ya son trabajadores
         worker_user_ids = Worker.objects.filter(
-            delete_date__isnull=False  # Solo trabajadores activos
+            delete_date__isnull=False  
         ).values_list('user_profile__user', flat=False)
         
-        # Filtrar para obtener solo usuarios que NO son trabajadores
         users = all_users.exclude(id__in=worker_user_ids)
         
         return render(request, "admin/userList.html",{
             "usuarios":users
         })
     elif request.method == 'POST':
-        # Obtiene la reserva con el ID proporcionado, o devuelve un 404 si no existe.
         user = User.objects.filter(id=user_id).first()
         grupo = Group.objects.get(name="Administradores")
         if user.groups.filter(name="Administradores").exists():
@@ -175,7 +162,6 @@ def userList(request,user_id=""):
             user.save()
             return JsonResponse({'success': True})
         else:
-            # Añadir usuario al grupo
             print("Siu")
             user.groups.add(grupo)
             user.save()
@@ -183,7 +169,6 @@ def userList(request,user_id=""):
 
     return JsonResponse({'success': False, 'error': 'Método no permitido'}, status=405)
 
-# Admin workers
 
 @permission_required('auth.change_user')
 def workerList(request):
@@ -196,24 +181,20 @@ def workerList(request):
 @permission_required('auth.change_user')
 def borrar_worker(request, worker_id):
     if request.method == 'POST':
-        # Obtiene la reserva con el ID proporcionado, o devuelve un 404 si no existe.
         worker = get_object_or_404(Worker, id=worker_id)
         
         try:
-            # Eliminar la reserva
             worker.delete_date = datetime.date.today() + datetime.timedelta(days=30)
             worker.delete_hour = datetime.datetime.now().time()
             worker.save()
             return JsonResponse({'success': True})
         except Exception as e:
-            # En caso de error al eliminar
             return JsonResponse({'success': False, 'error': str(e)})
     return JsonResponse({'success': False, 'error': 'Método no permitido'}, status=405)
 
 @permission_required('auth.change_user')
 def crear_worker(request):
     if request.method == 'GET':
-        # Crear el formulario con la instancia del worker
 
         form = WorkeCreaterForm()
         
@@ -225,7 +206,7 @@ def crear_worker(request):
         
         if form.is_valid():
             form.save()
-            return redirect('workerList')  # Redirige a la lista de trabajadores
+            return redirect('workerList')  
         else:
             return render(request, "admin/registerWorker.html", {
                 "form": form,
@@ -235,7 +216,6 @@ def crear_worker(request):
 @permission_required('auth.change_user')
 def restore_worker(request):
     if request.method == 'POST':
-        # Invertir el orden para que el último eliminado sea el primero en restaurarse
         workers = Worker.objects.filter(delete_date__isnull=False).order_by('-delete_date',"-delete_hour")
         worker = workers.first()
         if worker == None:
@@ -256,13 +236,12 @@ def editar_worker(request):
         if trabajador_id:
             worker = get_object_or_404(Worker, id=trabajador_id)
             
-            # Crear el formulario con la instancia del worker
 
-            form = WorkerEditForm(worker=worker)  # Pasamos el worker al formulario
+            form = WorkerEditForm(worker=worker)  
             
             return render(request, "admin/editWorker.html", {
                 "form": form,
-                "worker": worker,  # Importante: pasar el worker al template
+                "worker": worker,  
             })
         else:
             return JsonResponse({'success': False, 'error': 'ID de trabajador no proporcionado'}, status=400)
@@ -275,7 +254,7 @@ def editar_worker(request):
             
             if form.is_valid():
                 form.save()
-                return redirect('workerList')  # Redirige a la lista de trabajadores
+                return redirect('workerList')  
             else:
                 return render(request, "admin/editWorker.html", {
                     "form": form,
@@ -306,7 +285,6 @@ def importar_workers(request):
                 worker_instance.save()
         for entry in data:
             try:
-                # Extraer campos obligatorios
                 username = entry.get('username')
                 if not username:
                     raise ValueError("El campo 'username' es obligatorio")
@@ -315,12 +293,10 @@ def importar_workers(request):
                 if not dni:
                     raise ValueError("El campo 'dni' es obligatorio")
                 
-                # Extraer otros campos con valores predeterminados
                 phone = entry.get('phone_number', '')
                 email = entry.get('email', '')
                 password = entry.get('password', '')
                 
-                # FECHA: Manejar el campo start_date
                 start_date_str = entry.get('start_date')
                 if start_date_str:
                     try:
@@ -330,34 +306,29 @@ def importar_workers(request):
                 else:
                     start_date = datetime.date.today()
                 
-                # HORAS: Manejar explícitamente casos nulos o ausentes
-                # Para start_time - usar valor predeterminado si no existe o es null
                 start_time_str = entry.get('start_time')
                 if start_time_str:
                     try:
                         start_time = datetime.datetime.strptime(start_time_str, '%H:%M').time()
                     except ValueError:
-                        start_time = datetime.time(9, 0)  # 9:00 AM predeterminado
+                        start_time = datetime.time(9, 0)  
                 else:
-                    start_time = datetime.time(9, 0)  # 9:00 AM predeterminado
+                    start_time = datetime.time(9, 0)  
                 
-                # Para end_time - usar valor predeterminado si no existe o es null
                 end_time_str = entry.get('end_time')
                 if end_time_str:
                     try:
                         end_time = datetime.datetime.strptime(end_time_str, '%H:%M').time()
                     except (ValueError, TypeError):
-                        end_time = datetime.time(17, 0)  # 5:00 PM predeterminado
+                        end_time = datetime.time(17, 0)  
                 else:
-                    end_time = datetime.time(17, 0)  # 5:00 PM predeterminado
+                    end_time = datetime.time(17, 0) 
 
-                # Resto del código para usuario y UserProfile...
                 user, created = User.objects.get_or_create(username=username, defaults={
                     'email': email,
                     'is_active': True
                 })
 
-                # Actualizar el usuario según sea necesario
                 if created:
                     user.set_password(password)
                     resultados['creados'] += 1
@@ -370,7 +341,6 @@ def importar_workers(request):
 
                 user.save()
 
-                # Crear o actualizar el perfil y worker
                 profile, _ = UserProfile.objects.get_or_create(user=user)
                 
                 try:
@@ -391,7 +361,6 @@ def importar_workers(request):
                         end_time=end_time
                     )
                 
-                # Guardar el worker
                 worker.save()
                 print(f"Worker guardado: {worker.dni}, fecha={worker.start_date}, inicio={worker.start_time}, fin={worker.end_time}")
 
@@ -404,7 +373,6 @@ def importar_workers(request):
                     'error': str(e),
                     'detail': error_trace[:500]
                 })
-                # Revert worker to its previous state if it exists in trabajadores_existentes
                 for existing_worker in trabajadores_existentes:
                     if existing_worker['id'] == worker.id:
                         worker.dni = existing_worker['dni']
@@ -416,7 +384,6 @@ def importar_workers(request):
                         worker.save()
                         break
                 else:
-                    # If the worker was newly added, delete it
                     worker.delete()
         
         return JsonResponse(resultados)
@@ -433,14 +400,11 @@ def forgot_username(request):
         try:
             user = User.objects.get(email=email)
             
-            # Generar una nueva contraseña temporal
             temp_password = ''.join(random.choices(string.ascii_letters + string.digits, k=10))
             
-            # Actualizar la contraseña del usuario
             user.password = make_password(temp_password)
             user.save()
             
-            # Enviar email con la información
             subject = 'Recuperación de datos de acceso'
             message = f'''
             Hola {user.first_name},

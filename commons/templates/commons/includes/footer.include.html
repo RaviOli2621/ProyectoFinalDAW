@@ -1,7 +1,6 @@
 {% load static %}
 <link rel="stylesheet" href="{% static 'css/include/footer.include.css' %}">
 <footer>
-    <!-- Sección de navegación principal -->
     <div>
         <p class="footer-title">Navegación</p>
         <a href="{% url 'home' %}">Inicio</a>
@@ -13,7 +12,6 @@
         {% endif %}
     </div>
 
-    <!-- Sección de tipos de masajes -->
     <div>
         <p class="footer-title">Tipos de Masaje</p>
         {% for tipo in tipos_masajes %}
@@ -23,7 +21,6 @@
         {% endfor %}
     </div>
 
-    <!-- Sección de contacto -->
     <div>
         <p class="footer-title">Contacto</p>
         <span>Email: <a href="mailto:ravirubio@gmail.com">ravirubio@gmail.com</a></span>
@@ -31,13 +28,11 @@
         <span>Dirección: Calle Ejemplo 123, Ciudad</span>
     </div>
 
-    <!-- Sección de redes sociales -->
     <div>
         <p class="footer-title">Redes Sociales</p>
         <a href="https://www.instagram.com/lmonjesa?igsh=N2hxeWVzNnZqaTM0" target="_blank">Instagram</a>
     </div>
 
-    <!-- Sección de autor y logo -->
     <div>
         <p class="footer-title">Autor</p>
         <span>Laura Monje</span>
