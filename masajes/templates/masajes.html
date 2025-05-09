@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
     {%if verTipo%}
-        {% include "commons/includes/title.include.html" with Titulo="Tipos de masajes" Subtitulo="Algo" %}
+        {% include "commons/includes/title.include.html" with Titulo="Tipos de masajes" Subtitulo="Seguro que encuentras el que necesitas" %}
         <div class="contentList">
             {% for tipo in tipos %}
                 <a href="{% url 'masajes' %}?tipo={{ tipo.id }}">

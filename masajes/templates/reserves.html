@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
 {% csrf_token %}
-        {% include "commons/includes/title.include.html" with Titulo="Reservas" Subtitulo="Algo" %}
+        {% include "commons/includes/title.include.html" with Titulo="Reservas" Subtitulo="Aqui estan todas tus reservas" %}
         {% include "commons/includes/modal.include.html" with Titulo="Reservas" Contenido="Seguro que quieres borrar la reserva?" idConfirm="modalConfirmDeleteResBtn" %}
         {% if reserves %}
             <div class="contentList">
