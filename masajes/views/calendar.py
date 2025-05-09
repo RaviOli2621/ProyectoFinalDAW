@@ -313,7 +313,7 @@ def calcFiestaTrabajador(dia_evento, current_date, workers, delta, worker):
     dia_evento["backgroundColor"] = "green"
     return dia_evento
 
-def cambiarFiestatrabajador(request,idTrabajador):
+def cambiarFiestatrabajador(request, idTrabajador):
     fecha = request.GET.get('fecha')
     worker = Worker.objects.filter(id=idTrabajador).first()
     fiesta = Fiestas.objects.filter(fecha=fecha, empleado=worker).first()
@@ -325,11 +325,9 @@ def cambiarFiestatrabajador(request,idTrabajador):
         fiesta.delete()
         return JsonResponse({"status": "success"}, status=200)
     else:
-        # Calcular el inicio y fin del horario del trabajador para ese día
         hora_inicio = datetime.combine(datetime.strptime(fecha, "%Y-%m-%d"), workerHoraInicio)
         hora_fin = datetime.combine(datetime.strptime(fecha, "%Y-%m-%d"), workerHoraFin)
 
-        # Filtrar reservas que se solapan con el horario del trabajador
         reserva = Reserva.objects.annotate(
             fin_reserva=ExpressionWrapper(
                 F('fecha') + F('duracion'),
@@ -340,19 +338,20 @@ def cambiarFiestatrabajador(request,idTrabajador):
             fecha__lt=hora_fin,
             fin_reserva__gt=hora_inicio
         ).last()
-            # Enviar correo a los usuarios con reservas
+
         from commons.services.email_service import send_email  
-        try:
-            send_email(
-            to_emails=reserva.idCliente.email,
-            subject="Cancelación de reserva",
-            message=f"Estimado/a {reserva.idCliente.first_name},\n\n"
-                f"Lamentamos informarle que su reserva para el día {fecha} ha sido cancelada. Su pago sera reenvolsado de inmediato \n\n"
-                f"Saludos cordiales,\nEl equipo de Masajes."
-            )
-        except Exception as e:
-            print(f"Error sending email: {e}")
-            return JsonResponse({"status": "error", "message": "Error sending email to " + reserva.idCliente.email}, status=500)
-        reserva.delete()
+        if reserva:
+            try:
+                send_email(
+                    to_emails=reserva.idCliente.email,
+                    subject="Cancelación de reserva",
+                    message=f"Estimado/a {reserva.idCliente.first_name},\n\n"
+                            f"Lamentamos informarle que su reserva para el día {fecha} ha sido cancelada. Su pago sera reenvolsado de inmediato \n\n"
+                            f"Saludos cordiales,\nEl equipo de Masajes."
+                )
+            except Exception as e:
+                print(f"Error sending email: {e}")
+                return JsonResponse({"status": "error", "message": "Error enviando email al cliente."}, status=500)
+            reserva.delete()
         Fiestas.objects.create(fecha=fecha, empleado=worker, general=False)
-        return JsonResponse({"status": "error"}, status=200)
+        return JsonResponse({"status": "success"}, status=200)
