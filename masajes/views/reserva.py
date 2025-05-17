@@ -15,8 +15,8 @@ def worker_required(view_func):
     def _wrapped_view(request, *args, **kwargs):
         if not request.user.is_authenticated:
             return redirect('login')
-        # Verifica si existe un Worker asociado al usuario
-        if not Worker.objects.filter(user_profile_id=request.user.id).exists():
+        # Refactor: usa método del modelo
+        if not Worker.is_user_worker(request.user):
             return redirect('home')
         return view_func(request, *args, **kwargs)
     return _wrapped_view

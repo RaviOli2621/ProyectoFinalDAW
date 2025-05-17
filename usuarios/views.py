@@ -140,29 +140,20 @@ def editUser(request):
     return JsonResponse({'success': False, 'error': 'Método no permitido'}, status=405)
 
 @permission_required('auth.change_user')
-def userList(request,user_id=""):
+def userList(request, user_id=""):
     if request.method == "GET":
-        all_users = User.objects.all().order_by('id')
-        
-        worker_user_ids = Worker.objects.filter(
-            delete_date__isnull=False  
-        ).values_list('user_profile__user', flat=False)
-        
-        users = all_users.exclude(id__in=worker_user_ids)
-        
-        return render(request, "admin/userList.html",{
-            "usuarios":users
+        users = Worker.get_users_without_pending_worker()
+        return render(request, "admin/userList.html", {
+            "usuarios": users
         })
     elif request.method == 'POST':
         user = User.objects.filter(id=user_id).first()
         grupo = Group.objects.get(name="Administradores")
         if user.groups.filter(name="Administradores").exists():
-            print("Si")
             user.groups.remove(grupo)
             user.save()
             return JsonResponse({'success': True})
         else:
-            print("Siu")
             user.groups.add(grupo)
             user.save()
             return JsonResponse({'success': True})
@@ -172,8 +163,7 @@ def userList(request,user_id=""):
 
 @permission_required('auth.change_user')
 def workerList(request):
-    workers = Worker.objects.filter(delete_date__isnull=True).order_by('id')
-
+    workers = Worker.get_active_workers()
     return render(request, "admin/workerList.html", {
         "workers": workers
     })
@@ -181,87 +171,21 @@ def workerList(request):
 @permission_required('auth.change_user')
 def borrar_worker(request, worker_id):
     if request.method == 'POST':
-        worker = get_object_or_404(Worker, id=worker_id)
-        
         try:
-            worker.delete_date = datetime.date.today() + datetime.timedelta(days=30)
-            worker.delete_hour = datetime.datetime.now().time()
-            worker.save()
+            Worker.mark_for_deletion_by_id(worker_id)
             return JsonResponse({'success': True})
         except Exception as e:
             return JsonResponse({'success': False, 'error': str(e)})
-    return JsonResponse({'success': False, 'error': 'Método no permitido'}, status=405)
-
-@permission_required('auth.change_user')
-def crear_worker(request):
-    if request.method == 'GET':
-
-        form = WorkeCreaterForm()
-        
-        return render(request, "admin/registerWorker.html", {
-            "form": form,
-        })
-    elif request.method == 'POST':
-        form = WorkeCreaterForm(request.POST,request.FILES)  
-        
-        if form.is_valid():
-            form.save()
-            return redirect('workerList')  
-        else:
-            return render(request, "admin/registerWorker.html", {
-                "form": form,
-            })
     return JsonResponse({'success': False, 'error': 'Método no permitido'}, status=405)
 
 @permission_required('auth.change_user')
 def restore_worker(request):
     if request.method == 'POST':
-        workers = Worker.objects.filter(delete_date__isnull=False).order_by('-delete_date',"-delete_hour")
-        worker = workers.first()
-        if worker == None:
-            return JsonResponse({'success': False, 'error': 'No hay trabajadores para restaurar'}, status=404)
-        try:
-            worker.delete_date = None
-            worker.delete_hour = None
-            worker.save()
+        worker = Worker.restore_first_deleted_worker()
+        if worker:
             return JsonResponse({'success': True})
-        except Exception as e:
-            return JsonResponse({'success': False, 'error': str(e)})
-    return JsonResponse({'success': False, 'error': 'Método no permitido'}, status=405)
-
-@permission_required('auth.change_user')
-def editar_worker(request):
-    if request.method == 'GET':
-        trabajador_id = request.GET.get('trabajador_id')
-        if trabajador_id:
-            worker = get_object_or_404(Worker, id=trabajador_id)
-            
-
-            form = WorkerEditForm(worker=worker)  
-            
-            return render(request, "admin/editWorker.html", {
-                "form": form,
-                "worker": worker,  
-            })
         else:
-            return JsonResponse({'success': False, 'error': 'ID de trabajador no proporcionado'}, status=400)
-    elif request.method == 'POST':
-        trabajador_id = request.POST.get('trabajador_id')
-        if trabajador_id:
-            worker = get_object_or_404(Worker, id=trabajador_id)
-
-            form = WorkerEditForm(request.POST, request.FILES ,worker=worker)
-            
-            if form.is_valid():
-                form.save()
-                return redirect('workerList')  
-            else:
-                return render(request, "admin/editWorker.html", {
-                    "form": form,
-                    "worker": worker,
-                })
-        else:
-            return JsonResponse({'success': False, 'error': 'ID de trabajador no proporcionado'}, status=400)
+            return JsonResponse({'success': False, 'error': 'No hay trabajadores para restaurar'}, status=404)
     return JsonResponse({'success': False, 'error': 'Método no permitido'}, status=405)
 
 @csrf_exempt
@@ -277,26 +201,19 @@ def importar_workers(request):
             return JsonResponse({'error': f'Formato JSON inválido: {str(e)}'}, status=400)
 
         resultados = {'creados': 0, 'actualizados': 0, 'errores': []}
-        trabajadores_existentes = list(Worker.objects.values())
-        for worker in trabajadores_existentes:
-            if worker['delete_date'] is None:
-                worker_instance = Worker.objects.get(id=worker['id'])
-                worker_instance.delete_date = datetime.date.today() + datetime.timedelta(days=30)
-                worker_instance.save()
+        Worker.mark_all_active_as_deleted()
         for entry in data:
             try:
                 username = entry.get('username')
                 if not username:
                     raise ValueError("El campo 'username' es obligatorio")
-                
                 dni = entry.get('dni')
                 if not dni:
                     raise ValueError("El campo 'dni' es obligatorio")
-                
                 phone = entry.get('phone_number', '')
                 email = entry.get('email', '')
                 password = entry.get('password', '')
-                
+
                 start_date_str = entry.get('start_date')
                 if start_date_str:
                     try:
@@ -305,24 +222,24 @@ def importar_workers(request):
                         start_date = datetime.date.today()
                 else:
                     start_date = datetime.date.today()
-                
+
                 start_time_str = entry.get('start_time')
                 if start_time_str:
                     try:
                         start_time = datetime.datetime.strptime(start_time_str, '%H:%M').time()
                     except ValueError:
-                        start_time = datetime.time(9, 0)  
+                        start_time = datetime.time(9, 0)
                 else:
-                    start_time = datetime.time(9, 0)  
-                
+                    start_time = datetime.time(9, 0)
+
                 end_time_str = entry.get('end_time')
                 if end_time_str:
                     try:
                         end_time = datetime.datetime.strptime(end_time_str, '%H:%M').time()
                     except (ValueError, TypeError):
-                        end_time = datetime.time(17, 0)  
+                        end_time = datetime.time(17, 0)
                 else:
-                    end_time = datetime.time(17, 0) 
+                    end_time = datetime.time(17, 0)
 
                 user, created = User.objects.get_or_create(username=username, defaults={
                     'email': email,
@@ -341,51 +258,26 @@ def importar_workers(request):
 
                 user.save()
 
-                profile, _ = UserProfile.objects.get_or_create(user=user)
-                
-                try:
-                    worker = Worker.objects.get(user_profile=profile)
-                    worker.dni = dni
-                    worker.phone_number = phone
-                    worker.start_date = start_date
-                    worker.start_time = start_time
-                    worker.end_time = end_time
-                    worker.delete_date = None 
-                except Worker.DoesNotExist:
-                    worker = Worker(
-                        user_profile=profile,
-                        dni=dni,
-                        phone_number=phone,
-                        start_date=start_date,
-                        start_time=start_time,
-                        end_time=end_time
-                    )
-                
-                worker.save()
-                print(f"Worker guardado: {worker.dni}, fecha={worker.start_date}, inicio={worker.start_time}, fin={worker.end_time}")
+                profile, _ = UserProfile.get_or_create_by_user(user)
+
+                Worker.create_or_update_from_profile(
+                    profile=profile,
+                    dni=dni,
+                    phone=phone,
+                    start_date=start_date,
+                    start_time=start_time,
+                    end_time=end_time
+                )
 
             except Exception as e:
                 import traceback
                 error_trace = traceback.format_exc()
-                print(f"ERROR: {str(e)}\n{error_trace}")
                 resultados['errores'].append({
                     'entry': entry,
                     'error': str(e),
                     'detail': error_trace[:500]
                 })
-                for existing_worker in trabajadores_existentes:
-                    if existing_worker['id'] == worker.id:
-                        worker.dni = existing_worker['dni']
-                        worker.phone_number = existing_worker['phone_number']
-                        worker.start_date = existing_worker['start_date']
-                        worker.start_time = existing_worker['start_time']
-                        worker.end_time = existing_worker['end_time']
-                        worker.delete_date = existing_worker['delete_date']
-                        worker.save()
-                        break
-                else:
-                    worker.delete()
-        
+
         return JsonResponse(resultados)
 
     return JsonResponse({'error': 'Método no permitido'}, status=405)
@@ -431,3 +323,51 @@ def forgot_username(request):
             context['error'] = 'No existe ningún usuario con ese correo electrónico'
     
     return render(request, 'forgot_username.html', context)
+
+@permission_required('auth.change_user')
+def crear_worker(request):
+    if request.method == 'GET':
+        form = WorkeCreaterForm()
+        return render(request, "admin/registerWorker.html", {
+            "form": form,
+        })
+    elif request.method == 'POST':
+        form = WorkeCreaterForm(request.POST, request.FILES)
+        if form.is_valid():
+            Worker.create_worker(form)
+            return redirect('workerList')
+        else:
+            return render(request, "admin/registerWorker.html", {
+                "form": form,
+            })
+    return JsonResponse({'success': False, 'error': 'Método no permitido'}, status=405)
+
+@permission_required('auth.change_user')
+def editar_worker(request):
+    if request.method == 'GET':
+        trabajador_id = request.GET.get('trabajador_id')
+        if trabajador_id:
+            worker = get_object_or_404(Worker, id=trabajador_id)
+            form = WorkerEditForm(worker=worker)
+            return render(request, "admin/editWorker.html", {
+                "form": form,
+                "worker": worker,
+            })
+        else:
+            return JsonResponse({'success': False, 'error': 'ID de trabajador no proporcionado'}, status=400)
+    elif request.method == 'POST':
+        trabajador_id = request.POST.get('trabajador_id')
+        if trabajador_id:
+            worker = get_object_or_404(Worker, id=trabajador_id)
+            form = WorkerEditForm(request.POST, request.FILES, worker=worker)
+            if form.is_valid():
+                worker.update_worker(form)
+                return redirect('workerList')
+            else:
+                return render(request, "admin/editWorker.html", {
+                    "form": form,
+                    "worker": worker,
+                })
+        else:
+            return JsonResponse({'success': False, 'error': 'ID de trabajador no proporcionado'}, status=400)
+    return JsonResponse({'success': False, 'error': 'Método no permitido'}, status=405)

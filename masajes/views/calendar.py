@@ -122,19 +122,16 @@ def calendario_api(request):
     month = int(request.GET.get('month', request.GET['month']))
     blue = request.GET.get('blue', request.GET.get('blue', True))
     duradacion = request.GET.get('duracion', request.GET.get('duracion', 30))
-    # Calcular rango de días a mostrar (incluyendo días del mes anterior/siguiente)
     start_date = datetime(year, month, 1).date()
     end_date = (start_date.replace(day=28) + timedelta(days=10)).replace(day=1)
     delta = timedelta(days=1)
 
-    workers = Worker.objects.filter(delete_date__isnull=True)
+    workers = Worker.get_active_workers()
 
     current_date = start_date
     while current_date < end_date:
         dia_evento = {"start": current_date.isoformat(), "display": "background"}
-       
-        dia_evento = calcDiaCalendario(dia_evento, current_date, workers, delta,blue,duradacion)
-
+        dia_evento = calcDiaCalendario(dia_evento, current_date, workers, delta, blue, duradacion)
         eventos.append(dia_evento)
         current_date += delta
 
@@ -147,14 +144,13 @@ def horas_api(request):
     horas_ocupadas = []
 
     franjas = [
-    safe_aware(datetime.combine(fecha, time(8, 0)) + timedelta(minutes=30 * i))
-    for i in range(28)
+        safe_aware(datetime.combine(fecha, time(8, 0)) + timedelta(minutes=30 * i))
+        for i in range(28)
     ]
-    workers = Worker.objects.filter(delete_date__isnull=True)
+    workers = Worker.get_active_workers()
     franjas = quitarHorasDeDescanso(franjas)
     for franja_inicio in franjas:
         duracionFormated = 30  
-        
         if duracion:
             if isinstance(duracion, str) and duracion.isdigit():
                 duracionFormated = int(duracion)
@@ -172,10 +168,7 @@ def horas_api(request):
             fecha__lte=franja_inicio,
             fecha__gte=franja_inicio - timedelta(hours=3)  
         )
-        workersThisHour = workers.filter(
-            start_time__lt=franja_fin.time(),
-            end_time__gt=franja_inicio.time()
-        )
+        workersThisHour = Worker.get_available_workers_for_time(franja_inicio.time(), franja_fin.time())
         total_workers = workersThisHour.count()
         horas_disponibles = total_workers
 
@@ -188,7 +181,6 @@ def horas_api(request):
                 horas_disponibles -= 1
              
         if horas_disponibles <= 0:
-            print(f"franja: {franja_inicio} trabajadores: {total_workers} {reservas}")
             horas_ocupadas.append({"fecha":franja_inicio.isoformat(),"color":"red"})
         elif horas_disponibles < workersThisHour.count():
             horas_ocupadas.append({"fecha":franja_inicio.isoformat(),"color":"orange"})
@@ -236,21 +228,17 @@ def fiestaTrabajador(request):
     end_date = (start_date.replace(day=28) + timedelta(days=10)).replace(day=1)
     delta = timedelta(days=1)
 
-    workers = Worker.objects.filter(delete_date__isnull=True)
-
-    worker = Worker.objects.filter(id=request.GET.get('idTrabajador')).first()
+    workers = Worker.get_active_workers()
+    worker = Worker.get_by_id(request.GET.get('idTrabajador'))
     current_date = start_date
     while current_date < end_date:
         dia_evento = {"start": current_date.isoformat(), "display": "background"}
-    
-        dia_evento = calcFiestaTrabajador(dia_evento, current_date, workers, delta,worker)
-
+        dia_evento = calcFiestaTrabajador(dia_evento, current_date, workers, delta, worker)
         eventos.append(dia_evento)
         current_date += delta
 
     return JsonResponse(eventos, safe=False)
 def calcFiestaTrabajador(dia_evento, current_date, workers, delta, worker):
-    # Comprobar si es fiesta específica del trabajador
     duracion = 30
     if worker is not None:
         worker_instance = worker
@@ -266,7 +254,6 @@ def calcFiestaTrabajador(dia_evento, current_date, workers, delta, worker):
         dia_evento["color"] = "gray"
         return dia_evento
 
-    # Comprobar si quitando al worker hay más reservas que trabajadores en alguna franja
     franjas = [
         safe_aware(datetime.combine(current_date, time(8, 0)) + timedelta(minutes=30 * i))
         for i in range(28)
@@ -275,7 +262,6 @@ def calcFiestaTrabajador(dia_evento, current_date, workers, delta, worker):
 
     for franja_inicio in franjas:
         duracionFormated = 30 
-        
         if duracion:
             if isinstance(duracion, str) and duracion.isdigit():
                 duracionFormated = int(duracion)
@@ -290,9 +276,10 @@ def calcFiestaTrabajador(dia_evento, current_date, workers, delta, worker):
                     pass
         franja_fin = franja_inicio + timedelta(minutes=duracionFormated if duracion else 30)
         # Trabajadores disponibles en esa franja, quitando al worker
-        workersThisHour = workers.exclude(id=worker.id).filter(
-            start_time__lt=franja_fin.time(),
-            end_time__gt=franja_inicio.time()
+        workersThisHour = Worker.exclude_worker_and_available_for_time(
+            worker.id if worker else None,
+            franja_inicio.time(),
+            franja_fin.time()
         )
         total_workers = workersThisHour.count()
         reservas = Reserva.objects.filter(
@@ -315,7 +302,7 @@ def calcFiestaTrabajador(dia_evento, current_date, workers, delta, worker):
 
 def cambiarFiestatrabajador(request, idTrabajador):
     fecha = request.GET.get('fecha')
-    worker = Worker.objects.filter(id=idTrabajador).first()
+    worker = Worker.get_by_id(idTrabajador)
     fiesta = Fiestas.objects.filter(fecha=fecha, empleado=worker).first()
 
     workerHoraInicio = worker.start_time

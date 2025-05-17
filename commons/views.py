@@ -162,45 +162,8 @@ def get_usuarios_reservas_mañana():
 
 def eliminar_trabajadores_vencidos():
     from usuarios.models import Worker
-    from django.contrib.auth.models import User
-    
     hoy = timezone.now().date()
-    
     print(f"Buscando trabajadores con fecha de eliminación vencida (hoy es {hoy})")
-    
-    trabajadores_vencidos = Worker.objects.filter(delete_date__lte=hoy)
-    cantidad_trabajadores = trabajadores_vencidos.count()
-    print(f"Encontrados {cantidad_trabajadores} trabajadores a eliminar")
-    
-    usuarios_eliminados = 0
-    trabajadores_eliminados = 0
-    
-    for trabajador in trabajadores_vencidos:
-        print(f"Procesando trabajador: {trabajador.id} - {trabajador.user_profile.user.username}")
-        
-        if hasattr(trabajador, 'idUsuario') and trabajador.idUsuario:
-            usuario = trabajador.idUsuario
-            print(f"  → Eliminando usuario asociado: {usuario.username}")
-            
-            try:
-                usuario.delete()
-                usuarios_eliminados += 1
-                print(f"  ✓ Usuario eliminado correctamente")
-            except Exception as e:
-                print(f"  ✗ Error al eliminar usuario: {str(e)}")
-        
-        try:
-            trabajador.delete()
-            trabajadores_eliminados += 1
-            print(f"  ✓ Trabajador eliminado correctamente")
-        except Exception as e:
-            print(f"  ✗ Error al eliminar trabajador: {str(e)}")
-    
-    mensaje = f"Proceso completado: {trabajadores_eliminados} trabajadores y {usuarios_eliminados} usuarios eliminados."
-    
-    print(mensaje)
-    return {
-        "trabajadores_eliminados": trabajadores_eliminados,
-        "usuarios_eliminados": usuarios_eliminados,
-        "mensaje": mensaje
-    }
+    resultado = Worker.eliminar_trabajadores_vencidos(fecha=hoy)
+    print(f"Proceso completado: {resultado['trabajadores_eliminados']} trabajadores y {resultado['usuarios_eliminados']} usuarios eliminados.")
+    return resultado

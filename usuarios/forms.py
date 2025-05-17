@@ -1,5 +1,6 @@
 from django import forms
-from .models import Masaje, Reserva, UserProfile, Worker  
+from .models import Reserva, UserProfile, Worker  
+from masajes.models import Masaje
 from django.contrib.auth.models import User  
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.forms import UserCreationForm
@@ -201,7 +202,8 @@ class WorkeCreaterForm(UserCreationForm):
     
     def clean_dni(self):
         dni = self.cleaned_data.get('dni')
-        if Worker.objects.filter(dni=dni).exists():
+        # Refactor: usa método del modelo
+        if Worker.exists_with_dni(dni):
             raise forms.ValidationError("Ya existe un trabajador con este DNI.")
         return dni
     
@@ -241,22 +243,14 @@ class WorkeCreaterForm(UserCreationForm):
         
         if commit:
             user.save()
-            
             user_profile = UserProfile.objects.get_or_create(user=user)[0]
 
             if self.cleaned_data.get('foto'):
                 user_profile.foto = self.cleaned_data['foto']
                 user_profile.save()
             
-            horario = self.cleaned_data.get('horario')
-            worker = Worker.objects.create(
-                user_profile=user_profile,
-                dni=self.cleaned_data['dni'],
-                phone_number=self.cleaned_data['phone_number'],
-                start_date=self.cleaned_data['start_date'],
-                start_time=horario['start_time'],
-                end_time=horario['end_time']
-            )
+            # Refactor: usa método del modelo
+            Worker.create_worker_from_form(user_profile, self.cleaned_data)
         
         return user
     
@@ -346,7 +340,7 @@ class WorkerEditForm(forms.Form):
         dni = self.cleaned_data.get('dni')
         
         if self.worker_instance:
-            if Worker.objects.filter(dni=dni).exclude(pk=self.worker_instance.pk).exists():
+            if Worker.exists_with_dni(dni, exclude_pk=self.worker_instance.pk):
                 raise forms.ValidationError("Ya existe un trabajador con este DNI.")
         
         return dni
@@ -404,21 +398,13 @@ class WorkerEditForm(forms.Form):
         if password1:
             user.set_password(password1)
         
-        worker = self.worker_instance
-        worker.dni = self.cleaned_data['dni']
-        worker.phone_number = self.cleaned_data['phone_number']
-        worker.start_date = self.cleaned_data['start_date']
-        
-        horario = self.cleaned_data.get('horario')
-        worker.start_time = horario['start_time']
-        worker.end_time = horario['end_time']
-        
         if self.cleaned_data.get('foto'):
-            worker.user_profile.foto = self.cleaned_data['foto']
+            self.worker_instance.user_profile.foto = self.cleaned_data['foto']
         
         if commit:
             user.save()
-            worker.user_profile.save()  
-            worker.save()
+            self.worker_instance.user_profile.save()
+            # Refactor: usa método del modelo
+            self.worker_instance.update_worker_from_form(self.cleaned_data)
         
-        return worker
+        return self.worker_instance

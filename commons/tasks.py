@@ -74,57 +74,9 @@ def get_usuarios_reservas_mañana():
     return usuarios_reservas
 
 def eliminar_trabajadores_vencidos():
-    """
-    Elimina los trabajadores y sus usuarios asociados cuya fecha de borrado
-    (delete_date) sea igual o anterior a la fecha actual.
-    """
     from usuarios.models import Worker
-    from django.contrib.auth.models import User
-    
-    # Obtener la fecha actual
     hoy = timezone.now().date()
-    
     print(f"Buscando trabajadores con fecha de eliminación vencida (hoy es {hoy})")
-    
-    # Encontrar todos los trabajadores con delete_date <= hoy
-    trabajadores_vencidos = Worker.objects.filter(delete_date__lte=hoy)
-    cantidad_trabajadores = trabajadores_vencidos.count()
-    print(f"Encontrados {cantidad_trabajadores} trabajadores a eliminar")
-    
-    # Variables para llevar el conteo
-    usuarios_eliminados = 0
-    trabajadores_eliminados = 0
-    
-    # Procesar cada trabajador vencido
-    for trabajador in trabajadores_vencidos:
-        print(f"Procesando trabajador: {trabajador.id} - {trabajador.user_profile.user.username}")
-        
-        # Si hay una relación con un usuario, eliminarlo primero
-        if hasattr(trabajador, 'idUsuario') and trabajador.idUsuario:
-            usuario = trabajador.idUsuario
-            print(f"  → Eliminando usuario asociado: {usuario.username}")
-            
-            try:
-                # Eliminar el usuario
-                usuario.delete()
-                usuarios_eliminados += 1
-                print(f"  ✓ Usuario eliminado correctamente")
-            except Exception as e:
-                print(f"  ✗ Error al eliminar usuario: {str(e)}")
-        
-        try:
-            # Eliminar el trabajador
-            trabajador.delete()
-            trabajadores_eliminados += 1
-            print(f"  ✓ Trabajador eliminado correctamente")
-        except Exception as e:
-            print(f"  ✗ Error al eliminar trabajador: {str(e)}")
-    
-    mensaje = f"Proceso completado: {trabajadores_eliminados} trabajadores y {usuarios_eliminados} usuarios eliminados."
-    
-    print(mensaje)
-    return {
-        "trabajadores_eliminados": trabajadores_eliminados,
-        "usuarios_eliminados": usuarios_eliminados,
-        "mensaje": mensaje
-    }
+    resultado = Worker.eliminar_trabajadores_vencidos(fecha=hoy)
+    print(f"Proceso completado: {resultado['trabajadores_eliminados']} trabajadores y {resultado['usuarios_eliminados']} usuarios eliminados.")
+    return resultado
