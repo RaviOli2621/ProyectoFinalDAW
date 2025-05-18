@@ -97,41 +97,30 @@ def signin(request):
 def editUser(request):
     if request.method == 'GET':
         user = request.user
-        
         initial_data = {
             'username': user.username,
             'email': user.email,
         }
-        
         form = UserEditForm(initial=initial_data)
-        
         return render(request, "editUser.html", {
             "form": form,
         })
     elif request.method == 'POST':
         user = request.user
         form = UserEditForm(request.POST, request.FILES, instance=user)
-        
         if form.is_valid():
             user = form.save(commit=False)
-            
             user.email = user._original_email if hasattr(user, '_original_email') else User.objects.get(id=user.id).email
-
-
             password1 = form.cleaned_data.get('password1')
             if password1:
                 user.set_password(password1)
-                
             user.save()
-            
             if 'foto' in request.FILES:
-                user.userprofile.foto = request.FILES['foto']
-                user.userprofile.save()
-                print(f"URL de la imagen guardada: {user.userprofile.foto.url}")
-
+                user_profile, _ = UserProfile.get_or_create_by_user(user)
+                user_profile.set_foto(request.FILES['foto'])
+                print(f"URL de la imagen guardada: {user_profile.foto.url}")
             if password1:
                 login(request, user)
-                
             return redirect('home')
         else:
             return render(request, "editUser.html", {
@@ -194,12 +183,10 @@ def importar_workers(request):
         json_file = request.FILES.get('file')
         if not json_file:
             return JsonResponse({'error': 'No se subió ningún archivo'}, status=400)
-
         try:
             data = json.load(json_file)
         except Exception as e:
             return JsonResponse({'error': f'Formato JSON inválido: {str(e)}'}, status=400)
-
         resultados = {'creados': 0, 'actualizados': 0, 'errores': []}
         Worker.mark_all_active_as_deleted()
         for entry in data:
@@ -245,7 +232,6 @@ def importar_workers(request):
                     'email': email,
                     'is_active': True
                 })
-
                 if created:
                     user.set_password(password)
                     resultados['creados'] += 1
@@ -255,11 +241,8 @@ def importar_workers(request):
                     if password:
                         user.set_password(password)
                     resultados['actualizados'] += 1
-
                 user.save()
-
                 profile, _ = UserProfile.get_or_create_by_user(user)
-
                 Worker.create_or_update_from_profile(
                     profile=profile,
                     dni=dni,
@@ -268,7 +251,6 @@ def importar_workers(request):
                     start_time=start_time,
                     end_time=end_time
                 )
-
             except Exception as e:
                 import traceback
                 error_trace = traceback.format_exc()
@@ -277,9 +259,7 @@ def importar_workers(request):
                     'error': str(e),
                     'detail': error_trace[:500]
                 })
-
         return JsonResponse(resultados)
-
     return JsonResponse({'error': 'Método no permitido'}, status=405)
 
 def forgot_username(request):

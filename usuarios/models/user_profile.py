@@ -1,9 +1,9 @@
-import cloudinary
-from django.contrib.auth.models import User
 from django.db import models
+from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from cloudinary_storage.storage import MediaCloudinaryStorage as CloudinaryStorage
+import cloudinary
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)  
@@ -25,6 +25,10 @@ class UserProfile(models.Model):
     @classmethod
     def get_or_create_by_user(cls, user):
         return cls.objects.get_or_create(user=user)
+
+    def set_foto(self, foto):
+        self.foto = foto
+        self.save()
 
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):

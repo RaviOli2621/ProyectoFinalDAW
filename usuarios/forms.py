@@ -243,13 +243,11 @@ class WorkeCreaterForm(UserCreationForm):
         
         if commit:
             user.save()
-            user_profile = UserProfile.objects.get_or_create(user=user)[0]
+            user_profile, _ = UserProfile.get_or_create_by_user(user)
 
             if self.cleaned_data.get('foto'):
-                user_profile.foto = self.cleaned_data['foto']
-                user_profile.save()
+                user_profile.set_foto(self.cleaned_data['foto'])
             
-            # Refactor: usa método del modelo
             Worker.create_worker_from_form(user_profile, self.cleaned_data)
         
         return user
