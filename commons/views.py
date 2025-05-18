@@ -135,29 +135,24 @@ def notificar_usuarios_reservas_mañana():
 
 def eliminar_reservas_pasadas(dias=0):
     fecha_limite = timezone.now().date() - timezone.timedelta(days=dias)
-    
-    resultado = Reserva.objects.filter(fecha__lt=fecha_limite).delete()
-    
+    # Refactor: usa método del modelo
+    resultado = Reserva.delete_older_than(fecha_limite)
     return resultado[0] if resultado and isinstance(resultado, tuple) else 0
 
 def get_usuarios_reservas_mañana():
     mañana = timezone.now().date() + timezone.timedelta(days=1)
     print(f"Buscando reservas para: {mañana}")
-    
     inicio_mañana = timezone.make_aware(datetime.datetime.combine(mañana, datetime.time.min))
     fin_mañana = timezone.make_aware(datetime.datetime.combine(mañana, datetime.time.max))
-    
     print(f"Rango de búsqueda: {inicio_mañana} hasta {fin_mañana}")
-    
-    reservas_mañana = Reserva.objects.filter(fecha__range=(inicio_mañana, fin_mañana))
+    # Refactor: usa método del modelo
+    reservas_mañana = Reserva.get_for_date_range(inicio_mañana, fin_mañana)
     print(f"Reservas encontradas: {reservas_mañana.count()}")
-    
     usuarios_reservas = {}
     for reserva in reservas_mañana:
         if reserva.idCliente not in usuarios_reservas:
             usuarios_reservas[reserva.idCliente] = []
         usuarios_reservas[reserva.idCliente].append(reserva)
-    
     return usuarios_reservas
 
 def eliminar_trabajadores_vencidos():

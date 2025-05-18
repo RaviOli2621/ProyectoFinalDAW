@@ -25,7 +25,7 @@ def safe_aware(dt):
     if is_naive(dt):
         return make_aware(dt)
     return dt
-def calcDiaCalendario(dia_evento, current_date, workers, delta,blue,duracion):
+def calcDiaCalendario(dia_evento, current_date, workers, delta, blue,duracion):
     if current_date <= datetime.now().date():
         dia_evento["backgroundColor"] = "red"
         return dia_evento
@@ -34,8 +34,10 @@ def calcDiaCalendario(dia_evento, current_date, workers, delta,blue,duracion):
         dia_evento["color"] = "gray"
         return dia_evento
     if Fiestas.objects.filter(fecha=current_date, general=True).exists():
-        if blue==True: dia_evento["color"] = "blue" 
-        else: dia_evento["color"] = "gray"
+        if blue == True:
+            dia_evento["color"] = "blue"
+        else:
+            dia_evento["color"] = "gray"
         return dia_evento
 
     franjas = [
@@ -84,7 +86,6 @@ def calcDiaCalendario(dia_evento, current_date, workers, delta,blue,duracion):
         )
         total_workers = workersThisHour.count()
 
-        # Festivos personales de los que trabajan en esta franja
         festivos_personales = Fiestas.objects.filter(
             fecha=current_date,
             general=False,
@@ -93,9 +94,8 @@ def calcDiaCalendario(dia_evento, current_date, workers, delta,blue,duracion):
 
         workers_disponibles = total_workers - festivos_personales
 
-        reservas = Reserva.objects.filter(
-            fecha__lte=franja_inicio,
-        )
+        # SOLO este cambio: usa método del modelo para reservas en la franja
+        reservas = Reserva.get_before(franja_inicio)
 
         ocupacion = 0
         for r in reservas:
@@ -164,28 +164,26 @@ def horas_api(request):
                 except (ValueError, AttributeError, TypeError):
                     pass
         franja_fin = franja_inicio + timedelta(minutes=duracionFormated if duracion else 30)
-        reservas = Reserva.objects.filter(
-            fecha__lte=franja_inicio,
-            fecha__gte=franja_inicio - timedelta(hours=3)  
-        )
+        # SOLO este cambio: usa método del modelo para reservas en la franja
+        reservas = Reserva.get_for_time_window(franja_inicio)
         workersThisHour = Worker.get_available_workers_for_time(franja_inicio.time(), franja_fin.time())
         total_workers = workersThisHour.count()
         horas_disponibles = total_workers
 
         for r in reservas:
             inicio = r.fecha  
-            duracion = r.duracion if r.duracion else r.idMasaje.duracion
-            fin = inicio + duracion
+            duracion_r = r.duracion if r.duracion else r.idMasaje.duracion
+            fin = inicio + duracion_r
 
             if inicio < franja_fin and fin > franja_inicio:
                 horas_disponibles -= 1
              
         if horas_disponibles <= 0:
-            horas_ocupadas.append({"fecha":franja_inicio.isoformat(),"color":"red"})
+            horas_ocupadas.append({"fecha": franja_inicio.isoformat(), "color": "red"})
         elif horas_disponibles < workersThisHour.count():
-            horas_ocupadas.append({"fecha":franja_inicio.isoformat(),"color":"orange"})
+            horas_ocupadas.append({"fecha": franja_inicio.isoformat(), "color": "orange"})
         else:
-            horas_ocupadas.append({"fecha":franja_inicio.isoformat(),"color":"green"})
+            horas_ocupadas.append({"fecha": franja_inicio.isoformat(), "color": "green"})
     return JsonResponse(horas_ocupadas, safe=False)
 def quitarHorasDeDescanso(franjas):
     franjas = [franja for franja in franjas if franja.time() not in {time(13, 0),time(13, 30), time(19, 0),time(19, 30)}]
@@ -196,16 +194,17 @@ def gestionarDiasFiesta(request):
     dia = request.GET.get('fecha')
 
     if request.method == "PUT":
-        reservas = Reserva.objects.filter(fecha__date=dia)
+        # SOLO este cambio: usa método del modelo para reservas del día
+        reservas = Reserva.get_for_day(dia)
         for reserva in reservas:
             from commons.services.email_service import send_email  
             try:
                 send_email(
-                to_emails=reserva.idCliente.email,
-                subject="Cancelación de reserva",
-                message=f"Estimado/a {reserva.idCliente.first_name},\n\n"
-                    f"Lamentamos informarle que su reserva para el día {dia} ha sido cancelada. Su pago sera reenvolsado de inmediato \n\n"
-                    f"Saludos cordiales,\nEl equipo de Masajes."
+                    to_emails=reserva.idCliente.email,
+                    subject="Cancelación de reserva",
+                    message=f"Estimado/a {reserva.idCliente.first_name},\n\n"
+                            f"Lamentamos informarle que su reserva para el día {dia} ha sido cancelada. Su pago sera reenvolsado de inmediato \n\n"
+                            f"Saludos cordiales,\nEl equipo de Masajes."
                 )
             except Exception as e:
                 print(f"Error sending email: {e}")
@@ -282,10 +281,8 @@ def calcFiestaTrabajador(dia_evento, current_date, workers, delta, worker):
             franja_fin.time()
         )
         total_workers = workersThisHour.count()
-        reservas = Reserva.objects.filter(
-            fecha__lte=franja_inicio,
-            fecha__gte=franja_inicio - timedelta(hours=3)
-        )
+        # CORREGIDO: usa método del modelo
+        reservas = Reserva.get_for_time_window(franja_inicio)
 
         ocupacion = 0
         for r in reservas:
@@ -294,9 +291,9 @@ def calcFiestaTrabajador(dia_evento, current_date, workers, delta, worker):
             fin = inicio + duracion
             if inicio < franja_fin and fin > franja_inicio:
                 ocupacion += 1
-        if ocupacion > total_workers:
-            dia_evento["backgroundColor"] = "red"
-            return dia_evento
+    if ocupacion > total_workers:
+        dia_evento["backgroundColor"] = "red"
+        return dia_evento
     dia_evento["backgroundColor"] = "green"
     return dia_evento
 
@@ -315,16 +312,7 @@ def cambiarFiestatrabajador(request, idTrabajador):
         hora_inicio = datetime.combine(datetime.strptime(fecha, "%Y-%m-%d"), workerHoraInicio)
         hora_fin = datetime.combine(datetime.strptime(fecha, "%Y-%m-%d"), workerHoraFin)
 
-        reserva = Reserva.objects.annotate(
-            fin_reserva=ExpressionWrapper(
-                F('fecha') + F('duracion'),
-                output_field=DateTimeField()
-            )
-        ).filter(
-            fecha__date=fecha,
-            fecha__lt=hora_fin,
-            fin_reserva__gt=hora_inicio
-        ).last()
+        reserva = Reserva.get_overlapping_reservation(fecha, hora_inicio, hora_fin)
 
         from commons.services.email_service import send_email  
         if reserva:

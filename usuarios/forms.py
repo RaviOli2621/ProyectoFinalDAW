@@ -69,7 +69,6 @@ class ReservaForm(forms.ModelForm):
     
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        
         if self.instance and self.instance.pk and hasattr(self.instance, 'duracion'):
             self.initial['duracion'] = self.instance.duracion
         elif 'initial' in kwargs and 'duracion' in kwargs['initial']:
@@ -84,34 +83,28 @@ class ReservaForm(forms.ModelForm):
         if fecha:
             try:
                 fecha_str = fecha.strftime('%Y-%m-%d')
-                
                 from django.urls import reverse
                 from django.http import HttpRequest
                 from masajes.views.calendar import horas_api  
-                
                 print(f"DEBUG - Consultando horas disponibles para: {fecha_str}")
-                
                 request = HttpRequest()
                 request.method = 'GET'
                 request.GET = {'fecha': fecha_str}
-                
                 from django.http import JsonResponse
                 try:
                     response = horas_api(request)
-
                     if isinstance(response, JsonResponse):
                         horas_disponibles = response.content
                         import json
                         horas_disponibles = json.loads(horas_disponibles.decode('utf-8'))
                         fechaFormated = str(fecha).replace(' ', 'T')
                         hora_objeto = next((hora for hora in horas_disponibles if hora.get('fecha') == fechaFormated), None)
-                        reserva = Reserva.objects.filter(id=self.instance.id).first().fecha
-
+                        # Usar self.instance.fecha si existe, si no, None
+                        reserva_fecha_actual = getattr(self.instance, 'fecha', None)
                         if not hora_objeto:
                             self.add_error('fecha', "No hay horas disponibles para esta fecha")
-                        if hora_objeto["color"] == 'red' and reserva != fecha:
+                        if hora_objeto["color"] == 'red' and reserva_fecha_actual != fecha:
                             self.add_error('fecha', "No hay horas disponibles para esta fecha")
-                        
                         self._horas_disponibles = horas_disponibles
                     else:
                         print(f"DEBUG - Respuesta inesperada de la API: {type(response)}")
@@ -121,7 +114,6 @@ class ReservaForm(forms.ModelForm):
                 import traceback
                 print(f"DEBUG - Error al verificar disponibilidad: {type(e).__name__}: {e}")
                 traceback.print_exc()
-                
         return cleaned_data
 
 class TarjetaForm(forms.Form):

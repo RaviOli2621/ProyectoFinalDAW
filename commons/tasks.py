@@ -47,11 +47,10 @@ def eliminar_reservas_pasadas(dias=0):
     # Calcular la fecha límite (por defecto, hoy)
     fecha_limite = timezone.now().date() - timezone.timedelta(days=dias)
     
-    # Eliminar reservas anteriores a la fecha límite
-    resultado = Reserva.objects.filter(fecha__lt=fecha_limite).delete()
+    # Refactor: usa método del modelo
+    eliminadas = Reserva.delete_older_than(fecha_limite)
     
-    # El resultado es una tupla (número_de_elementos_eliminados, {diccionario_con_detalles})
-    return resultado[0] if resultado and isinstance(resultado, tuple) else 0
+    return eliminadas[0] if eliminadas and isinstance(eliminadas, tuple) else 0
 
 def get_usuarios_reservas_mañana():
     mañana = timezone.now().date() + timezone.timedelta(days=1)
@@ -62,7 +61,8 @@ def get_usuarios_reservas_mañana():
     
     print(f"Rango de búsqueda: {inicio_mañana} hasta {fin_mañana}")
     
-    reservas_mañana = Reserva.objects.filter(fecha__range=(inicio_mañana, fin_mañana))
+    # Refactor: usa método del modelo
+    reservas_mañana = Reserva.get_for_date_range(inicio_mañana, fin_mañana)
     print(f"Reservas encontradas: {reservas_mañana.count()}")
     
     usuarios_reservas = {}

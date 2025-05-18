@@ -15,7 +15,6 @@ def worker_required(view_func):
     def _wrapped_view(request, *args, **kwargs):
         if not request.user.is_authenticated:
             return redirect('login')
-        # Refactor: usa método del modelo
         if not Worker.is_user_worker(request.user):
             return redirect('home')
         return view_func(request, *args, **kwargs)
@@ -37,7 +36,7 @@ def safe_aware(dt):
 @login_required
 def reserves(request):
     idUser = request.user.id
-    reserves = Reserva.objects.filter(idCliente=idUser)
+    reserves = Reserva.get_by_cliente(idUser)
     for reserva in reserves:
         reserva.foto_nombre = get_filename(reserva.idMasaje.foto) 
         reserva.duracion_formatada = f"{reserva.idMasaje.duracion.total_seconds() / 3600:.1f}"  
@@ -55,11 +54,13 @@ def workerReserves(request):
             idReserva = data.get('reserva_id')
             pagado = data.get('pagado')
             hecho = data.get('hecho')
-            reserva = Reserva.objects.get(id=idReserva)
+            reserva = Reserva.get_by_id(idReserva)
+            if not reserva:
+                return JsonResponse({'success': False, 'error': 'Reserva no encontrada'})
             reserva.pagado = pagado
             reserva.hecho = hecho
             reserva.save()
-            return JsonResponse({'success': False})
+            return JsonResponse({'success': True})
         except Exception as e:
             print(e)
             return JsonResponse({'success': False, 'error': str(e)})
@@ -71,7 +72,9 @@ def getReservaById(request):
     if request.method == 'POST':
         data = json.loads(request.body)
         reserva_id = data.get('reserva_id')
-        reserva = get_object_or_404(Reserva, id=reserva_id)
+        reserva = Reserva.get_by_id(reserva_id)
+        if not reserva:
+            return JsonResponse({'error': 'Reserva no encontrada'}, status=404)
         return JsonResponse({
             'fecha': reserva.fecha.strftime('%Y-%m-%d %H:%M:%S'),
             'masajePrecio': reserva.idMasaje.precio,
@@ -173,8 +176,8 @@ def pago_tarjeta(request):
 def editar_reserva(request):
     reserva_id = request.GET.get('reservaid')  
 
-    reserva = get_object_or_404(Reserva, id=reserva_id)
-    if reserva.idCliente.id != request.user.id:
+    reserva = Reserva.get_by_id(reserva_id)
+    if not reserva or reserva.idCliente.id != request.user.id:
         return redirect('home')  
     if request.method == 'POST':
         reserva_form = ReservaForm(request.POST, instance=reserva)
@@ -220,7 +223,9 @@ def editar_pago_tarjeta(request):
             id_cliente = reserva_temp['idCliente']
             cliente = User.objects.get(id=id_cliente)
             reserva_id = reserva_temp['reserva_id']
-            reserva = get_object_or_404(Reserva, id=reserva_id) 
+            reserva = Reserva.get_by_id(reserva_id)
+            if not reserva:
+                return redirect('home')
             reserva.fecha = fecha
             reserva.idMasaje = masaje
             reserva.metodo_pago = reserva_temp['metodo_pago']
@@ -239,8 +244,9 @@ def editar_pago_tarjeta(request):
 @login_required
 def borrar_reserva(request, reserva_id):
     if request.method == 'POST':
-        reserva = get_object_or_404(Reserva, id=reserva_id)
-        
+        reserva = Reserva.get_by_id(reserva_id)
+        if not reserva:
+            return JsonResponse({'success': False, 'error': 'Reserva no encontrada'})
         try:
             reserva.delete()
             return JsonResponse({'success': True})
