@@ -33,11 +33,8 @@ def calcDiaCalendario(dia_evento, current_date, workers, delta, blue,duracion):
     if current_date.weekday() in {5, 6}:
         dia_evento["color"] = "gray"
         return dia_evento
-    if Fiestas.objects.filter(fecha=current_date, general=True).exists():
-        if blue == True:
-            dia_evento["color"] = "blue"
-        else:
-            dia_evento["color"] = "gray"
+    if Fiestas.existe_general_en_fecha(current_date):
+        dia_evento["color"] = "blue" if blue else "gray"
         return dia_evento
 
     franjas = [
@@ -79,22 +76,19 @@ def calcDiaCalendario(dia_evento, current_date, workers, delta, blue,duracion):
                 except (ValueError, AttributeError, TypeError):
                     pass
         franja_fin = franja_inicio + timedelta(minutes=duracionFormated if duracion else 30)
-        # Trabajadores disponibles en la franja
         workersThisHour = workers.filter(
             start_time__lt=franja_fin.time(),
             end_time__gt=franja_inicio.time()
         )
         total_workers = workersThisHour.count()
 
-        festivos_personales = Fiestas.objects.filter(
-            fecha=current_date,
-            general=False,
-            empleado_id__in=workersThisHour.values_list('id', flat=True)
-        ).count()
+        festivos_personales = Fiestas.get_festivos_personales(
+            current_date,
+            list(workersThisHour.values_list('id', flat=True))
+        )
 
         workers_disponibles = total_workers - festivos_personales
 
-        # SOLO este cambio: usa método del modelo para reservas en la franja
         reservas = Reserva.get_before(franja_inicio)
 
         ocupacion = 0
@@ -194,7 +188,6 @@ def gestionarDiasFiesta(request):
     dia = request.GET.get('fecha')
 
     if request.method == "PUT":
-        # SOLO este cambio: usa método del modelo para reservas del día
         reservas = Reserva.get_for_day(dia)
         for reserva in reservas:
             from commons.services.email_service import send_email  
@@ -210,9 +203,9 @@ def gestionarDiasFiesta(request):
                 print(f"Error sending email: {e}")
                 return JsonResponse({"status": "error", "message": "Error sending email to " + reserva.idCliente.email}, status=500)
         reservas.delete()
-        Fiestas.objects.create(fecha=dia, general=True)
+        Fiestas.crear_general(dia)
     elif request.method == "DELETE":
-        Fiestas.objects.filter(fecha=dia).delete()
+        Fiestas.eliminar_general(dia)
     return JsonResponse({"status": "success"}, status=200)
 @notAdmin_user
 def calendari(request):
@@ -241,7 +234,7 @@ def calcFiestaTrabajador(dia_evento, current_date, workers, delta, worker):
     duracion = 30
     if worker is not None:
         worker_instance = worker
-        if Fiestas.objects.filter(fecha=current_date, general=False, empleado_id=worker_instance.id).exists():
+        if Fiestas.existe_personal_en_fecha(current_date, worker_instance.id):
             dia_evento["backgroundColor"] = "blue"
             return dia_evento
 
@@ -249,7 +242,7 @@ def calcFiestaTrabajador(dia_evento, current_date, workers, delta, worker):
         dia_evento["backgroundColor"] = "red"
         return dia_evento
 
-    if current_date.weekday() in {5, 6} or Fiestas.objects.filter(fecha=current_date, general=True).exists():
+    if current_date.weekday() in {5, 6} or Fiestas.existe_general_en_fecha(current_date):
         dia_evento["color"] = "gray"
         return dia_evento
 
@@ -274,14 +267,12 @@ def calcFiestaTrabajador(dia_evento, current_date, workers, delta, worker):
                 except (ValueError, AttributeError, TypeError):
                     pass
         franja_fin = franja_inicio + timedelta(minutes=duracionFormated if duracion else 30)
-        # Trabajadores disponibles en esa franja, quitando al worker
         workersThisHour = Worker.exclude_worker_and_available_for_time(
             worker.id if worker else None,
             franja_inicio.time(),
             franja_fin.time()
         )
         total_workers = workersThisHour.count()
-        # CORREGIDO: usa método del modelo
         reservas = Reserva.get_for_time_window(franja_inicio)
 
         ocupacion = 0
@@ -300,13 +291,13 @@ def calcFiestaTrabajador(dia_evento, current_date, workers, delta, worker):
 def cambiarFiestatrabajador(request, idTrabajador):
     fecha = request.GET.get('fecha')
     worker = Worker.get_by_id(idTrabajador)
-    fiesta = Fiestas.objects.filter(fecha=fecha, empleado=worker).first()
+    fiesta = Fiestas.get_personal_en_fecha(fecha, worker)
 
     workerHoraInicio = worker.start_time
     workerHoraFin = worker.end_time
 
     if fiesta:
-        fiesta.delete()
+        Fiestas.eliminar_personal(fecha, worker)
         return JsonResponse({"status": "success"}, status=200)
     else:
         hora_inicio = datetime.combine(datetime.strptime(fecha, "%Y-%m-%d"), workerHoraInicio)
@@ -328,5 +319,5 @@ def cambiarFiestatrabajador(request, idTrabajador):
                 print(f"Error sending email: {e}")
                 return JsonResponse({"status": "error", "message": "Error enviando email al cliente."}, status=500)
             reserva.delete()
-        Fiestas.objects.create(fecha=fecha, empleado=worker, general=False)
+        Fiestas.crear_personal(fecha, worker)
         return JsonResponse({"status": "success"}, status=200)
