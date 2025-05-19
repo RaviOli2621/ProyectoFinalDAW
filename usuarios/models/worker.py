@@ -1,6 +1,7 @@
 from django.db import models
 from .user_profile import UserProfile
 from django.contrib.auth.models import User
+from .user import UserManager
 import datetime
 
 
@@ -162,4 +163,4 @@ class Worker(models.Model):
         worker_user_ids = cls.objects.filter(
             delete_date__isnull=False
         ).values_list('user_profile__user', flat=True)
-        return User.objects.all().exclude(id__in=worker_user_ids).order_by('id')
+        return UserManager.exclude_ids(worker_user_ids)

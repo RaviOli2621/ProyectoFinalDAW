@@ -3,7 +3,7 @@ from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 
 from usuarios.forms import ReservaForm, TarjetaForm
-from usuarios.models import Fiestas, Reserva, Worker
+from usuarios.models import Fiestas, Reserva, Worker, UserManager
 from masajes.models import Masaje, TipoMasaje
 from commons.utils import get_filename  
 from django.contrib.auth.decorators import login_required
@@ -137,19 +137,17 @@ def pago_tarjeta(request):
     reserva_temp = request.session.get('reserva_temp', None)
 
     if not reserva_temp:
-        return redirect('crear_reserva')  # Si no hay reserva temporal, redirige al formulario de reserva
+        return redirect('crear_reserva')
     
     if request.method == 'POST':
         tarjeta_form = TarjetaForm(request.POST)
         
         if tarjeta_form.is_valid():
             fecha = datetime.strptime(reserva_temp['fecha'], '%Y-%m-%d %H:%M:%S')  
-            
             id_masaje = reserva_temp['idMasaje']
             masaje = Masaje.get_by_id(id_masaje)  
-            
             id_cliente = reserva_temp['idCliente']
-            cliente = User.objects.get(id=id_cliente)  
+            cliente = UserManager.get_by_id(id_cliente)  
             
             reserva = Reserva(
                 fecha=fecha,
@@ -218,7 +216,7 @@ def editar_pago_tarjeta(request):
             id_masaje = reserva_temp['idMasaje']
             masaje = Masaje.get_by_id(id_masaje)
             id_cliente = reserva_temp['idCliente']
-            cliente = User.objects.get(id=id_cliente)
+            cliente = UserManager.get_by_id(id_cliente)  
             reserva_id = reserva_temp['reserva_id']
             reserva = Reserva.get_by_id(reserva_id)
             if not reserva:

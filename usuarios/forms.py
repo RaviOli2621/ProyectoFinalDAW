@@ -1,9 +1,11 @@
 from django import forms
 from .models import Reserva, UserProfile, Worker  
 from masajes.models import Masaje
-from django.contrib.auth.models import User  
-from django.contrib.auth.forms import AuthenticationForm
-from django.contrib.auth.forms import UserCreationForm
+from usuarios.models.user import UserManager  
+from django.contrib.auth import get_user_model
+from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
+
+User = get_user_model()
 
 class UserEditForm(forms.ModelForm):
     password1 = forms.CharField(
@@ -188,13 +190,14 @@ class WorkeCreaterForm(UserCreationForm):
     
     def clean_username(self):
         username = self.cleaned_data.get('username')
-        if User.objects.filter(username=username).exists():
+
+        if UserManager.exists_with_username(username):
             raise forms.ValidationError("Ya existe un usuario con este nombre.")
         return username
     
     def clean_dni(self):
         dni = self.cleaned_data.get('dni')
-        # Refactor: usa método del modelo
+
         if Worker.exists_with_dni(dni):
             raise forms.ValidationError("Ya existe un trabajador con este DNI.")
         return dni
@@ -321,7 +324,8 @@ class WorkerEditForm(forms.Form):
         
         if self.worker_instance:
             user_actual = self.worker_instance.user_profile.user
-            if User.objects.filter(username=username).exclude(pk=user_actual.pk).exists():
+
+            if UserManager.exists_with_username(username, exclude_pk=user_actual.pk):
                 raise forms.ValidationError("Ya existe un usuario con este nombre.")
         
         return username
@@ -394,7 +398,7 @@ class WorkerEditForm(forms.Form):
         if commit:
             user.save()
             self.worker_instance.user_profile.save()
-            # Refactor: usa método del modelo
+
             self.worker_instance.update_worker_from_form(self.cleaned_data)
         
         return self.worker_instance

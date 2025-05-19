@@ -18,6 +18,7 @@ import string
 
 from usuarios.forms import CustomLoginForm, CustomSignInForm, UserEditForm, WorkeCreaterForm, WorkerEditForm
 from usuarios.models import UserProfile, Worker
+from usuarios.models.user import UserManager
 
 # decorador para cuando no estas logado
 def unauthenticated_user(view_func):
@@ -39,7 +40,11 @@ def signup(request):
         authentication_form = CustomSignInForm(request.POST)
         if(request.POST['password2'] == request.POST['password1']):
             try:
-                user = User.objects.create_user(username=request.POST['username'],email=request.POST['gmail'],password=request.POST['password1'])
+                user = UserManager.create_user(
+                    username=request.POST['username'],
+                    email=request.POST['gmail'],
+                    password=request.POST['password1']
+                )
                 user.save()
                 login(request,user)
                 return redirect("home")
@@ -110,7 +115,7 @@ def editUser(request):
         form = UserEditForm(request.POST, request.FILES, instance=user)
         if form.is_valid():
             user = form.save(commit=False)
-            user.email = user._original_email if hasattr(user, '_original_email') else User.objects.get(id=user.id).email
+            user.email = user._original_email if hasattr(user, '_original_email') else UserManager.get_by_id(user.id).email
             password1 = form.cleaned_data.get('password1')
             if password1:
                 user.set_password(password1)
@@ -136,7 +141,7 @@ def userList(request, user_id=""):
             "usuarios": users
         })
     elif request.method == 'POST':
-        user = User.objects.filter(id=user_id).first()
+        user = UserManager.get_by_id(user_id)
         grupo = Group.objects.get(name="Administradores")
         if user.groups.filter(name="Administradores").exists():
             user.groups.remove(grupo)
@@ -228,12 +233,11 @@ def importar_workers(request):
                 else:
                     end_time = datetime.time(17, 0)
 
-                user, created = User.objects.get_or_create(username=username, defaults={
-                    'email': email,
-                    'is_active': True
-                })
-                if created:
-                    user.set_password(password)
+                user = UserManager.get_by_username(username)
+                created = False
+                if not user:
+                    user = UserManager.create_user(username=username, email=email, password=password)
+                    created = True
                     resultados['creados'] += 1
                 else:
                     if user.email != email:
@@ -268,15 +272,14 @@ def forgot_username(request):
     if request.method == 'POST':
         email = request.POST.get('email', '')
         
-        User = get_user_model()
+        # User = get_user_model()
         try:
-            user = User.objects.get(email=email)
-            
+            user = UserManager.get_by_email(email)
+            if not user:
+                raise User.DoesNotExist()
             temp_password = ''.join(random.choices(string.ascii_letters + string.digits, k=10))
-            
             user.password = make_password(temp_password)
             user.save()
-            
             subject = 'Recuperación de datos de acceso'
             message = f'''
             Hola {user.first_name},
@@ -291,14 +294,10 @@ def forgot_username(request):
             Saludos,
             El equipo de soporte
             '''
-            
             from_email = 'noreply@tudominio.com'
             recipient_list = [email]
-            
             send_mail(subject, message, from_email, recipient_list, fail_silently=False)
-            
             context['success'] = 'Se ha enviado un correo electrónico con tus datos de acceso'
-            
         except User.DoesNotExist:
             context['error'] = 'No existe ningún usuario con ese correo electrónico'
     
