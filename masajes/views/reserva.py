@@ -94,9 +94,8 @@ def reservar(request):
     if not masaje_id:
         return redirect('home')  
 
-    try:
-        masaje = Masaje.objects.get(id=masaje_id)
-    except Masaje.DoesNotExist:
+    masaje = Masaje.get_by_id(masaje_id)
+    if not masaje:
         return redirect('home')  
 
     if request.method == 'POST':
@@ -120,7 +119,6 @@ def reservar(request):
                 return redirect('pago_tarjeta')  
 
             # Si el método de pago es efectivo guardar la reserva
-            
             reserva = reserva_form.save(commit=False)
             reserva.idCliente = request.user  
             reserva.idMasaje = masaje  
@@ -148,9 +146,8 @@ def pago_tarjeta(request):
             fecha = datetime.strptime(reserva_temp['fecha'], '%Y-%m-%d %H:%M:%S')  
             
             id_masaje = reserva_temp['idMasaje']
-            masaje = Masaje.objects.get(id=id_masaje)  
+            masaje = Masaje.get_by_id(id_masaje)  
             
-
             id_cliente = reserva_temp['idCliente']
             cliente = User.objects.get(id=id_cliente)  
             
@@ -219,7 +216,7 @@ def editar_pago_tarjeta(request):
         if tarjeta_form.is_valid():
             fecha = datetime.strptime(reserva_temp['fecha'], '%Y-%m-%d %H:%M:%S')
             id_masaje = reserva_temp['idMasaje']
-            masaje = Masaje.objects.get(id=id_masaje)
+            masaje = Masaje.get_by_id(id_masaje)
             id_cliente = reserva_temp['idCliente']
             cliente = User.objects.get(id=id_cliente)
             reserva_id = reserva_temp['reserva_id']

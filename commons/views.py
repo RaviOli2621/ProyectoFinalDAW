@@ -31,7 +31,7 @@ def home(request):
 
     imagen_default = 'masajes/crayones.jpg'  
 
-    masajes = Masaje.objects.all()
+    masajes = Masaje.get_all()
     carrusel_items = []
     for masaje in masajes:
         if masaje.foto:  

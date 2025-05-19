@@ -30,13 +30,12 @@ def masajes(request):
     verTipo = True
     
     if tipo_id:
-        masajes = Masaje.objects.filter(tipo_id=tipo_id)
+        masajes = Masaje.get_by_tipo(tipo_id)
         verTipo = False
-        tipos = TipoMasaje.objects.filter(id=tipo_id)  
-
+        tipos = TipoMasaje.get_by_id(tipo_id)
     else:
-        masajes = Masaje.objects.all()
-        tipos = TipoMasaje.objects.all()  
+        masajes = Masaje.get_all()
+        tipos = TipoMasaje.get_all()
 
     for masaje in masajes:
         masaje.foto_nombre = get_filename(masaje.foto)  
@@ -52,9 +51,9 @@ def masajes(request):
 
 def masaje(request):
     id = request.GET.get('tipo')
-    masaje = Masaje.objects.filter(id=id).first()
-    masaje.foto_nombre = get_filename(masaje.foto)
-    if id:
+    masaje = Masaje.get_by_id(id)
+    if masaje:
+        masaje.foto_nombre = get_filename(masaje.foto)
         return render(request, 'masaje.html', {
             "masaje": masaje,
         })  

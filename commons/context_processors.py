@@ -2,7 +2,7 @@ from masajes.models import TipoMasaje
 from django.conf import settings
 
 def tipos_masajes(request):
-    tipos = TipoMasaje.objects.all()
+    tipos = TipoMasaje.get_all()
     return {'tipos_masajes': tipos}
 
 def env_vars(request):
