@@ -1,0 +1,106 @@
+[
+{
+  "model": "masajes.masaje",
+  "pk": 1,
+  "fields": {
+    "nombre": "Masaje Descontracturante",
+    "descriptionSh": "Es una técnica de terapia manual, que consiste  en emplear maniobras profundas e intensas, que van dirigidas a zonas de dolor y que buscan eliminar las contracturas y puntos gatillo, ayudando a recuperar la función normal del musculo.",
+    "description": "Con el masaje provocamos que llegue más cantidad de sangre hacia el lugar de la contractura muscular favoreciendo la recuperación del tejido y eliminando los desechos metabolitos. Como consecuencia, se consigue una relajación del músculo y por lo tanto una disminución del dolor.\r\n \r\n\\n\\n- Los beneficios que aporta este tipo de masajes descontracturantes en nuestro organismo son:\r\n\r\n\\n\\n- Recuperación la elasticidad y funcionalidad muscular\r\n\r\n\\n\\n-Activa la circulación sanguínea y de la linfa en la zona afectada.\r\n\r\n\\n\\n- Elimina productos irritantes (toxinas), lo que disminuye la fatiga muscular.\r\n\r\n\\n\\n- Ayuda a mejorar la postura.\r\n\r\n\\n\\n- Relaja al cuerpo de tal manera que ayuda a dormir bien, descansando profundamente.",
+    "foto": "masajes/static/masajes/masaje-descontracturantejpg.jpg",
+    "precio": "50.00",
+    "tipo": 1,
+    "duracion": "01:00:00"
+  }
+},
+{
+  "model": "masajes.masaje",
+  "pk": 2,
+  "fields": {
+    "nombre": "Masaje Sueco",
+    "descriptionSh": "Persigue eliminar las tensiones y reafirmar músculos y articulaciones mediante un efecto tonificante",
+    "description": "Las principales ventajas del masaje Sueco son:\r\n\\n\\n- Alivia el dolor y la tensión muscular: al trabajar en los músculos para relajarlos y aliviar la presión de las fascias, este masaje reduce los niveles de tensión muscular y el dolor.\r\n\r\n\\n\\n- Mejora la circulación: el Masaje Sueco promueve una mejor circulación sanguínea y linfática. Esto permite que los nutrientes y el oxígeno lleguen a los músculos, lo que ayuda a prevenir la fatiga muscular y mejora la resistencia\r\n\r\n\\n\\n- Mejora la flexibilidad y la movilidad: este masaje estira los tejidos y ayuda a aliviar la rigidez muscular y a mejorar la movilidad. Esto mejora la flexibilidad del cuerpo y reduce la probabilidad de lesiones y las famosas “rampas”.",
+    "foto": "masajes/static/masajes/sueco.jpg",
+    "precio": "45.00",
+    "tipo": 2,
+    "duracion": "01:00:00"
+  }
+},
+{
+  "model": "masajes.masaje",
+  "pk": 3,
+  "fields": {
+    "nombre": "Masaje Shiatsu",
+    "descriptionSh": "El Shiatsu es una práctica tradicional japonesa de terapia manual que busca restablecer el equilibri",
+    "description": "Basado en los principios de la medicina oriental, el Shiatsu sostiene la idea de que la circulación fluida de la energía vital, conocida como «ki», es esencial para mantener la salud. El Shiatsu ofrece un enfoque holístico, considerando el cuerpo y la mente como interconectados. Poniendo énfasis en la prevención y la promoción del bienestar, esta técnica terapéutica contribuye a reducir el estrés, alivia las tensiones musculares y mejora la circulación energética general. Gracias a sus múltiples beneficios, el Shiatsu se presenta como un método natural para mantener la vitalidad y la armonía interna.",
+    "foto": "masajes/static/masajes/shiatsu.jpg",
+    "precio": "60.00",
+    "tipo": 3,
+    "duracion": "01:00:00"
+  }
+},
+{
+  "model": "masajes.masaje",
+  "pk": 4,
+  "fields": {
+    "nombre": "Masaje Reductor",
+    "descriptionSh": "El masaje reductor es una técnica especializada, diseñada para modelar y tonificar el cuerpo.",
+    "description": "El objetivo del masaje reductor y anticelulítico es fundamentalmente estético, ya que trata de moldear la figura y de redistribuir la grasa corporal o eliminarla en cada sesión a través del sistema linfático. Los masajes reductores combinados con una dieta sana y ejercicio regular permiten reducir medidas corporales y ayuda a mejorar el físico, teniendo efectos positivos tanto fisiológicos y como psicológicos.\r\nLos beneficios del masaje reductor son:\r\n\\n\\n- Mejora la apariencia de la piel mediante la hidratación de la misma.\r\n\\n\\n- Reduce la grasa corporal\r\n\\n\\n- Moldea y estiliza tu figura\r\n\\n\\n- Elimina la celulitis o piel de naranja\r\n\\n\\n- Favorece el flujo sanguíneo\r\n\\n\\n- Elimina toxinas\r\n\\n\\n- Mejora el sistema digestivo",
+    "foto": "masajes/static/masajes/masajes-reductores.jpg",
+    "precio": "55.00",
+    "tipo": 4,
+    "duracion": "01:00:00"
+  }
+},
+{
+  "model": "masajes.masaje",
+  "pk": 5,
+  "fields": {
+    "nombre": "Masaje con Ventosas (Cupping)",
+    "descriptionSh": "Es una técnica que implica la colocación de tazas o ventosas en la piel para crear succión.",
+    "description": "El cupping se ha integrado cada vez más en la fisioterapia moderna debido a sus múltiples beneficios para la salud. En este contexto, las ventosas se utilizan principalmente para: \r\n\\n\\n - Aliviar el dolor muscular y articular. La succión creada por las ventosas aumenta la circulación sanguínea en la zona tratada, lo que puede reducir la tensión muscular y disminuir la percepción del dolor.\r\n\\n\\n - Mejorar la flexibilidad y el rango de movimiento en articulaciones rígidas o músculos tensos. Al aumentar la circulación y reducir la tensión, los pacientes pueden experimentar una mayor libertad de movimiento.\r\n\\n\\n - Acelerar la recuperación de lesiones musculares o articulares al mejorar la circulación sanguínea y linfática.",
+    "foto": "masajes/static/masajes-con-ventosas-chinas.jpg",
+    "precio": "50.00",
+    "tipo": 5,
+    "duracion": "01:00:00"
+  }
+},
+{
+  "model": "masajes.masaje",
+  "pk": 6,
+  "fields": {
+    "nombre": "Reflexodología Podal",
+    "descriptionSh": "Mejorar la circulación, estimular los músculos, reducir la tensión y a aliviar el dolo",
+    "description": "La reflexodlogía podal es una técnica ancestral que utiliza la presión en los reflejos de los pies para equilibrar todos los sistemas corporales. Ayuda a las personas a resolver problemas tanto corporales como emocionales. Con la reflexología se puede favorecer:\r\n\\n\\n- La relajación profunda\r\n\\n\\n- Mejorar la circulación sanguínea\r\n\\n\\n- Hacer que se disuelvan los sedimentos y residuos en el lugar de origen de los bloqueos energéticos\r\n\\n\\n- Liberar la energía de cualquier bloqueo para que circule y fluya por todo el organismo\r\n\\n\\n- Normalizar el funcionamiento orgánico y glandular",
+    "foto": "masajes/static/masajes/masaje-pies.jpg",
+    "precio": "30.00",
+    "tipo": 1,
+    "duracion": "01:00:00"
+  }
+},
+{
+  "model": "masajes.masaje",
+  "pk": 7,
+  "fields": {
+    "nombre": "Masaje facial japonés Kobido",
+    "descriptionSh": "Kobido es el masaje facial más antiguo de Japón y significa “antiguo camino de la belleza”.",
+    "description": "Kobido o \"Antiguo camino de la Belleza\", es una técnica natural que mejora la condición de la piel minimizando su envejecimiento. Conseguimos que nuestra piel se muestre más lisa, firme y radiante. Este masaje ofrece un efecto rejuvenecedor al mejorar la elasticidad de la piel y reducir visiblemente las arrugas y líneas de expresión. Su efecto lifting natural tonifica los músculos faciales, ayudando a mantener una apariencia juvenil.",
+    "foto": "masajes/static/masajes/kobido.jpg",
+    "precio": "140.00",
+    "tipo": 3,
+    "duracion": "01:00:00"
+  }
+},
+{
+  "model": "masajes.masaje",
+  "pk": 8,
+  "fields": {
+    "nombre": "Maderoterapia",
+    "descriptionSh": "Intenso masaje manual utilizando diferentes instrumentos de madera, que puede combatir la celulitis",
+    "description": "La maderoterapia es una técnica de masaje terapéutico y estético que utiliza instrumentos de madera. Su origen se encuentra en culturas orientales, aunque ha sido modernizada y adaptada en Latinoamérica y Europa. Se utiliza principalmente para: \r\n\\n\\n- Reducir celulitis y adiposidad localizada.\r\n\r\n\\n\\n- Tonificar el cuerpo.\r\n\r\n\\n\\n- Mejorar la circulación sanguínea y linfática.\r\n\r\n\\n\\n- Estimular la producción de colágen",
+    "foto": "masajes/static/masajes/maderoterapia.jpeg",
+    "precio": "40.00",
+    "tipo": 4,
+    "duracion": "01:00:00"
+  }
+}
+]

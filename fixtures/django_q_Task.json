@@ -1,0 +1,1226 @@
+[
+{
+  "model": "django_q.task",
+  "pk": "03189cafe5144b6a88a977e9278a62a4",
+  "fields": {
+    "name": "cola-spaghetti-salami-johnny",
+    "func": "commons.tasks.enviar_correo_diario",
+    "hook": null,
+    "args": "gAUpLg==",
+    "kwargs": "gAV9lC4=",
+    "result": "gAWVbwEAAAAAAABYaAEAAEZ1bmN0aW9uIGNvbW1vbnMudGFza3MuZW52aWFyX2NvcnJlb19kaWFyaW8gaXMgbm90IGRlZmluZWQgOiBUcmFjZWJhY2sgKG1vc3QgcmVjZW50IGNhbGwgbGFzdCk6CiAgRmlsZSAiQzpceGFtcHBcaHRkb2NzXFByYWN0aXF1ZXNcUHJvamVjdGVcUHJvamVjdGUgZmluYWxcRmluYWxcdmVudlxMaWJcc2l0ZS1wYWNrYWdlc1xkamFuZ29fcVx3b3JrZXIucHkiLCBsaW5lIDEwMSwgaW4gd29ya2VyCiAgICByYWlzZSBWYWx1ZUVycm9yKGYiRnVuY3Rpb24ge3Rhc2tbJ2Z1bmMnXX0gaXMgbm90IGRlZmluZWQiKQpWYWx1ZUVycm9yOiBGdW5jdGlvbiBjb21tb25zLnRhc2tzLmVudmlhcl9jb3JyZW9fZGlhcmlvIGlzIG5vdCBkZWZpbmVkCpQu",
+    "group": "test_email",
+    "cluster": "DailyTasks",
+    "started": "2025-05-04T16:27:28.034Z",
+    "stopped": "2025-05-04T16:37:30.738Z",
+    "success": false,
+    "attempt_count": 2
+  }
+},
+{
+  "model": "django_q.task",
+  "pk": "03213c4622b94c6b93f25fd0667ffeea",
+  "fields": {
+    "name": "hamper-romeo-video-august",
+    "func": "commons.tasks.enviar_correo_hola",
+    "hook": null,
+    "args": "gAUpLg==",
+    "kwargs": "gAV9lC4=",
+    "result": "gAWVawEAAAAAAABYZAEAAEZ1bmN0aW9uIGNvbW1vbnMudGFza3MuZW52aWFyX2NvcnJlb19ob2xhIGlzIG5vdCBkZWZpbmVkIDogVHJhY2ViYWNrIChtb3N0IHJlY2VudCBjYWxsIGxhc3QpOgogIEZpbGUgIkM6XHhhbXBwXGh0ZG9jc1xQcmFjdGlxdWVzXFByb2plY3RlXFByb2plY3RlIGZpbmFsXEZpbmFsXHZlbnZcTGliXHNpdGUtcGFja2FnZXNcZGphbmdvX3Fcd29ya2VyLnB5IiwgbGluZSAxMDEsIGluIHdvcmtlcgogICAgcmFpc2UgVmFsdWVFcnJvcihmIkZ1bmN0aW9uIHt0YXNrWydmdW5jJ119IGlzIG5vdCBkZWZpbmVkIikKVmFsdWVFcnJvcjogRnVuY3Rpb24gY29tbW9ucy50YXNrcy5lbnZpYXJfY29ycmVvX2hvbGEgaXMgbm90IGRlZmluZWQKlC4=",
+    "group": "test_email",
+    "cluster": "DailyTasks",
+    "started": "2025-05-03T17:41:55.245Z",
+    "stopped": "2025-05-04T16:31:38.217Z",
+    "success": false,
+    "attempt_count": 4
+  }
+},
+{
+  "model": "django_q.task",
+  "pk": "041bcac661f0441d802490ba49507da0",
+  "fields": {
+    "name": "beer-six-missouri-shade",
+    "func": "commons.tasks.manage_reservations",
+    "hook": null,
+    "args": "gAUpLg==",
+    "kwargs": "gAV9lC4=",
+    "result": "gAWVeAAAAAAAAACMdFNlIG5vdGlmaWNhcm9uIDEgdXN1YXJpb3MgY29uIHJlc2VydmFzIHBhcmEgbWHDsWFuYSB5IHNlIGVsaW1pbmFyb24gMCByZXNlcnZhcyBhbnRpZ3Vhcy4gVHJhYmFqYWRvcmVzIGVsaW1pbmFkb3M6IDAulC4=",
+    "group": "test_email",
+    "cluster": "DailyTasks",
+    "started": "2025-05-04T16:37:43.205Z",
+    "stopped": "2025-05-04T16:37:49.216Z",
+    "success": true,
+    "attempt_count": 1
+  }
+},
+{
+  "model": "django_q.task",
+  "pk": "0c53d3fdd35f4e1abc02f5c2875cff86",
+  "fields": {
+    "name": "kilo-table-michigan-ohio",
+    "func": "commons.tasks.enviar_correo_hola",
+    "hook": null,
+    "args": "gAUpLg==",
+    "kwargs": "gAV9lC4=",
+    "result": "gAWVMwAAAAAAAACML1NlIG5vdGlmaWPDsyBhIDEgdXN1YXJpb3MgY29uIHJlc2VydmFzIHBhc2FkYXMulC4=",
+    "group": "test_email",
+    "cluster": "DailyTasks",
+    "started": "2025-05-03T17:56:37.924Z",
+    "stopped": "2025-05-03T17:56:42.618Z",
+    "success": true,
+    "attempt_count": 1
+  }
+},
+{
+  "model": "django_q.task",
+  "pk": "0e5696dbd06049e2b565e091620ae3b1",
+  "fields": {
+    "name": "beryllium-bulldog-october-edward",
+    "func": "commons.tasks.manage_reservations",
+    "hook": null,
+    "args": "gAUpLg==",
+    "kwargs": "gAV9lC4=",
+    "result": "gAWVeAAAAAAAAACMdFNlIG5vdGlmaWNhcm9uIDEgdXN1YXJpb3MgY29uIHJlc2VydmFzIHBhcmEgbWHDsWFuYSB5IHNlIGVsaW1pbmFyb24gMCByZXNlcnZhcyBhbnRpZ3Vhcy4gVHJhYmFqYWRvcmVzIGVsaW1pbmFkb3M6IDAulC4=",
+    "group": "test_email",
+    "cluster": "DailyTasks",
+    "started": "2025-05-04T16:34:31.834Z",
+    "stopped": "2025-05-04T16:34:38.565Z",
+    "success": true,
+    "attempt_count": 1
+  }
+},
+{
+  "model": "django_q.task",
+  "pk": "15042e141fc84b9bb647f619666bdfaa",
+  "fields": {
+    "name": "comet-april-california-leopard",
+    "func": "commons.tasks.enviar_correo_hola",
+    "hook": null,
+    "args": "gAUpLg==",
+    "kwargs": "gAV9lC4=",
+    "result": "gAWVMwAAAAAAAACML1NlIG5vdGlmaWPDsyBhIDEgdXN1YXJpb3MgY29uIHJlc2VydmFzIHBhc2FkYXMulC4=",
+    "group": "test_email",
+    "cluster": "DailyTasks",
+    "started": "2025-05-03T17:27:24.249Z",
+    "stopped": "2025-05-03T17:57:35.081Z",
+    "success": true,
+    "attempt_count": 3
+  }
+},
+{
+  "model": "django_q.task",
+  "pk": "169b7d4d47324b80a39bcd6f692b2052",
+  "fields": {
+    "name": "rugby-sad-nevada-december",
+    "func": "commons.tasks.enviar_correo_hola",
+    "hook": null,
+    "args": "gAUpLg==",
+    "kwargs": "gAV9lC4=",
+    "result": "gAWVawEAAAAAAABYZAEAAEZ1bmN0aW9uIGNvbW1vbnMudGFza3MuZW52aWFyX2NvcnJlb19ob2xhIGlzIG5vdCBkZWZpbmVkIDogVHJhY2ViYWNrIChtb3N0IHJlY2VudCBjYWxsIGxhc3QpOgogIEZpbGUgIkM6XHhhbXBwXGh0ZG9jc1xQcmFjdGlxdWVzXFByb2plY3RlXFByb2plY3RlIGZpbmFsXEZpbmFsXHZlbnZcTGliXHNpdGUtcGFja2FnZXNcZGphbmdvX3Fcd29ya2VyLnB5IiwgbGluZSAxMDEsIGluIHdvcmtlcgogICAgcmFpc2UgVmFsdWVFcnJvcihmIkZ1bmN0aW9uIHt0YXNrWydmdW5jJ119IGlzIG5vdCBkZWZpbmVkIikKVmFsdWVFcnJvcjogRnVuY3Rpb24gY29tbW9ucy50YXNrcy5lbnZpYXJfY29ycmVvX2hvbGEgaXMgbm90IGRlZmluZWQKlC4=",
+    "group": "test_email",
+    "cluster": "DailyTasks",
+    "started": "2025-05-04T16:23:33.218Z",
+    "stopped": "2025-05-04T16:33:36.368Z",
+    "success": false,
+    "attempt_count": 2
+  }
+},
+{
+  "model": "django_q.task",
+  "pk": "170ebf170e614baa9624420b2226a4d0",
+  "fields": {
+    "name": "pluto-missouri-xray-kentucky",
+    "func": "commons.tasks.manage_reservations",
+    "hook": null,
+    "args": "gAUpLg==",
+    "kwargs": "gAV9lC4=",
+    "result": "gAWVeAAAAAAAAACMdFNlIG5vdGlmaWNhcm9uIDEgdXN1YXJpb3MgY29uIHJlc2VydmFzIHBhcmEgbWHDsWFuYSB5IHNlIGVsaW1pbmFyb24gMCByZXNlcnZhcyBhbnRpZ3Vhcy4gVHJhYmFqYWRvcmVzIGVsaW1pbmFkb3M6IDAulC4=",
+    "group": "test_email",
+    "cluster": "DailyTasks",
+    "started": "2025-05-04T16:36:39.395Z",
+    "stopped": "2025-05-04T16:36:45.987Z",
+    "success": true,
+    "attempt_count": 1
+  }
+},
+{
+  "model": "django_q.task",
+  "pk": "19343a823e0b48f7956fdd337bd94810",
+  "fields": {
+    "name": "muppet-mike-berlin-wyoming",
+    "func": "commons.tasks.enviar_correo_hola",
+    "hook": null,
+    "args": "gAUpLg==",
+    "kwargs": "gAV9lC4=",
+    "result": "gAWVawEAAAAAAABYZAEAAEZ1bmN0aW9uIGNvbW1vbnMudGFza3MuZW52aWFyX2NvcnJlb19ob2xhIGlzIG5vdCBkZWZpbmVkIDogVHJhY2ViYWNrIChtb3N0IHJlY2VudCBjYWxsIGxhc3QpOgogIEZpbGUgIkM6XHhhbXBwXGh0ZG9jc1xQcmFjdGlxdWVzXFByb2plY3RlXFByb2plY3RlIGZpbmFsXEZpbmFsXHZlbnZcTGliXHNpdGUtcGFja2FnZXNcZGphbmdvX3Fcd29ya2VyLnB5IiwgbGluZSAxMDEsIGluIHdvcmtlcgogICAgcmFpc2UgVmFsdWVFcnJvcihmIkZ1bmN0aW9uIHt0YXNrWydmdW5jJ119IGlzIG5vdCBkZWZpbmVkIikKVmFsdWVFcnJvcjogRnVuY3Rpb24gY29tbW9ucy50YXNrcy5lbnZpYXJfY29ycmVvX2hvbGEgaXMgbm90IGRlZmluZWQKlC4=",
+    "group": "test_email",
+    "cluster": "DailyTasks",
+    "started": "2025-05-04T16:25:19.654Z",
+    "stopped": "2025-05-04T16:35:23.747Z",
+    "success": false,
+    "attempt_count": 2
+  }
+},
+{
+  "model": "django_q.task",
+  "pk": "1dd5a8ea5f7b48499ee8bf334ee91081",
+  "fields": {
+    "name": "mike-charlie-wyoming-early",
+    "func": "commons.tasks.manage_reservations",
+    "hook": null,
+    "args": "gAUpLg==",
+    "kwargs": "gAV9lC4=",
+    "result": "gAWVeAAAAAAAAACMdFNlIG5vdGlmaWNhcm9uIDEgdXN1YXJpb3MgY29uIHJlc2VydmFzIHBhcmEgbWHDsWFuYSB5IHNlIGVsaW1pbmFyb24gMCByZXNlcnZhcyBhbnRpZ3Vhcy4gVHJhYmFqYWRvcmVzIGVsaW1pbmFkb3M6IDAulC4=",
+    "group": "test_email",
+    "cluster": "DailyTasks",
+    "started": "2025-05-04T16:31:20.851Z",
+    "stopped": "2025-05-04T16:31:26.918Z",
+    "success": true,
+    "attempt_count": 1
+  }
+},
+{
+  "model": "django_q.task",
+  "pk": "1f564ab13ef74594a1ec880e9d4fdb7b",
+  "fields": {
+    "name": "potato-blue-snake-king",
+    "func": "commons.tasks.enviar_correo_hola",
+    "hook": null,
+    "args": "gAUpLg==",
+    "kwargs": "gAV9lC4=",
+    "result": "gAWVawEAAAAAAABYZAEAAEZ1bmN0aW9uIGNvbW1vbnMudGFza3MuZW52aWFyX2NvcnJlb19ob2xhIGlzIG5vdCBkZWZpbmVkIDogVHJhY2ViYWNrIChtb3N0IHJlY2VudCBjYWxsIGxhc3QpOgogIEZpbGUgIkM6XHhhbXBwXGh0ZG9jc1xQcmFjdGlxdWVzXFByb2plY3RlXFByb2plY3RlIGZpbmFsXEZpbmFsXHZlbnZcTGliXHNpdGUtcGFja2FnZXNcZGphbmdvX3Fcd29ya2VyLnB5IiwgbGluZSAxMDEsIGluIHdvcmtlcgogICAgcmFpc2UgVmFsdWVFcnJvcihmIkZ1bmN0aW9uIHt0YXNrWydmdW5jJ119IGlzIG5vdCBkZWZpbmVkIikKVmFsdWVFcnJvcjogRnVuY3Rpb24gY29tbW9ucy50YXNrcy5lbnZpYXJfY29ycmVvX2hvbGEgaXMgbm90IGRlZmluZWQKlC4=",
+    "group": "test_email",
+    "cluster": "DailyTasks",
+    "started": "2025-05-04T16:26:34.203Z",
+    "stopped": "2025-05-04T16:36:37.901Z",
+    "success": false,
+    "attempt_count": 2
+  }
+},
+{
+  "model": "django_q.task",
+  "pk": "22b53fc57b0a4372b7c8e8f32d2c3f30",
+  "fields": {
+    "name": "july-equal-indigo-autumn",
+    "func": "commons.tasks.enviar_correo_hola",
+    "hook": null,
+    "args": "gAUpLg==",
+    "kwargs": "gAV9lC4=",
+    "result": "gAWVawEAAAAAAABYZAEAAEZ1bmN0aW9uIGNvbW1vbnMudGFza3MuZW52aWFyX2NvcnJlb19ob2xhIGlzIG5vdCBkZWZpbmVkIDogVHJhY2ViYWNrIChtb3N0IHJlY2VudCBjYWxsIGxhc3QpOgogIEZpbGUgIkM6XHhhbXBwXGh0ZG9jc1xQcmFjdGlxdWVzXFByb2plY3RlXFByb2plY3RlIGZpbmFsXEZpbmFsXHZlbnZcTGliXHNpdGUtcGFja2FnZXNcZGphbmdvX3Fcd29ya2VyLnB5IiwgbGluZSAxMDEsIGluIHdvcmtlcgogICAgcmFpc2UgVmFsdWVFcnJvcihmIkZ1bmN0aW9uIHt0YXNrWydmdW5jJ119IGlzIG5vdCBkZWZpbmVkIikKVmFsdWVFcnJvcjogRnVuY3Rpb24gY29tbW9ucy50YXNrcy5lbnZpYXJfY29ycmVvX2hvbGEgaXMgbm90IGRlZmluZWQKlC4=",
+    "group": "test_email",
+    "cluster": "DailyTasks",
+    "started": "2025-05-04T16:24:15.833Z",
+    "stopped": "2025-05-04T16:34:20.447Z",
+    "success": false,
+    "attempt_count": 2
+  }
+},
+{
+  "model": "django_q.task",
+  "pk": "24198e9f72cf4988bd73955166ebc238",
+  "fields": {
+    "name": "connecticut-london-artist-lemon",
+    "func": "commons.tasks.enviar_correo_hola",
+    "hook": null,
+    "args": "gAUpLg==",
+    "kwargs": "gAV9lC4=",
+    "result": "gAWVawEAAAAAAABYZAEAAEZ1bmN0aW9uIGNvbW1vbnMudGFza3MuZW52aWFyX2NvcnJlb19ob2xhIGlzIG5vdCBkZWZpbmVkIDogVHJhY2ViYWNrIChtb3N0IHJlY2VudCBjYWxsIGxhc3QpOgogIEZpbGUgIkM6XHhhbXBwXGh0ZG9jc1xQcmFjdGlxdWVzXFByb2plY3RlXFByb2plY3RlIGZpbmFsXEZpbmFsXHZlbnZcTGliXHNpdGUtcGFja2FnZXNcZGphbmdvX3Fcd29ya2VyLnB5IiwgbGluZSAxMDEsIGluIHdvcmtlcgogICAgcmFpc2UgVmFsdWVFcnJvcihmIkZ1bmN0aW9uIHt0YXNrWydmdW5jJ119IGlzIG5vdCBkZWZpbmVkIikKVmFsdWVFcnJvcjogRnVuY3Rpb24gY29tbW9ucy50YXNrcy5lbnZpYXJfY29ycmVvX2hvbGEgaXMgbm90IGRlZmluZWQKlC4=",
+    "group": "test_email",
+    "cluster": "DailyTasks",
+    "started": "2025-05-04T16:24:03.312Z",
+    "stopped": "2025-05-04T16:34:05.884Z",
+    "success": false,
+    "attempt_count": 2
+  }
+},
+{
+  "model": "django_q.task",
+  "pk": "267cebabf9c84c6493deb25f0d07c9a6",
+  "fields": {
+    "name": "bravo-bluebird-nuts-ink",
+    "func": "commons.tasks.enviar_correo_hola",
+    "hook": null,
+    "args": "gAUpLg==",
+    "kwargs": "gAV9lC4=",
+    "result": "gAWVawEAAAAAAABYZAEAAEZ1bmN0aW9uIGNvbW1vbnMudGFza3MuZW52aWFyX2NvcnJlb19ob2xhIGlzIG5vdCBkZWZpbmVkIDogVHJhY2ViYWNrIChtb3N0IHJlY2VudCBjYWxsIGxhc3QpOgogIEZpbGUgIkM6XHhhbXBwXGh0ZG9jc1xQcmFjdGlxdWVzXFByb2plY3RlXFByb2plY3RlIGZpbmFsXEZpbmFsXHZlbnZcTGliXHNpdGUtcGFja2FnZXNcZGphbmdvX3Fcd29ya2VyLnB5IiwgbGluZSAxMDEsIGluIHdvcmtlcgogICAgcmFpc2UgVmFsdWVFcnJvcihmIkZ1bmN0aW9uIHt0YXNrWydmdW5jJ119IGlzIG5vdCBkZWZpbmVkIikKVmFsdWVFcnJvcjogRnVuY3Rpb24gY29tbW9ucy50YXNrcy5lbnZpYXJfY29ycmVvX2hvbGEgaXMgbm90IGRlZmluZWQKlC4=",
+    "group": "test_email",
+    "cluster": "DailyTasks",
+    "started": "2025-05-04T16:23:44.016Z",
+    "stopped": "2025-05-04T16:33:49.293Z",
+    "success": false,
+    "attempt_count": 2
+  }
+},
+{
+  "model": "django_q.task",
+  "pk": "29b160000a8b4bd1a78b4568b20d08ff",
+  "fields": {
+    "name": "wisconsin-bulldog-alabama-fix",
+    "func": "commons.tasks.enviar_correo_hola",
+    "hook": null,
+    "args": "gAUpLg==",
+    "kwargs": "gAV9lC4=",
+    "result": true,
+    "group": "test_email",
+    "cluster": "DailyTasks",
+    "started": "2025-05-03T16:57:11.893Z",
+    "stopped": "2025-05-03T17:07:18.044Z",
+    "success": true,
+    "attempt_count": 2
+  }
+},
+{
+  "model": "django_q.task",
+  "pk": "2a498cb6c4934e92b36b78392d80b6ae",
+  "fields": {
+    "name": "happy-minnesota-network-quebec",
+    "func": "commons.tasks.manage_reservations",
+    "hook": null,
+    "args": "gAUpLg==",
+    "kwargs": "gAV9lC4=",
+    "result": "gAWVeAAAAAAAAACMdFNlIG5vdGlmaWNhcm9uIDEgdXN1YXJpb3MgY29uIHJlc2VydmFzIHBhcmEgbWHDsWFuYSB5IHNlIGVsaW1pbmFyb24gMCByZXNlcnZhcyBhbnRpZ3Vhcy4gVHJhYmFqYWRvcmVzIGVsaW1pbmFkb3M6IDAulC4=",
+    "group": "test_email",
+    "cluster": "DailyTasks",
+    "started": "2025-05-04T16:35:35.494Z",
+    "stopped": "2025-05-04T16:35:42.643Z",
+    "success": true,
+    "attempt_count": 1
+  }
+},
+{
+  "model": "django_q.task",
+  "pk": "345db4d230ab4b13b16552dc838284f9",
+  "fields": {
+    "name": "avocado-seventeen-harry-london",
+    "func": "commons.tasks.manage_reservations",
+    "hook": null,
+    "args": "gAUpLg==",
+    "kwargs": "gAV9lC4=",
+    "result": "gAWVXAAAAAAAAACMWFNlIG5vdGlmaWNhcm9uIDEgdXN1YXJpb3MgY29uIHJlc2VydmFzIHBhcmEgbWHDsWFuYSB5IHNlIGVsaW1pbmFyb24gMCByZXNlcnZhcyBhbnRpZ3Vhcy6ULg==",
+    "group": "test_email",
+    "cluster": "DailyTasks",
+    "started": "2025-05-04T16:35:37.302Z",
+    "stopped": "2025-05-04T16:35:39.031Z",
+    "success": true,
+    "attempt_count": 1
+  }
+},
+{
+  "model": "django_q.task",
+  "pk": "34f4a881dbb3431db7a16a1f3ee5898b",
+  "fields": {
+    "name": "utah-early-india-tango",
+    "func": "commons.tasks.enviar_correo_hola",
+    "hook": null,
+    "args": "gAUpLg==",
+    "kwargs": "gAV9lC4=",
+    "result": "gAWVawEAAAAAAABYZAEAAEZ1bmN0aW9uIGNvbW1vbnMudGFza3MuZW52aWFyX2NvcnJlb19ob2xhIGlzIG5vdCBkZWZpbmVkIDogVHJhY2ViYWNrIChtb3N0IHJlY2VudCBjYWxsIGxhc3QpOgogIEZpbGUgIkM6XHhhbXBwXGh0ZG9jc1xQcmFjdGlxdWVzXFByb2plY3RlXFByb2plY3RlIGZpbmFsXEZpbmFsXHZlbnZcTGliXHNpdGUtcGFja2FnZXNcZGphbmdvX3Fcd29ya2VyLnB5IiwgbGluZSAxMDEsIGluIHdvcmtlcgogICAgcmFpc2UgVmFsdWVFcnJvcihmIkZ1bmN0aW9uIHt0YXNrWydmdW5jJ119IGlzIG5vdCBkZWZpbmVkIikKVmFsdWVFcnJvcjogRnVuY3Rpb24gY29tbW9ucy50YXNrcy5lbnZpYXJfY29ycmVvX2hvbGEgaXMgbm90IGRlZmluZWQKlC4=",
+    "group": "test_email",
+    "cluster": "DailyTasks",
+    "started": "2025-05-03T17:31:55.838Z",
+    "stopped": "2025-05-04T16:31:38.218Z",
+    "success": false,
+    "attempt_count": 5
+  }
+},
+{
+  "model": "django_q.task",
+  "pk": "35b32b771f784159b2fefdba271cd41e",
+  "fields": {
+    "name": "ten-magazine-asparagus-washington",
+    "func": "commons.tasks.enviar_correo_hola",
+    "hook": null,
+    "args": "gAUpLg==",
+    "kwargs": "gAV9lC4=",
+    "result": "gAWVawEAAAAAAABYZAEAAEZ1bmN0aW9uIGNvbW1vbnMudGFza3MuZW52aWFyX2NvcnJlb19ob2xhIGlzIG5vdCBkZWZpbmVkIDogVHJhY2ViYWNrIChtb3N0IHJlY2VudCBjYWxsIGxhc3QpOgogIEZpbGUgIkM6XHhhbXBwXGh0ZG9jc1xQcmFjdGlxdWVzXFByb2plY3RlXFByb2plY3RlIGZpbmFsXEZpbmFsXHZlbnZcTGliXHNpdGUtcGFja2FnZXNcZGphbmdvX3Fcd29ya2VyLnB5IiwgbGluZSAxMDEsIGluIHdvcmtlcgogICAgcmFpc2UgVmFsdWVFcnJvcihmIkZ1bmN0aW9uIHt0YXNrWydmdW5jJ119IGlzIG5vdCBkZWZpbmVkIikKVmFsdWVFcnJvcjogRnVuY3Rpb24gY29tbW9ucy50YXNrcy5lbnZpYXJfY29ycmVvX2hvbGEgaXMgbm90IGRlZmluZWQKlC4=",
+    "group": "test_email",
+    "cluster": "DailyTasks",
+    "started": "2025-05-04T16:26:55.884Z",
+    "stopped": "2025-05-04T16:37:00.923Z",
+    "success": false,
+    "attempt_count": 2
+  }
+},
+{
+  "model": "django_q.task",
+  "pk": "3620170fce9144b5aa76fb7495644fd4",
+  "fields": {
+    "name": "autumn-pennsylvania-georgia-jig",
+    "func": "commons.tasks.enviar_correo_hola",
+    "hook": null,
+    "args": "gAUpLg==",
+    "kwargs": "gAV9lC4=",
+    "result": "gAWVMwAAAAAAAACML1NlIG5vdGlmaWPDsyBhIDEgdXN1YXJpb3MgY29uIHJlc2VydmFzIHBhc2FkYXMulC4=",
+    "group": "test_email",
+    "cluster": "DailyTasks",
+    "started": "2025-05-03T17:46:49.250Z",
+    "stopped": "2025-05-03T17:56:56.247Z",
+    "success": true,
+    "attempt_count": 2
+  }
+},
+{
+  "model": "django_q.task",
+  "pk": "3c0628fc15fa455f8433553bafc43b29",
+  "fields": {
+    "name": "video-william-tango-lima",
+    "func": "commons.tasks.manage_reservations",
+    "hook": null,
+    "args": "gAUpLg==",
+    "kwargs": "gAV9lC4=",
+    "result": "gAWVXAAAAAAAAACMWFNlIG5vdGlmaWNhcm9uIDEgdXN1YXJpb3MgY29uIHJlc2VydmFzIHBhcmEgbWHDsWFuYSB5IHNlIGVsaW1pbmFyb24gMCByZXNlcnZhcyBhbnRpZ3Vhcy6ULg==",
+    "group": "test_email",
+    "cluster": "DailyTasks",
+    "started": "2025-05-04T16:35:07.109Z",
+    "stopped": "2025-05-04T16:35:08.905Z",
+    "success": true,
+    "attempt_count": 1
+  }
+},
+{
+  "model": "django_q.task",
+  "pk": "3d25b4a2da614417a9e1857f1eb30e6a",
+  "fields": {
+    "name": "autumn-uranus-potato-sixteen",
+    "func": "commons.tasks.manage_reservations",
+    "hook": null,
+    "args": "gAUpLg==",
+    "kwargs": "gAV9lC4=",
+    "result": "gAWVeAAAAAAAAACMdFNlIG5vdGlmaWNhcm9uIDEgdXN1YXJpb3MgY29uIHJlc2VydmFzIHBhcmEgbWHDsWFuYSB5IHNlIGVsaW1pbmFyb24gMCByZXNlcnZhcyBhbnRpZ3Vhcy4gVHJhYmFqYWRvcmVzIGVsaW1pbmFkb3M6IDAulC4=",
+    "group": "test_email",
+    "cluster": "DailyTasks",
+    "started": "2025-05-04T16:37:11.215Z",
+    "stopped": "2025-05-04T16:37:17.803Z",
+    "success": true,
+    "attempt_count": 1
+  }
+},
+{
+  "model": "django_q.task",
+  "pk": "3d88fed5f485466389717a88436c5c88",
+  "fields": {
+    "name": "north-glucose-artist-xray",
+    "func": "commons.tasks.enviar_correo_hola",
+    "hook": null,
+    "args": "gAUpLg==",
+    "kwargs": "gAV9lC4=",
+    "result": "gAWVawEAAAAAAABYZAEAAEZ1bmN0aW9uIGNvbW1vbnMudGFza3MuZW52aWFyX2NvcnJlb19ob2xhIGlzIG5vdCBkZWZpbmVkIDogVHJhY2ViYWNrIChtb3N0IHJlY2VudCBjYWxsIGxhc3QpOgogIEZpbGUgIkM6XHhhbXBwXGh0ZG9jc1xQcmFjdGlxdWVzXFByb2plY3RlXFByb2plY3RlIGZpbmFsXEZpbmFsXHZlbnZcTGliXHNpdGUtcGFja2FnZXNcZGphbmdvX3Fcd29ya2VyLnB5IiwgbGluZSAxMDEsIGluIHdvcmtlcgogICAgcmFpc2UgVmFsdWVFcnJvcihmIkZ1bmN0aW9uIHt0YXNrWydmdW5jJ119IGlzIG5vdCBkZWZpbmVkIikKVmFsdWVFcnJvcjogRnVuY3Rpb24gY29tbW9ucy50YXNrcy5lbnZpYXJfY29ycmVvX2hvbGEgaXMgbm90IGRlZmluZWQKlC4=",
+    "group": "test_email",
+    "cluster": "DailyTasks",
+    "started": "2025-05-04T16:25:33.902Z",
+    "stopped": "2025-05-04T16:35:36.584Z",
+    "success": false,
+    "attempt_count": 2
+  }
+},
+{
+  "model": "django_q.task",
+  "pk": "3fb7ac77838b430580647f588c40bd32",
+  "fields": {
+    "name": "georgia-foxtrot-seventeen-fifteen",
+    "func": "commons.tasks.manage_reservations",
+    "hook": null,
+    "args": "gAUpLg==",
+    "kwargs": "gAV9lC4=",
+    "result": "gAWVeAAAAAAAAACMdFNlIG5vdGlmaWNhcm9uIDEgdXN1YXJpb3MgY29uIHJlc2VydmFzIHBhcmEgbWHDsWFuYSB5IHNlIGVsaW1pbmFyb24gMCByZXNlcnZhcyBhbnRpZ3Vhcy4gVHJhYmFqYWRvcmVzIGVsaW1pbmFkb3M6IDAulC4=",
+    "group": "test_email",
+    "cluster": "DailyTasks",
+    "started": "2025-05-04T16:33:28.176Z",
+    "stopped": "2025-05-04T16:33:35.323Z",
+    "success": true,
+    "attempt_count": 1
+  }
+},
+{
+  "model": "django_q.task",
+  "pk": "41e2e22f2d8140bab4f561f6db2e2e37",
+  "fields": {
+    "name": "jupiter-green-summer-vermont",
+    "func": "commons.tasks.manage_reservations",
+    "hook": null,
+    "args": "gAUpLg==",
+    "kwargs": "gAV9lC4=",
+    "result": "gAWVXAAAAAAAAACMWFNlIG5vdGlmaWNhcm9uIDEgdXN1YXJpb3MgY29uIHJlc2VydmFzIHBhcmEgbWHDsWFuYSB5IHNlIGVsaW1pbmFyb24gMCByZXNlcnZhcyBhbnRpZ3Vhcy6ULg==",
+    "group": "test_email",
+    "cluster": "DailyTasks",
+    "started": "2025-05-04T16:30:35.310Z",
+    "stopped": "2025-05-04T16:30:37.107Z",
+    "success": true,
+    "attempt_count": 1
+  }
+},
+{
+  "model": "django_q.task",
+  "pk": "4d5c0ef3c6da4e2bb4933aee085d0a58",
+  "fields": {
+    "name": "vermont-lima-whiskey-april",
+    "func": "commons.tasks.manage_reservations",
+    "hook": null,
+    "args": "gAUpLg==",
+    "kwargs": "gAV9lC4=",
+    "result": "gAWVeAAAAAAAAACMdFNlIG5vdGlmaWNhcm9uIDEgdXN1YXJpb3MgY29uIHJlc2VydmFzIHBhcmEgbWHDsWFuYSB5IHNlIGVsaW1pbmFyb24gMCByZXNlcnZhcyBhbnRpZ3Vhcy4gVHJhYmFqYWRvcmVzIGVsaW1pbmFkb3M6IDAulC4=",
+    "group": "test_email",
+    "cluster": "DailyTasks",
+    "started": "2025-05-04T16:36:07.628Z",
+    "stopped": "2025-05-04T16:36:14.188Z",
+    "success": true,
+    "attempt_count": 1
+  }
+},
+{
+  "model": "django_q.task",
+  "pk": "4eb2a87392bc4140bb1de43ee53b00a7",
+  "fields": {
+    "name": "coffee-dakota-london-lima",
+    "func": "commons.tasks.enviar_correo_hola",
+    "hook": null,
+    "args": "gAUpLg==",
+    "kwargs": "gAV9lC4=",
+    "result": "gAWVawEAAAAAAABYZAEAAEZ1bmN0aW9uIGNvbW1vbnMudGFza3MuZW52aWFyX2NvcnJlb19ob2xhIGlzIG5vdCBkZWZpbmVkIDogVHJhY2ViYWNrIChtb3N0IHJlY2VudCBjYWxsIGxhc3QpOgogIEZpbGUgIkM6XHhhbXBwXGh0ZG9jc1xQcmFjdGlxdWVzXFByb2plY3RlXFByb2plY3RlIGZpbmFsXEZpbmFsXHZlbnZcTGliXHNpdGUtcGFja2FnZXNcZGphbmdvX3Fcd29ya2VyLnB5IiwgbGluZSAxMDEsIGluIHdvcmtlcgogICAgcmFpc2UgVmFsdWVFcnJvcihmIkZ1bmN0aW9uIHt0YXNrWydmdW5jJ119IGlzIG5vdCBkZWZpbmVkIikKVmFsdWVFcnJvcjogRnVuY3Rpb24gY29tbW9ucy50YXNrcy5lbnZpYXJfY29ycmVvX2hvbGEgaXMgbm90IGRlZmluZWQKlC4=",
+    "group": "test_email",
+    "cluster": "DailyTasks",
+    "started": "2025-05-03T17:51:52.973Z",
+    "stopped": "2025-05-04T16:31:38.218Z",
+    "success": false,
+    "attempt_count": 3
+  }
+},
+{
+  "model": "django_q.task",
+  "pk": "4ee8f50f19ad44cc81030c590827865f",
+  "fields": {
+    "name": "helium-eighteen-sweet-winner",
+    "func": "commons.tasks.enviar_correo_hola",
+    "hook": null,
+    "args": "gAUpLg==",
+    "kwargs": "gAV9lC4=",
+    "result": "gAWVawEAAAAAAABYZAEAAEZ1bmN0aW9uIGNvbW1vbnMudGFza3MuZW52aWFyX2NvcnJlb19ob2xhIGlzIG5vdCBkZWZpbmVkIDogVHJhY2ViYWNrIChtb3N0IHJlY2VudCBjYWxsIGxhc3QpOgogIEZpbGUgIkM6XHhhbXBwXGh0ZG9jc1xQcmFjdGlxdWVzXFByb2plY3RlXFByb2plY3RlIGZpbmFsXEZpbmFsXHZlbnZcTGliXHNpdGUtcGFja2FnZXNcZGphbmdvX3Fcd29ya2VyLnB5IiwgbGluZSAxMDEsIGluIHdvcmtlcgogICAgcmFpc2UgVmFsdWVFcnJvcihmIkZ1bmN0aW9uIHt0YXNrWydmdW5jJ119IGlzIG5vdCBkZWZpbmVkIikKVmFsdWVFcnJvcjogRnVuY3Rpb24gY29tbW9ucy50YXNrcy5lbnZpYXJfY29ycmVvX2hvbGEgaXMgbm90IGRlZmluZWQKlC4=",
+    "group": "test_email",
+    "cluster": "DailyTasks",
+    "started": "2025-05-04T16:24:47.695Z",
+    "stopped": "2025-05-04T16:34:52.413Z",
+    "success": false,
+    "attempt_count": 2
+  }
+},
+{
+  "model": "django_q.task",
+  "pk": "516c50f008ee4c8580b208e0f1ea6b35",
+  "fields": {
+    "name": "nitrogen-dakota-ten-finch",
+    "func": "commons.tasks.manage_reservations",
+    "hook": null,
+    "args": "gAUpLg==",
+    "kwargs": "gAV9lC4=",
+    "result": "gAWVeAAAAAAAAACMdFNlIG5vdGlmaWNhcm9uIDEgdXN1YXJpb3MgY29uIHJlc2VydmFzIHBhcmEgbWHDsWFuYSB5IHNlIGVsaW1pbmFyb24gMCByZXNlcnZhcyBhbnRpZ3Vhcy4gVHJhYmFqYWRvcmVzIGVsaW1pbmFkb3M6IDAulC4=",
+    "group": "test_email",
+    "cluster": "DailyTasks",
+    "started": "2025-05-04T16:34:00.054Z",
+    "stopped": "2025-05-04T16:34:05.735Z",
+    "success": true,
+    "attempt_count": 1
+  }
+},
+{
+  "model": "django_q.task",
+  "pk": "5171df4a8d0b4f0a8492871dd7d945c1",
+  "fields": {
+    "name": "quebec-seventeen-mirror-mike",
+    "func": "commons.tasks.enviar_correo_hola",
+    "hook": null,
+    "args": "gAUpLg==",
+    "kwargs": "gAV9lC4=",
+    "result": false,
+    "group": "test_email",
+    "cluster": "DailyTasks",
+    "started": "2025-05-03T17:01:58.516Z",
+    "stopped": "2025-05-03T17:02:02.252Z",
+    "success": true,
+    "attempt_count": 1
+  }
+},
+{
+  "model": "django_q.task",
+  "pk": "51a07a24f84a4460a15e99a43068e7d4",
+  "fields": {
+    "name": "pip-music-seven-johnny",
+    "func": "commons.tasks.enviar_correo_diario",
+    "hook": null,
+    "args": "gAUpLg==",
+    "kwargs": "gAV9lC4=",
+    "result": "gAWVbwEAAAAAAABYaAEAAEZ1bmN0aW9uIGNvbW1vbnMudGFza3MuZW52aWFyX2NvcnJlb19kaWFyaW8gaXMgbm90IGRlZmluZWQgOiBUcmFjZWJhY2sgKG1vc3QgcmVjZW50IGNhbGwgbGFzdCk6CiAgRmlsZSAiQzpceGFtcHBcaHRkb2NzXFByYWN0aXF1ZXNcUHJvamVjdGVcUHJvamVjdGUgZmluYWxcRmluYWxcdmVudlxMaWJcc2l0ZS1wYWNrYWdlc1xkamFuZ29fcVx3b3JrZXIucHkiLCBsaW5lIDEwMSwgaW4gd29ya2VyCiAgICByYWlzZSBWYWx1ZUVycm9yKGYiRnVuY3Rpb24ge3Rhc2tbJ2Z1bmMnXX0gaXMgbm90IGRlZmluZWQiKQpWYWx1ZUVycm9yOiBGdW5jdGlvbiBjb21tb25zLnRhc2tzLmVudmlhcl9jb3JyZW9fZGlhcmlvIGlzIG5vdCBkZWZpbmVkCpQu",
+    "group": "test_email",
+    "cluster": "DailyTasks",
+    "started": "2025-05-04T16:28:44.344Z",
+    "stopped": "2025-05-04T16:28:46.722Z",
+    "success": false,
+    "attempt_count": 1
+  }
+},
+{
+  "model": "django_q.task",
+  "pk": "543d9b051fdd4df7a42919176051f18e",
+  "fields": {
+    "name": "winter-leopard-march-foxtrot",
+    "func": "commons.tasks.enviar_correo_diario",
+    "hook": null,
+    "args": "gAUpLg==",
+    "kwargs": "gAV9lC4=",
+    "result": "gAWVbwEAAAAAAABYaAEAAEZ1bmN0aW9uIGNvbW1vbnMudGFza3MuZW52aWFyX2NvcnJlb19kaWFyaW8gaXMgbm90IGRlZmluZWQgOiBUcmFjZWJhY2sgKG1vc3QgcmVjZW50IGNhbGwgbGFzdCk6CiAgRmlsZSAiQzpceGFtcHBcaHRkb2NzXFByYWN0aXF1ZXNcUHJvamVjdGVcUHJvamVjdGUgZmluYWxcRmluYWxcdmVudlxMaWJcc2l0ZS1wYWNrYWdlc1xkamFuZ29fcVx3b3JrZXIucHkiLCBsaW5lIDEwMSwgaW4gd29ya2VyCiAgICByYWlzZSBWYWx1ZUVycm9yKGYiRnVuY3Rpb24ge3Rhc2tbJ2Z1bmMnXX0gaXMgbm90IGRlZmluZWQiKQpWYWx1ZUVycm9yOiBGdW5jdGlvbiBjb21tb25zLnRhc2tzLmVudmlhcl9jb3JyZW9fZGlhcmlvIGlzIG5vdCBkZWZpbmVkCpQu",
+    "group": "test_email",
+    "cluster": "DailyTasks",
+    "started": "2025-05-04T16:27:34.403Z",
+    "stopped": "2025-05-04T16:37:38.191Z",
+    "success": false,
+    "attempt_count": 2
+  }
+},
+{
+  "model": "django_q.task",
+  "pk": "553fe6177d514fc2b47e62a4b478086f",
+  "fields": {
+    "name": "nine-october-aspen-papa",
+    "func": "commons.tasks.enviar_correo_hola",
+    "hook": null,
+    "args": "gAUpLg==",
+    "kwargs": "gAV9lC4=",
+    "result": "gAWVMwAAAAAAAACML1NlIG5vdGlmaWPDsyBhIDEgdXN1YXJpb3MgY29uIHJlc2VydmFzIHBhc2FkYXMulC4=",
+    "group": "test_email",
+    "cluster": "DailyTasks",
+    "started": "2025-05-03T17:36:39.862Z",
+    "stopped": "2025-05-03T17:56:48.807Z",
+    "success": true,
+    "attempt_count": 3
+  }
+},
+{
+  "model": "django_q.task",
+  "pk": "55d80ff727fa41aea764c3483da58295",
+  "fields": {
+    "name": "lake-delta-fix-mobile",
+    "func": "commons.tasks.manage_reservations",
+    "hook": null,
+    "args": "gAUpLg==",
+    "kwargs": "gAV9lC4=",
+    "result": "gAWVeAAAAAAAAACMdFNlIG5vdGlmaWNhcm9uIDEgdXN1YXJpb3MgY29uIHJlc2VydmFzIHBhcmEgbWHDsWFuYSB5IHNlIGVsaW1pbmFyb24gMCByZXNlcnZhcyBhbnRpZ3Vhcy4gVHJhYmFqYWRvcmVzIGVsaW1pbmFkb3M6IDAulC4=",
+    "group": "test_email",
+    "cluster": "DailyTasks",
+    "started": "2025-05-04T16:32:24.496Z",
+    "stopped": "2025-05-04T16:32:30.489Z",
+    "success": true,
+    "attempt_count": 1
+  }
+},
+{
+  "model": "django_q.task",
+  "pk": "565d5cdc6d424a9fbc3bbc8ba62fc443",
+  "fields": {
+    "name": "minnesota-wyoming-pizza-autumn",
+    "func": "commons.tasks.enviar_correo_hola",
+    "hook": null,
+    "args": "gAUpLg==",
+    "kwargs": "gAV9lC4=",
+    "result": "gAWVawEAAAAAAABYZAEAAEZ1bmN0aW9uIGNvbW1vbnMudGFza3MuZW52aWFyX2NvcnJlb19ob2xhIGlzIG5vdCBkZWZpbmVkIDogVHJhY2ViYWNrIChtb3N0IHJlY2VudCBjYWxsIGxhc3QpOgogIEZpbGUgIkM6XHhhbXBwXGh0ZG9jc1xQcmFjdGlxdWVzXFByb2plY3RlXFByb2plY3RlIGZpbmFsXEZpbmFsXHZlbnZcTGliXHNpdGUtcGFja2FnZXNcZGphbmdvX3Fcd29ya2VyLnB5IiwgbGluZSAxMDEsIGluIHdvcmtlcgogICAgcmFpc2UgVmFsdWVFcnJvcihmIkZ1bmN0aW9uIHt0YXNrWydmdW5jJ119IGlzIG5vdCBkZWZpbmVkIikKVmFsdWVFcnJvcjogRnVuY3Rpb24gY29tbW9ucy50YXNrcy5lbnZpYXJfY29ycmVvX2hvbGEgaXMgbm90IGRlZmluZWQKlC4=",
+    "group": "test_email",
+    "cluster": "DailyTasks",
+    "started": "2025-05-04T16:22:32.806Z",
+    "stopped": "2025-05-04T16:32:35.926Z",
+    "success": false,
+    "attempt_count": 2
+  }
+},
+{
+  "model": "django_q.task",
+  "pk": "5a90c8767c9f49919e30730dbf4f1ffb",
+  "fields": {
+    "name": "lactose-eight-spaghetti-berlin",
+    "func": "commons.tasks.manage_reservations",
+    "hook": null,
+    "args": "gAUpLg==",
+    "kwargs": "gAV9lC4=",
+    "result": "gAWVeAAAAAAAAACMdFNlIG5vdGlmaWNhcm9uIDEgdXN1YXJpb3MgY29uIHJlc2VydmFzIHBhcmEgbWHDsWFuYSB5IHNlIGVsaW1pbmFyb24gMCByZXNlcnZhcyBhbnRpZ3Vhcy4gVHJhYmFqYWRvcmVzIGVsaW1pbmFkb3M6IDAulC4=",
+    "group": "test_email",
+    "cluster": "DailyTasks",
+    "started": "2025-05-04T16:32:56.267Z",
+    "stopped": "2025-05-04T16:33:03.121Z",
+    "success": true,
+    "attempt_count": 1
+  }
+},
+{
+  "model": "django_q.task",
+  "pk": "5d67cc0cfe0145c5aba97c2e5b103094",
+  "fields": {
+    "name": "wyoming-magazine-friend-violet",
+    "func": "commons.tasks.enviar_correo_hola",
+    "hook": null,
+    "args": "gAUpLg==",
+    "kwargs": "gAV9lC4=",
+    "result": "gAWVMwAAAAAAAACML1NlIG5vdGlmaWPDsyBhIDEgdXN1YXJpb3MgY29uIHJlc2VydmFzIHBhc2FkYXMulC4=",
+    "group": "test_email",
+    "cluster": "DailyTasks",
+    "started": "2025-05-03T17:27:56.118Z",
+    "stopped": "2025-05-03T17:58:05.645Z",
+    "success": true,
+    "attempt_count": 3
+  }
+},
+{
+  "model": "django_q.task",
+  "pk": "5f9eac2f0ec2406b854cf9d21ee00f7d",
+  "fields": {
+    "name": "fanta-uniform-twelve-mirror",
+    "func": "commons.tasks.manage_reservations",
+    "hook": null,
+    "args": "gAUpLg==",
+    "kwargs": "gAV9lC4=",
+    "result": "gAWVeAAAAAAAAACMdFNlIG5vdGlmaWNhcm9uIDEgdXN1YXJpb3MgY29uIHJlc2VydmFzIHBhcmEgbWHDsWFuYSB5IHNlIGVsaW1pbmFyb24gMCByZXNlcnZhcyBhbnRpZ3Vhcy4gVHJhYmFqYWRvcmVzIGVsaW1pbmFkb3M6IDAulC4=",
+    "group": "test_email",
+    "cluster": "DailyTasks",
+    "started": "2025-05-04T16:30:48.931Z",
+    "stopped": "2025-05-04T16:30:55.529Z",
+    "success": true,
+    "attempt_count": 1
+  }
+},
+{
+  "model": "django_q.task",
+  "pk": "6b2681198cf645778a97dd60d369812f",
+  "fields": {
+    "name": "stream-fix-nuts-berlin",
+    "func": "commons.tasks.enviar_correo_hola",
+    "hook": null,
+    "args": "gAUpLg==",
+    "kwargs": "gAV9lC4=",
+    "result": "gAWVawEAAAAAAABYZAEAAEZ1bmN0aW9uIGNvbW1vbnMudGFza3MuZW52aWFyX2NvcnJlb19ob2xhIGlzIG5vdCBkZWZpbmVkIDogVHJhY2ViYWNrIChtb3N0IHJlY2VudCBjYWxsIGxhc3QpOgogIEZpbGUgIkM6XHhhbXBwXGh0ZG9jc1xQcmFjdGlxdWVzXFByb2plY3RlXFByb2plY3RlIGZpbmFsXEZpbmFsXHZlbnZcTGliXHNpdGUtcGFja2FnZXNcZGphbmdvX3Fcd29ya2VyLnB5IiwgbGluZSAxMDEsIGluIHdvcmtlcgogICAgcmFpc2UgVmFsdWVFcnJvcihmIkZ1bmN0aW9uIHt0YXNrWydmdW5jJ119IGlzIG5vdCBkZWZpbmVkIikKVmFsdWVFcnJvcjogRnVuY3Rpb24gY29tbW9ucy50YXNrcy5lbnZpYXJfY29ycmVvX2hvbGEgaXMgbm90IGRlZmluZWQKlC4=",
+    "group": "test_email",
+    "cluster": "DailyTasks",
+    "started": "2025-05-04T16:25:03.716Z",
+    "stopped": "2025-05-04T16:35:07.931Z",
+    "success": false,
+    "attempt_count": 2
+  }
+},
+{
+  "model": "django_q.task",
+  "pk": "6c706dd9669041fe8b19a231a4beba67",
+  "fields": {
+    "name": "oscar-floor-alabama-sink",
+    "func": "commons.tasks.enviar_correo_diario",
+    "hook": null,
+    "args": "gAUpLg==",
+    "kwargs": "gAV9lC4=",
+    "result": "gAWVbwEAAAAAAABYaAEAAEZ1bmN0aW9uIGNvbW1vbnMudGFza3MuZW52aWFyX2NvcnJlb19kaWFyaW8gaXMgbm90IGRlZmluZWQgOiBUcmFjZWJhY2sgKG1vc3QgcmVjZW50IGNhbGwgbGFzdCk6CiAgRmlsZSAiQzpceGFtcHBcaHRkb2NzXFByYWN0aXF1ZXNcUHJvamVjdGVcUHJvamVjdGUgZmluYWxcRmluYWxcdmVudlxMaWJcc2l0ZS1wYWNrYWdlc1xkamFuZ29fcVx3b3JrZXIucHkiLCBsaW5lIDEwMSwgaW4gd29ya2VyCiAgICByYWlzZSBWYWx1ZUVycm9yKGYiRnVuY3Rpb24ge3Rhc2tbJ2Z1bmMnXX0gaXMgbm90IGRlZmluZWQiKQpWYWx1ZUVycm9yOiBGdW5jdGlvbiBjb21tb25zLnRhc2tzLmVudmlhcl9jb3JyZW9fZGlhcmlvIGlzIG5vdCBkZWZpbmVkCpQu",
+    "group": "test_email",
+    "cluster": "DailyTasks",
+    "started": "2025-05-04T16:29:48.163Z",
+    "stopped": "2025-05-04T16:29:51.714Z",
+    "success": false,
+    "attempt_count": 1
+  }
+},
+{
+  "model": "django_q.task",
+  "pk": "7065da8830a34c2789b8e377aabab1c0",
+  "fields": {
+    "name": "five-wisconsin-orange-idaho",
+    "func": "commons.tasks.enviar_correo_diario",
+    "hook": null,
+    "args": "gAUpLg==",
+    "kwargs": "gAV9lC4=",
+    "result": "gAWVWgEAAAAAAABYUwEAAEZ1bmN0aW9uIGNvbW1vbnMudGFza3MuZW52aWFyX2NvcnJlb19kaWFyaW8gaXMgbm90IGRlZmluZWQgOiBUcmFjZWJhY2sgKG1vc3QgcmVjZW50IGNhbGwgbGFzdCk6CiAgRmlsZSAiL29wdC9yZW5kZXIvcHJvamVjdC9zcmMvLnZlbnYvbGliL3B5dGhvbjMuMTEvc2l0ZS1wYWNrYWdlcy9kamFuZ29fcS93b3JrZXIucHkiLCBsaW5lIDEwMSwgaW4gd29ya2VyCiAgICByYWlzZSBWYWx1ZUVycm9yKGYiRnVuY3Rpb24ge3Rhc2tbJ2Z1bmMnXX0gaXMgbm90IGRlZmluZWQiKQpWYWx1ZUVycm9yOiBGdW5jdGlvbiBjb21tb25zLnRhc2tzLmVudmlhcl9jb3JyZW9fZGlhcmlvIGlzIG5vdCBkZWZpbmVkCpQu",
+    "group": "test_email",
+    "cluster": "DailyTasks",
+    "started": "2025-05-04T16:29:34.908Z",
+    "stopped": "2025-05-04T16:29:35.206Z",
+    "success": false,
+    "attempt_count": 1
+  }
+},
+{
+  "model": "django_q.task",
+  "pk": "708e74302c0747468d1a2554adec1969",
+  "fields": {
+    "name": "robert-colorado-undress-delaware",
+    "func": "commons.tasks.manage_reservations",
+    "hook": null,
+    "args": "gAUpLg==",
+    "kwargs": "gAV9lC4=",
+    "result": "gAWVXAAAAAAAAACMWFNlIG5vdGlmaWNhcm9uIDEgdXN1YXJpb3MgY29uIHJlc2VydmFzIHBhcmEgbWHDsWFuYSB5IHNlIGVsaW1pbmFyb24gMCByZXNlcnZhcyBhbnRpZ3Vhcy6ULg==",
+    "group": "test_email",
+    "cluster": "DailyTasks",
+    "started": "2025-05-04T16:30:05.106Z",
+    "stopped": "2025-05-04T16:30:07.061Z",
+    "success": true,
+    "attempt_count": 1
+  }
+},
+{
+  "model": "django_q.task",
+  "pk": "739ee5b7c3b649699add75327541c5f4",
+  "fields": {
+    "name": "salami-golf-ack-angel",
+    "func": "commons.tasks.manage_reservations",
+    "hook": null,
+    "args": "gAUpLg==",
+    "kwargs": "gAV9lC4=",
+    "result": "gAWVXAAAAAAAAACMWFNlIG5vdGlmaWNhcm9uIDEgdXN1YXJpb3MgY29uIHJlc2VydmFzIHBhcmEgbWHDsWFuYSB5IHNlIGVsaW1pbmFyb24gMCByZXNlcnZhcyBhbnRpZ3Vhcy6ULg==",
+    "group": "test_email",
+    "cluster": "DailyTasks",
+    "started": "2025-05-04T16:32:06.003Z",
+    "stopped": "2025-05-04T16:32:07.797Z",
+    "success": true,
+    "attempt_count": 1
+  }
+},
+{
+  "model": "django_q.task",
+  "pk": "78f0d2d817d342db8585bd1878c03c17",
+  "fields": {
+    "name": "mango-high-orange-moon",
+    "func": "commons.tasks.enviar_correo_hola",
+    "hook": null,
+    "args": "gAUpLg==",
+    "kwargs": "gAV9lC4=",
+    "result": "gAWVMwAAAAAAAACML1NlIG5vdGlmaWPDsyBhIDEgdXN1YXJpb3MgY29uIHJlc2VydmFzIHBhc2FkYXMulC4=",
+    "group": "test_email",
+    "cluster": "DailyTasks",
+    "started": "2025-05-03T17:26:52.357Z",
+    "stopped": "2025-05-03T17:57:02.303Z",
+    "success": true,
+    "attempt_count": 3
+  }
+},
+{
+  "model": "django_q.task",
+  "pk": "7b57251cdcce459eb4c98aafbabf4d70",
+  "fields": {
+    "name": "beryllium-sixteen-hamper-east",
+    "func": "commons.tasks.manage_reservations",
+    "hook": null,
+    "args": "gAUpLg==",
+    "kwargs": "gAV9lC4=",
+    "result": "gAWVXAAAAAAAAACMWFNlIG5vdGlmaWNhcm9uIDEgdXN1YXJpb3MgY29uIHJlc2VydmFzIHBhcmEgbWHDsWFuYSB5IHNlIGVsaW1pbmFyb24gMCByZXNlcnZhcyBhbnRpZ3Vhcy6ULg==",
+    "group": "test_email",
+    "cluster": "DailyTasks",
+    "started": "2025-05-04T16:34:36.818Z",
+    "stopped": "2025-05-04T16:34:38.483Z",
+    "success": true,
+    "attempt_count": 1
+  }
+},
+{
+  "model": "django_q.task",
+  "pk": "802990c054c146208c771ff7cba5c659",
+  "fields": {
+    "name": "wolfram-whiskey-beer-washington",
+    "func": "commons.tasks.manage_reservations",
+    "hook": null,
+    "args": "gAUpLg==",
+    "kwargs": "gAV9lC4=",
+    "result": "gAWVXAAAAAAAAACMWFNlIG5vdGlmaWNhcm9uIDEgdXN1YXJpb3MgY29uIHJlc2VydmFzIHBhcmEgbWHDsWFuYSB5IHNlIGVsaW1pbmFyb24gMCByZXNlcnZhcyBhbnRpZ3Vhcy6ULg==",
+    "group": "test_email",
+    "cluster": "DailyTasks",
+    "started": "2025-05-04T16:33:06.403Z",
+    "stopped": "2025-05-04T16:33:08.122Z",
+    "success": true,
+    "attempt_count": 1
+  }
+},
+{
+  "model": "django_q.task",
+  "pk": "80c1339359f54773a9e64df349476c15",
+  "fields": {
+    "name": "triple-neptune-washington-lemon",
+    "func": "commons.tasks.enviar_correo_hola",
+    "hook": null,
+    "args": "gAUpLg==",
+    "kwargs": "gAV9lC4=",
+    "result": "gAWVMwAAAAAAAACML1NlIG5vdGlmaWPDsyBhIDEgdXN1YXJpb3MgY29uIHJlc2VydmFzIHBhc2FkYXMulC4=",
+    "group": "test_email",
+    "cluster": "DailyTasks",
+    "started": "2025-05-03T17:26:20.517Z",
+    "stopped": "2025-05-03T17:56:30.366Z",
+    "success": true,
+    "attempt_count": 3
+  }
+},
+{
+  "model": "django_q.task",
+  "pk": "87386c1373fc4912b2dbdf7c58e5aa54",
+  "fields": {
+    "name": "saturn-steak-skylark-fifteen",
+    "func": "commons.tasks.enviar_correo_hola",
+    "hook": null,
+    "args": "gAUpLg==",
+    "kwargs": "gAV9lC4=",
+    "result": "gAWVawEAAAAAAABYZAEAAEZ1bmN0aW9uIGNvbW1vbnMudGFza3MuZW52aWFyX2NvcnJlb19ob2xhIGlzIG5vdCBkZWZpbmVkIDogVHJhY2ViYWNrIChtb3N0IHJlY2VudCBjYWxsIGxhc3QpOgogIEZpbGUgIkM6XHhhbXBwXGh0ZG9jc1xQcmFjdGlxdWVzXFByb2plY3RlXFByb2plY3RlIGZpbmFsXEZpbmFsXHZlbnZcTGliXHNpdGUtcGFja2FnZXNcZGphbmdvX3Fcd29ya2VyLnB5IiwgbGluZSAxMDEsIGluIHdvcmtlcgogICAgcmFpc2UgVmFsdWVFcnJvcihmIkZ1bmN0aW9uIHt0YXNrWydmdW5jJ119IGlzIG5vdCBkZWZpbmVkIikKVmFsdWVFcnJvcjogRnVuY3Rpb24gY29tbW9ucy50YXNrcy5lbnZpYXJfY29ycmVvX2hvbGEgaXMgbm90IGRlZmluZWQKlC4=",
+    "group": "test_email",
+    "cluster": "DailyTasks",
+    "started": "2025-05-04T16:25:51.635Z",
+    "stopped": "2025-05-04T16:35:56.402Z",
+    "success": false,
+    "attempt_count": 2
+  }
+},
+{
+  "model": "django_q.task",
+  "pk": "896d5480a50f4ed1a5dbd0b5ab53b6b2",
+  "fields": {
+    "name": "december-double-bulldog-yankee",
+    "func": "commons.tasks.enviar_correo_diario",
+    "hook": null,
+    "args": "gAUpLg==",
+    "kwargs": "gAV9lC4=",
+    "result": "gAWVWgEAAAAAAABYUwEAAEZ1bmN0aW9uIGNvbW1vbnMudGFza3MuZW52aWFyX2NvcnJlb19kaWFyaW8gaXMgbm90IGRlZmluZWQgOiBUcmFjZWJhY2sgKG1vc3QgcmVjZW50IGNhbGwgbGFzdCk6CiAgRmlsZSAiL29wdC9yZW5kZXIvcHJvamVjdC9zcmMvLnZlbnYvbGliL3B5dGhvbjMuMTEvc2l0ZS1wYWNrYWdlcy9kamFuZ29fcS93b3JrZXIucHkiLCBsaW5lIDEwMSwgaW4gd29ya2VyCiAgICByYWlzZSBWYWx1ZUVycm9yKGYiRnVuY3Rpb24ge3Rhc2tbJ2Z1bmMnXX0gaXMgbm90IGRlZmluZWQiKQpWYWx1ZUVycm9yOiBGdW5jdGlvbiBjb21tb25zLnRhc2tzLmVudmlhcl9jb3JyZW9fZGlhcmlvIGlzIG5vdCBkZWZpbmVkCpQu",
+    "group": "test_email",
+    "cluster": "DailyTasks",
+    "started": "2025-05-04T16:29:04.717Z",
+    "stopped": "2025-05-04T16:29:05.012Z",
+    "success": false,
+    "attempt_count": 1
+  }
+},
+{
+  "model": "django_q.task",
+  "pk": "8d6f7582b7fc4d1b8a1fead232725916",
+  "fields": {
+    "name": "beryllium-butter-pasta-avocado",
+    "func": "commons.tasks.enviar_correo_diario",
+    "hook": null,
+    "args": "gAUpLg==",
+    "kwargs": "gAV9lC4=",
+    "result": "gAWVWgEAAAAAAABYUwEAAEZ1bmN0aW9uIGNvbW1vbnMudGFza3MuZW52aWFyX2NvcnJlb19kaWFyaW8gaXMgbm90IGRlZmluZWQgOiBUcmFjZWJhY2sgKG1vc3QgcmVjZW50IGNhbGwgbGFzdCk6CiAgRmlsZSAiL29wdC9yZW5kZXIvcHJvamVjdC9zcmMvLnZlbnYvbGliL3B5dGhvbjMuMTEvc2l0ZS1wYWNrYWdlcy9kamFuZ29fcS93b3JrZXIucHkiLCBsaW5lIDEwMSwgaW4gd29ya2VyCiAgICByYWlzZSBWYWx1ZUVycm9yKGYiRnVuY3Rpb24ge3Rhc2tbJ2Z1bmMnXX0gaXMgbm90IGRlZmluZWQiKQpWYWx1ZUVycm9yOiBGdW5jdGlvbiBjb21tb25zLnRhc2tzLmVudmlhcl9jb3JyZW9fZGlhcmlvIGlzIG5vdCBkZWZpbmVkCpQu",
+    "group": "test_email",
+    "cluster": "DailyTasks",
+    "started": "2025-05-04T16:28:34.605Z",
+    "stopped": "2025-05-04T16:28:35.105Z",
+    "success": false,
+    "attempt_count": 1
+  }
+},
+{
+  "model": "django_q.task",
+  "pk": "8dfcf107043e42168bb0fe59346d0936",
+  "fields": {
+    "name": "may-jupiter-nineteen-iowa",
+    "func": "commons.tasks.enviar_correo_hola",
+    "hook": null,
+    "args": "gAUpLg==",
+    "kwargs": "gAV9lC4=",
+    "result": "gAWVawEAAAAAAABYZAEAAEZ1bmN0aW9uIGNvbW1vbnMudGFza3MuZW52aWFyX2NvcnJlb19ob2xhIGlzIG5vdCBkZWZpbmVkIDogVHJhY2ViYWNrIChtb3N0IHJlY2VudCBjYWxsIGxhc3QpOgogIEZpbGUgIkM6XHhhbXBwXGh0ZG9jc1xQcmFjdGlxdWVzXFByb2plY3RlXFByb2plY3RlIGZpbmFsXEZpbmFsXHZlbnZcTGliXHNpdGUtcGFja2FnZXNcZGphbmdvX3Fcd29ya2VyLnB5IiwgbGluZSAxMDEsIGluIHdvcmtlcgogICAgcmFpc2UgVmFsdWVFcnJvcihmIkZ1bmN0aW9uIHt0YXNrWydmdW5jJ119IGlzIG5vdCBkZWZpbmVkIikKVmFsdWVFcnJvcjogRnVuY3Rpb24gY29tbW9ucy50YXNrcy5lbnZpYXJfY29ycmVvX2hvbGEgaXMgbm90IGRlZmluZWQKlC4=",
+    "group": "test_email",
+    "cluster": "DailyTasks",
+    "started": "2025-05-04T16:24:33.510Z",
+    "stopped": "2025-05-04T16:34:37.425Z",
+    "success": false,
+    "attempt_count": 2
+  }
+},
+{
+  "model": "django_q.task",
+  "pk": "8e8f78e7cbf14d1291087aaa027e601d",
+  "fields": {
+    "name": "north-ink-floor-alabama",
+    "func": "commons.tasks.manage_reservations",
+    "hook": null,
+    "args": "gAUpLg==",
+    "kwargs": "gAV9lC4=",
+    "result": "gAWVXAAAAAAAAACMWFNlIG5vdGlmaWNhcm9uIDEgdXN1YXJpb3MgY29uIHJlc2VydmFzIHBhcmEgbWHDsWFuYSB5IHNlIGVsaW1pbmFyb24gMCByZXNlcnZhcyBhbnRpZ3Vhcy6ULg==",
+    "group": "test_email",
+    "cluster": "DailyTasks",
+    "started": "2025-05-04T16:33:36.507Z",
+    "stopped": "2025-05-04T16:33:38.216Z",
+    "success": true,
+    "attempt_count": 1
+  }
+},
+{
+  "model": "django_q.task",
+  "pk": "998eb284cb574cb9974e9cd5f430b2df",
+  "fields": {
+    "name": "carolina-jersey-mockingbird-oven",
+    "func": "commons.tasks.enviar_correo_hola",
+    "hook": null,
+    "args": "gAUpLg==",
+    "kwargs": "gAV9lC4=",
+    "result": "gAWVawEAAAAAAABYZAEAAEZ1bmN0aW9uIGNvbW1vbnMudGFza3MuZW52aWFyX2NvcnJlb19ob2xhIGlzIG5vdCBkZWZpbmVkIDogVHJhY2ViYWNrIChtb3N0IHJlY2VudCBjYWxsIGxhc3QpOgogIEZpbGUgIkM6XHhhbXBwXGh0ZG9jc1xQcmFjdGlxdWVzXFByb2plY3RlXFByb2plY3RlIGZpbmFsXEZpbmFsXHZlbnZcTGliXHNpdGUtcGFja2FnZXNcZGphbmdvX3Fcd29ya2VyLnB5IiwgbGluZSAxMDEsIGluIHdvcmtlcgogICAgcmFpc2UgVmFsdWVFcnJvcihmIkZ1bmN0aW9uIHt0YXNrWydmdW5jJ119IGlzIG5vdCBkZWZpbmVkIikKVmFsdWVFcnJvcjogRnVuY3Rpb24gY29tbW9ucy50YXNrcy5lbnZpYXJfY29ycmVvX2hvbGEgaXMgbm90IGRlZmluZWQKlC4=",
+    "group": "test_email",
+    "cluster": "DailyTasks",
+    "started": "2025-05-04T16:26:04.016Z",
+    "stopped": "2025-05-04T16:36:06.625Z",
+    "success": false,
+    "attempt_count": 2
+  }
+},
+{
+  "model": "django_q.task",
+  "pk": "9ae28bfec3dd46f98ee5f489f01048af",
+  "fields": {
+    "name": "august-october-black-april",
+    "func": "commons.tasks.manage_reservations",
+    "hook": null,
+    "args": "gAUpLg==",
+    "kwargs": "gAV9lC4=",
+    "result": "gAWVXAAAAAAAAACMWFNlIG5vdGlmaWNhcm9uIDEgdXN1YXJpb3MgY29uIHJlc2VydmFzIHBhcmEgbWHDsWFuYSB5IHNlIGVsaW1pbmFyb24gMCByZXNlcnZhcyBhbnRpZ3Vhcy6ULg==",
+    "group": "test_email",
+    "cluster": "DailyTasks",
+    "started": "2025-05-04T16:32:36.203Z",
+    "stopped": "2025-05-04T16:32:37.904Z",
+    "success": true,
+    "attempt_count": 1
+  }
+},
+{
+  "model": "django_q.task",
+  "pk": "9db95127861b4fab979667867d891554",
+  "fields": {
+    "name": "gee-lima-timing-quebec",
+    "func": "commons.tasks.enviar_correo_diario",
+    "hook": null,
+    "args": "gAUpLg==",
+    "kwargs": "gAV9lC4=",
+    "result": "gAWVbwEAAAAAAABYaAEAAEZ1bmN0aW9uIGNvbW1vbnMudGFza3MuZW52aWFyX2NvcnJlb19kaWFyaW8gaXMgbm90IGRlZmluZWQgOiBUcmFjZWJhY2sgKG1vc3QgcmVjZW50IGNhbGwgbGFzdCk6CiAgRmlsZSAiQzpceGFtcHBcaHRkb2NzXFByYWN0aXF1ZXNcUHJvamVjdGVcUHJvamVjdGUgZmluYWxcRmluYWxcdmVudlxMaWJcc2l0ZS1wYWNrYWdlc1xkamFuZ29fcVx3b3JrZXIucHkiLCBsaW5lIDEwMSwgaW4gd29ya2VyCiAgICByYWlzZSBWYWx1ZUVycm9yKGYiRnVuY3Rpb24ge3Rhc2tbJ2Z1bmMnXX0gaXMgbm90IGRlZmluZWQiKQpWYWx1ZUVycm9yOiBGdW5jdGlvbiBjb21tb25zLnRhc2tzLmVudmlhcl9jb3JyZW9fZGlhcmlvIGlzIG5vdCBkZWZpbmVkCpQu",
+    "group": "test_email",
+    "cluster": "DailyTasks",
+    "started": "2025-05-04T16:27:04.309Z",
+    "stopped": "2025-05-04T16:37:07.036Z",
+    "success": false,
+    "attempt_count": 2
+  }
+},
+{
+  "model": "django_q.task",
+  "pk": "a18177517e614c6b9c41f0339936784b",
+  "fields": {
+    "name": "apart-east-california-nineteen",
+    "func": "commons.tasks.manage_reservations",
+    "hook": null,
+    "args": "gAUpLg==",
+    "kwargs": "gAV9lC4=",
+    "result": "gAWVeAAAAAAAAACMdFNlIG5vdGlmaWNhcm9uIDEgdXN1YXJpb3MgY29uIHJlc2VydmFzIHBhcmEgbWHDsWFuYSB5IHNlIGVsaW1pbmFyb24gMCByZXNlcnZhcyBhbnRpZ3Vhcy4gVHJhYmFqYWRvcmVzIGVsaW1pbmFkb3M6IDAulC4=",
+    "group": "test_email",
+    "cluster": "DailyTasks",
+    "started": "2025-05-04T16:35:03.703Z",
+    "stopped": "2025-05-04T16:35:11.791Z",
+    "success": true,
+    "attempt_count": 1
+  }
+},
+{
+  "model": "django_q.task",
+  "pk": "a201ccf2c52646d1944a928625555196",
+  "fields": {
+    "name": "nitrogen-lactose-skylark-quiet",
+    "func": "commons.tasks.manage_reservations",
+    "hook": null,
+    "args": "gAUpLg==",
+    "kwargs": "gAV9lC4=",
+    "result": "gAWVXAAAAAAAAACMWFNlIG5vdGlmaWNhcm9uIDEgdXN1YXJpb3MgY29uIHJlc2VydmFzIHBhcmEgbWHDsWFuYSB5IHNlIGVsaW1pbmFyb24gMCByZXNlcnZhcyBhbnRpZ3Vhcy6ULg==",
+    "group": "test_email",
+    "cluster": "DailyTasks",
+    "started": "2025-05-04T16:34:06.715Z",
+    "stopped": "2025-05-04T16:34:08.523Z",
+    "success": true,
+    "attempt_count": 1
+  }
+},
+{
+  "model": "django_q.task",
+  "pk": "c455bedc37734875ac35aadbe22cccbe",
+  "fields": {
+    "name": "whiskey-lima-uranus-romeo",
+    "func": "commons.tasks.enviar_correo_hola",
+    "hook": null,
+    "args": "gAUpLg==",
+    "kwargs": "gAV9lC4=",
+    "result": "gAWVawEAAAAAAABYZAEAAEZ1bmN0aW9uIGNvbW1vbnMudGFza3MuZW52aWFyX2NvcnJlb19ob2xhIGlzIG5vdCBkZWZpbmVkIDogVHJhY2ViYWNrIChtb3N0IHJlY2VudCBjYWxsIGxhc3QpOgogIEZpbGUgIkM6XHhhbXBwXGh0ZG9jc1xQcmFjdGlxdWVzXFByb2plY3RlXFByb2plY3RlIGZpbmFsXEZpbmFsXHZlbnZcTGliXHNpdGUtcGFja2FnZXNcZGphbmdvX3Fcd29ya2VyLnB5IiwgbGluZSAxMDEsIGluIHdvcmtlcgogICAgcmFpc2UgVmFsdWVFcnJvcihmIkZ1bmN0aW9uIHt0YXNrWydmdW5jJ119IGlzIG5vdCBkZWZpbmVkIikKVmFsdWVFcnJvcjogRnVuY3Rpb24gY29tbW9ucy50YXNrcy5lbnZpYXJfY29ycmVvX2hvbGEgaXMgbm90IGRlZmluZWQKlC4=",
+    "group": "test_email",
+    "cluster": "DailyTasks",
+    "started": "2025-05-04T16:23:03.117Z",
+    "stopped": "2025-05-04T16:33:05.897Z",
+    "success": false,
+    "attempt_count": 2
+  }
+},
+{
+  "model": "django_q.task",
+  "pk": "cb0ae37347c14287a27d34ecf0d6014e",
+  "fields": {
+    "name": "fruit-fifteen-april-jersey",
+    "func": "commons.tasks.enviar_correo_hola",
+    "hook": null,
+    "args": "gAUpLg==",
+    "kwargs": "gAV9lC4=",
+    "result": "gAWVawEAAAAAAABYZAEAAEZ1bmN0aW9uIGNvbW1vbnMudGFza3MuZW52aWFyX2NvcnJlb19ob2xhIGlzIG5vdCBkZWZpbmVkIDogVHJhY2ViYWNrIChtb3N0IHJlY2VudCBjYWxsIGxhc3QpOgogIEZpbGUgIkM6XHhhbXBwXGh0ZG9jc1xQcmFjdGlxdWVzXFByb2plY3RlXFByb2plY3RlIGZpbmFsXEZpbmFsXHZlbnZcTGliXHNpdGUtcGFja2FnZXNcZGphbmdvX3Fcd29ya2VyLnB5IiwgbGluZSAxMDEsIGluIHdvcmtlcgogICAgcmFpc2UgVmFsdWVFcnJvcihmIkZ1bmN0aW9uIHt0YXNrWydmdW5jJ119IGlzIG5vdCBkZWZpbmVkIikKVmFsdWVFcnJvcjogRnVuY3Rpb24gY29tbW9ucy50YXNrcy5lbnZpYXJfY29ycmVvX2hvbGEgaXMgbm90IGRlZmluZWQKlC4=",
+    "group": "test_email",
+    "cluster": "DailyTasks",
+    "started": "2025-05-04T16:22:02.631Z",
+    "stopped": "2025-05-04T16:32:06.042Z",
+    "success": false,
+    "attempt_count": 2
+  }
+},
+{
+  "model": "django_q.task",
+  "pk": "cb18b372406649029d3c2696be7589c7",
+  "fields": {
+    "name": "batman-july-bakerloo-maryland",
+    "func": "commons.tasks.enviar_correo_hola",
+    "hook": null,
+    "args": "gAUpLg==",
+    "kwargs": "gAV9lC4=",
+    "result": "gAWVawEAAAAAAABYZAEAAEZ1bmN0aW9uIGNvbW1vbnMudGFza3MuZW52aWFyX2NvcnJlb19ob2xhIGlzIG5vdCBkZWZpbmVkIDogVHJhY2ViYWNrIChtb3N0IHJlY2VudCBjYWxsIGxhc3QpOgogIEZpbGUgIkM6XHhhbXBwXGh0ZG9jc1xQcmFjdGlxdWVzXFByb2plY3RlXFByb2plY3RlIGZpbmFsXEZpbmFsXHZlbnZcTGliXHNpdGUtcGFja2FnZXNcZGphbmdvX3Fcd29ya2VyLnB5IiwgbGluZSAxMDEsIGluIHdvcmtlcgogICAgcmFpc2UgVmFsdWVFcnJvcihmIkZ1bmN0aW9uIHt0YXNrWydmdW5jJ119IGlzIG5vdCBkZWZpbmVkIikKVmFsdWVFcnJvcjogRnVuY3Rpb24gY29tbW9ucy50YXNrcy5lbnZpYXJfY29ycmVvX2hvbGEgaXMgbm90IGRlZmluZWQKlC4=",
+    "group": "test_email",
+    "cluster": "DailyTasks",
+    "started": "2025-05-04T16:26:23.661Z",
+    "stopped": "2025-05-04T16:36:29.096Z",
+    "success": false,
+    "attempt_count": 2
+  }
+},
+{
+  "model": "django_q.task",
+  "pk": "cbb02fea6c2841f697d7e71bec8959f4",
+  "fields": {
+    "name": "sad-whiskey-romeo-six",
+    "func": "commons.tasks.enviar_correo_hola",
+    "hook": null,
+    "args": "gAUpLg==",
+    "kwargs": "gAV9lC4=",
+    "result": true,
+    "group": "test_email",
+    "cluster": "DailyTasks",
+    "started": "2025-05-03T17:06:55.146Z",
+    "stopped": "2025-05-03T17:06:59.338Z",
+    "success": true,
+    "attempt_count": 1
+  }
+},
+{
+  "model": "django_q.task",
+  "pk": "dcc67f8028bc4bbb9e47448cd4108fdb",
+  "fields": {
+    "name": "uncle-indigo-bakerloo-mockingbird",
+    "func": "commons.tasks.manage_reservations",
+    "hook": null,
+    "args": "gAUpLg==",
+    "kwargs": "gAV9lC4=",
+    "result": "gAWVXAAAAAAAAACMWFNlIG5vdGlmaWNhcm9uIDEgdXN1YXJpb3MgY29uIHJlc2VydmFzIHBhcmEgbWHDsWFuYSB5IHNlIGVsaW1pbmFyb24gMCByZXNlcnZhcyBhbnRpZ3Vhcy6ULg==",
+    "group": "test_email",
+    "cluster": "DailyTasks",
+    "started": "2025-05-04T16:36:07.508Z",
+    "stopped": "2025-05-04T16:36:09.218Z",
+    "success": true,
+    "attempt_count": 1
+  }
+},
+{
+  "model": "django_q.task",
+  "pk": "e8279731b7d141329e25cf082ca0cd8e",
+  "fields": {
+    "name": "jersey-beryllium-london-south",
+    "func": "commons.tasks.manage_reservations",
+    "hook": null,
+    "args": "gAUpLg==",
+    "kwargs": "gAV9lC4=",
+    "result": "gAWVeAAAAAAAAACMdFNlIG5vdGlmaWNhcm9uIDEgdXN1YXJpb3MgY29uIHJlc2VydmFzIHBhcmEgbWHDsWFuYSB5IHNlIGVsaW1pbmFyb24gMCByZXNlcnZhcyBhbnRpZ3Vhcy4gVHJhYmFqYWRvcmVzIGVsaW1pbmFkb3M6IDAulC4=",
+    "group": "test_email",
+    "cluster": "DailyTasks",
+    "started": "2025-05-04T16:31:52.658Z",
+    "stopped": "2025-05-04T16:31:59.324Z",
+    "success": true,
+    "attempt_count": 1
+  }
+},
+{
+  "model": "django_q.task",
+  "pk": "e96e5d77a7c247cb98c70af61232c93e",
+  "fields": {
+    "name": "pasta-utah-oklahoma-sweet",
+    "func": "commons.tasks.enviar_correo_diario",
+    "hook": null,
+    "args": "gAUpLg==",
+    "kwargs": "gAV9lC4=",
+    "result": "gAWVbwEAAAAAAABYaAEAAEZ1bmN0aW9uIGNvbW1vbnMudGFza3MuZW52aWFyX2NvcnJlb19kaWFyaW8gaXMgbm90IGRlZmluZWQgOiBUcmFjZWJhY2sgKG1vc3QgcmVjZW50IGNhbGwgbGFzdCk6CiAgRmlsZSAiQzpceGFtcHBcaHRkb2NzXFByYWN0aXF1ZXNcUHJvamVjdGVcUHJvamVjdGUgZmluYWxcRmluYWxcdmVudlxMaWJcc2l0ZS1wYWNrYWdlc1xkamFuZ29fcVx3b3JrZXIucHkiLCBsaW5lIDEwMSwgaW4gd29ya2VyCiAgICByYWlzZSBWYWx1ZUVycm9yKGYiRnVuY3Rpb24ge3Rhc2tbJ2Z1bmMnXX0gaXMgbm90IGRlZmluZWQiKQpWYWx1ZUVycm9yOiBGdW5jdGlvbiBjb21tb25zLnRhc2tzLmVudmlhcl9jb3JyZW9fZGlhcmlvIGlzIG5vdCBkZWZpbmVkCpQu",
+    "group": "test_email",
+    "cluster": "DailyTasks",
+    "started": "2025-05-04T16:29:16.226Z",
+    "stopped": "2025-05-04T16:29:18.697Z",
+    "success": false,
+    "attempt_count": 1
+  }
+},
+{
+  "model": "django_q.task",
+  "pk": "f3831f32ae5c4ee1b90d27ef1baf2598",
+  "fields": {
+    "name": "high-high-london-arkansas",
+    "func": "commons.tasks.manage_reservations",
+    "hook": null,
+    "args": "gAUpLg==",
+    "kwargs": "gAV9lC4=",
+    "result": "gAWVXAAAAAAAAACMWFNlIG5vdGlmaWNhcm9uIDEgdXN1YXJpb3MgY29uIHJlc2VydmFzIHBhcmEgbWHDsWFuYSB5IHNlIGVsaW1pbmFyb24gMCByZXNlcnZhcyBhbnRpZ3Vhcy6ULg==",
+    "group": "test_email",
+    "cluster": "DailyTasks",
+    "started": "2025-05-04T16:31:05.507Z",
+    "stopped": "2025-05-04T16:31:07.610Z",
+    "success": true,
+    "attempt_count": 1
+  }
+},
+{
+  "model": "django_q.task",
+  "pk": "f456f4190fed492dad9dd6fcf8db0845",
+  "fields": {
+    "name": "freddie-massachusetts-bravo-jupiter",
+    "func": "commons.tasks.enviar_correo_diario",
+    "hook": null,
+    "args": "gAUpLg==",
+    "kwargs": "gAV9lC4=",
+    "result": "gAWVWgEAAAAAAABYUwEAAEZ1bmN0aW9uIGNvbW1vbnMudGFza3MuZW52aWFyX2NvcnJlb19kaWFyaW8gaXMgbm90IGRlZmluZWQgOiBUcmFjZWJhY2sgKG1vc3QgcmVjZW50IGNhbGwgbGFzdCk6CiAgRmlsZSAiL29wdC9yZW5kZXIvcHJvamVjdC9zcmMvLnZlbnYvbGliL3B5dGhvbjMuMTEvc2l0ZS1wYWNrYWdlcy9kamFuZ29fcS93b3JrZXIucHkiLCBsaW5lIDEwMSwgaW4gd29ya2VyCiAgICByYWlzZSBWYWx1ZUVycm9yKGYiRnVuY3Rpb24ge3Rhc2tbJ2Z1bmMnXX0gaXMgbm90IGRlZmluZWQiKQpWYWx1ZUVycm9yOiBGdW5jdGlvbiBjb21tb25zLnRhc2tzLmVudmlhcl9jb3JyZW9fZGlhcmlvIGlzIG5vdCBkZWZpbmVkCpQu",
+    "group": "test_email",
+    "cluster": "DailyTasks",
+    "started": "2025-05-04T16:28:04.503Z",
+    "stopped": "2025-05-04T16:28:04.804Z",
+    "success": false,
+    "attempt_count": 1
+  }
+},
+{
+  "model": "django_q.task",
+  "pk": "fdf0ffbcd3a94695acf4e1dd9ada37cf",
+  "fields": {
+    "name": "foxtrot-oven-indigo-red",
+    "func": "commons.tasks.manage_reservations",
+    "hook": null,
+    "args": "gAUpLg==",
+    "kwargs": "gAV9lC4=",
+    "result": "gAWVXAAAAAAAAACMWFNlIG5vdGlmaWNhcm9uIDEgdXN1YXJpb3MgY29uIHJlc2VydmFzIHBhcmEgbWHDsWFuYSB5IHNlIGVsaW1pbmFyb24gMCByZXNlcnZhcyBhbnRpZ3Vhcy6ULg==",
+    "group": "test_email",
+    "cluster": "DailyTasks",
+    "started": "2025-05-04T16:31:35.738Z",
+    "stopped": "2025-05-04T16:31:37.606Z",
+    "success": true,
+    "attempt_count": 1
+  }
+},
+{
+  "model": "django_q.task",
+  "pk": "ffa0d810ef9a4f1a8d1a4a9fac1f64fb",
+  "fields": {
+    "name": "nebraska-cardinal-fanta-connecticut",
+    "func": "commons.tasks.enviar_correo_diario",
+    "hook": null,
+    "args": "gAUpLg==",
+    "kwargs": "gAV9lC4=",
+    "result": "gAWVbwEAAAAAAABYaAEAAEZ1bmN0aW9uIGNvbW1vbnMudGFza3MuZW52aWFyX2NvcnJlb19kaWFyaW8gaXMgbm90IGRlZmluZWQgOiBUcmFjZWJhY2sgKG1vc3QgcmVjZW50IGNhbGwgbGFzdCk6CiAgRmlsZSAiQzpceGFtcHBcaHRkb2NzXFByYWN0aXF1ZXNcUHJvamVjdGVcUHJvamVjdGUgZmluYWxcRmluYWxcdmVudlxMaWJcc2l0ZS1wYWNrYWdlc1xkamFuZ29fcVx3b3JrZXIucHkiLCBsaW5lIDEwMSwgaW4gd29ya2VyCiAgICByYWlzZSBWYWx1ZUVycm9yKGYiRnVuY3Rpb24ge3Rhc2tbJ2Z1bmMnXX0gaXMgbm90IGRlZmluZWQiKQpWYWx1ZUVycm9yOiBGdW5jdGlvbiBjb21tb25zLnRhc2tzLmVudmlhcl9jb3JyZW9fZGlhcmlvIGlzIG5vdCBkZWZpbmVkCpQu",
+    "group": "test_email",
+    "cluster": "DailyTasks",
+    "started": "2025-05-04T16:28:12.229Z",
+    "stopped": "2025-05-04T16:28:15.462Z",
+    "success": false,
+    "attempt_count": 1
+  }
+}
+]

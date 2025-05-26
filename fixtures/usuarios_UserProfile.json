@@ -1,0 +1,82 @@
+[
+{
+  "model": "usuarios.userprofile",
+  "pk": 1,
+  "fields": {
+    "user": 1,
+    "foto": "usuarios/fotosPerfil/crayones_jpg_zlum16"
+  }
+},
+{
+  "model": "usuarios.userprofile",
+  "pk": 2,
+  "fields": {
+    "user": 2,
+    "foto": "usuarios/fotosPerfil/a887711f-00ad-450d-948c-64f2f6770033_nyui9w"
+  }
+},
+{
+  "model": "usuarios.userprofile",
+  "pk": 4,
+  "fields": {
+    "user": 4,
+    "foto": "usuarios/fotosPerfil/b07e1b38-8fca-47e8-86c7-ccdfdd3dfa00_jh1vi4"
+  }
+},
+{
+  "model": "usuarios.userprofile",
+  "pk": 5,
+  "fields": {
+    "user": 5,
+    "foto": "usuarios/fotosPerfil/316053d3-97ef-4ecd-b587-f705a6677080_hsitfo"
+  }
+},
+{
+  "model": "usuarios.userprofile",
+  "pk": 6,
+  "fields": {
+    "user": 6,
+    "foto": "usuarios/fotosPerfil/cd2ff2c1-d32f-4e99-a538-1ca3e46cd0a1_am8dqu"
+  }
+},
+{
+  "model": "usuarios.userprofile",
+  "pk": 12,
+  "fields": {
+    "user": 12,
+    "foto": ""
+  }
+},
+{
+  "model": "usuarios.userprofile",
+  "pk": 13,
+  "fields": {
+    "user": 13,
+    "foto": ""
+  }
+},
+{
+  "model": "usuarios.userprofile",
+  "pk": 14,
+  "fields": {
+    "user": 14,
+    "foto": ""
+  }
+},
+{
+  "model": "usuarios.userprofile",
+  "pk": 15,
+  "fields": {
+    "user": 15,
+    "foto": ""
+  }
+},
+{
+  "model": "usuarios.userprofile",
+  "pk": 16,
+  "fields": {
+    "user": 16,
+    "foto": "usuarios/fotosPerfil/1200px-Wooper_de_Paldea_ktg1ww"
+  }
+}
+]

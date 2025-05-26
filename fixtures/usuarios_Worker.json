@@ -1,0 +1,86 @@
+[
+{
+  "model": "usuarios.worker",
+  "pk": 1,
+  "fields": {
+    "user_profile": 2,
+    "dni": "12345678A",
+    "phone_number": "600123456",
+    "start_date": "2024-01-15",
+    "start_time": "08:00:00",
+    "end_time": "15:00:00",
+    "delete_date": null,
+    "delete_hour": null
+  }
+},
+{
+  "model": "usuarios.worker",
+  "pk": 3,
+  "fields": {
+    "user_profile": 4,
+    "dni": "12345678B",
+    "phone_number": "111111111111111",
+    "start_date": "2025-05-05",
+    "start_time": "08:00:00",
+    "end_time": "15:00:00",
+    "delete_date": null,
+    "delete_hour": null
+  }
+},
+{
+  "model": "usuarios.worker",
+  "pk": 4,
+  "fields": {
+    "user_profile": 5,
+    "dni": "12345678P",
+    "phone_number": "000000000000000",
+    "start_date": "2025-05-05",
+    "start_time": "15:00:00",
+    "end_time": "22:00:00",
+    "delete_date": null,
+    "delete_hour": null
+  }
+},
+{
+  "model": "usuarios.worker",
+  "pk": 5,
+  "fields": {
+    "user_profile": 6,
+    "dni": "01010101M",
+    "phone_number": "888888888",
+    "start_date": "2025-05-12",
+    "start_time": "15:00:00",
+    "end_time": "22:00:00",
+    "delete_date": null,
+    "delete_hour": null
+  }
+},
+{
+  "model": "usuarios.worker",
+  "pk": 13,
+  "fields": {
+    "user_profile": 12,
+    "dni": "87654321K",
+    "phone_number": "609654327",
+    "start_date": "2024-01-16",
+    "start_time": "11:00:00",
+    "end_time": "12:00:00",
+    "delete_date": "2025-06-16",
+    "delete_hour": "13:35:10.863"
+  }
+},
+{
+  "model": "usuarios.worker",
+  "pk": 14,
+  "fields": {
+    "user_profile": 16,
+    "dni": "36363636Ñ",
+    "phone_number": "111111111111143",
+    "start_date": "2025-05-17",
+    "start_time": "08:00:00",
+    "end_time": "15:00:00",
+    "delete_date": null,
+    "delete_hour": null
+  }
+}
+]

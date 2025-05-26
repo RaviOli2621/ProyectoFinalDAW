@@ -1,0 +1,38 @@
+[
+{
+  "model": "usuarios.fiestas",
+  "pk": 5,
+  "fields": {
+    "fecha": "2025-05-29",
+    "general": false,
+    "empleado": 3
+  }
+},
+{
+  "model": "usuarios.fiestas",
+  "pk": 7,
+  "fields": {
+    "fecha": "2025-05-15",
+    "general": false,
+    "empleado": 3
+  }
+},
+{
+  "model": "usuarios.fiestas",
+  "pk": 12,
+  "fields": {
+    "fecha": "2025-05-20",
+    "general": false,
+    "empleado": 1
+  }
+},
+{
+  "model": "usuarios.fiestas",
+  "pk": 13,
+  "fields": {
+    "fecha": "2025-05-21",
+    "general": false,
+    "empleado": 1
+  }
+}
+]

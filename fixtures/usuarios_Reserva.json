@@ -1,0 +1,28 @@
+[
+{
+  "model": "usuarios.reserva",
+  "pk": 17,
+  "fields": {
+    "fecha": "2025-05-21T15:00:00Z",
+    "idCliente": 1,
+    "idMasaje": 4,
+    "duracion": "01:00:00",
+    "pagado": false,
+    "hecho": false,
+    "metodo_pago": "efectivo"
+  }
+},
+{
+  "model": "usuarios.reserva",
+  "pk": 18,
+  "fields": {
+    "fecha": "2025-05-21T15:00:00Z",
+    "idCliente": 1,
+    "idMasaje": 2,
+    "duracion": "01:00:00",
+    "pagado": false,
+    "hecho": false,
+    "metodo_pago": "efectivo"
+  }
+}
+]

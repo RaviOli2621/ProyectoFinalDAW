@@ -1,0 +1,21 @@
+[
+{
+  "model": "django_q.schedule",
+  "pk": 2,
+  "fields": {
+    "name": "manage_reservations",
+    "func": "commons.tasks.manage_reservations",
+    "hook": null,
+    "args": null,
+    "kwargs": null,
+    "schedule_type": "D",
+    "minutes": null,
+    "repeats": -1,
+    "next_run": "2025-05-05T00:00:00Z",
+    "cron": null,
+    "task": null,
+    "cluster": null,
+    "intended_date_kwarg": null
+  }
+}
+]

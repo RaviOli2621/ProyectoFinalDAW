@@ -1,0 +1,47 @@
+[
+{
+  "model": "masajes.tipomasaje",
+  "pk": 1,
+  "fields": {
+    "nombre": "Masajes Terapéuticos",
+    "description": "",
+    "foto": "masajes/static/masajes/terapeuticos.jpg"
+  }
+},
+{
+  "model": "masajes.tipomasaje",
+  "pk": 2,
+  "fields": {
+    "nombre": "Masajes Relajantes",
+    "description": "",
+    "foto": "masajes/static/masajes/relax.jpg"
+  }
+},
+{
+  "model": "masajes.tipomasaje",
+  "pk": 3,
+  "fields": {
+    "nombre": "Masajes Orientales",
+    "description": "",
+    "foto": "masajes/static/masajes/orienta.jpg"
+  }
+},
+{
+  "model": "masajes.tipomasaje",
+  "pk": 4,
+  "fields": {
+    "nombre": "Masajes Estéticos y Anticelulíticos",
+    "description": "",
+    "foto": "masajes/static/masajes/masaje-anticelulitico-corporal.jpg"
+  }
+},
+{
+  "model": "masajes.tipomasaje",
+  "pk": 5,
+  "fields": {
+    "nombre": "Masajes Especiales y Sensoriales",
+    "description": "",
+    "foto": "masajes/static/masajes/msensorial.jpg"
+  }
+}
+]
