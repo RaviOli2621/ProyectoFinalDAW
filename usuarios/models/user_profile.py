@@ -8,6 +8,7 @@ import cloudinary
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)  
     foto = models.ImageField(upload_to="usuarios/fotosPerfil/", storage=CloudinaryStorage(), blank=True, null=True)
+    recover_token = models.CharField(max_length=255, blank=True, null=True)
 
     def __str__(self):
         return self.user.username
@@ -29,7 +30,11 @@ class UserProfile(models.Model):
     def set_foto(self, foto):
         self.foto = foto
         self.save()
-
+    
+    def set_recover_token(self, token):
+        self.recover_token = token
+        self.save()
+    
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):
     if created:

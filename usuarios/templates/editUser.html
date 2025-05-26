@@ -9,9 +9,11 @@
 <link rel="stylesheet" href="{% static 'css/workerData.css' %}">
 
 <div class="worker-form">
-    <form method="POST" enctype="multipart/form-data" action="{% url 'editUser' %}">
+    <form method="POST" enctype="multipart/form-data" action="">
         {% csrf_token %}
-        
+        {% if token %}
+            <input type="hidden" name="token" value="{{ token }}">
+        {% endif %}
         <div class="form-group">
             <label for="{{ form.foto.id_for_label }}">Foto de perfil:</label>
             

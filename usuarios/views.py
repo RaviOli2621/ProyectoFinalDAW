@@ -15,6 +15,8 @@ from django.contrib.auth.hashers import make_password
 from django.contrib.auth import get_user_model
 import random
 import string
+import jwt
+from django.conf import settings
 
 from usuarios.forms import CustomLoginForm, CustomSignInForm, UserEditForm, WorkeCreaterForm, WorkerEditForm
 from usuarios.models import UserProfile, Worker
@@ -268,40 +270,100 @@ def importar_workers(request):
 
 def forgot_username(request):
     context = {}
-    
     if request.method == 'POST':
         email = request.POST.get('email', '')
-        
-        # User = get_user_model()
         try:
             user = UserManager.get_by_email(email)
             if not user:
                 raise User.DoesNotExist()
-            temp_password = ''.join(random.choices(string.ascii_letters + string.digits, k=10))
-            user.password = make_password(temp_password)
-            user.save()
-            subject = 'Recuperación de datos de acceso'
+            profile, _ = UserProfile.get_or_create_by_user(user)
+            payload = {
+                'user_id': user.id,
+                'exp': datetime.datetime.now(datetime.timezone.utc) + datetime.timedelta(hours=1),
+                'jti': ''.join(random.choices(string.ascii_letters + string.digits, k=16))
+            }
+            token = jwt.encode(payload, settings.SECRET_KEY, algorithm='HS256')
+            profile.set_recover_token(token)
+            reset_url = f"{request.build_absolute_uri('/')[:-1]}/recover-user?token={token}"
+            subject = 'Recuperación de contraseña'
             message = f'''
-            Hola {user.first_name},
-            
-            Has solicitado la recuperación de tus datos de acceso.
-            
-            Tu nombre de usuario: {user.username}
-            Tu contraseña temporal: {temp_password}
-            
-            Por favor, cambia tu contraseña tan pronto como inicies sesión.
-            
-            Saludos,
-            El equipo de soporte
+            Hola {user.username},
+
+            Has solicitado recuperar tu contraseña.
+            Haz clic en el siguiente enlace para restablecerla (válido 1 hora, un solo uso):
+
+            {reset_url}
+
+            Si no solicitaste esto, ignora este correo.
             '''
-            from_email = 'noreply@tudominio.com'
+            from_email = 'no-reply@tudominio.com'
             recipient_list = [email]
             send_mail(subject, message, from_email, recipient_list, fail_silently=False)
-            context['success'] = 'Se ha enviado un correo electrónico con tus datos de acceso'
+            context['success'] = 'Se ha enviado un correo electrónico con el enlace para restablecer la contraseña'
         except User.DoesNotExist:
             context['error'] = 'No existe ningún usuario con ese correo electrónico'
-    
     return render(request, 'forgot_username.html', context)
+
+def recover_user(request):
+    if( request.method == 'GET'):
+        token = request.GET.get('token', '')
+        if not token:
+            return JsonResponse({'error': 'Token no proporcionado'}, status=400)
+        try:
+            payload = jwt.decode(token, settings.SECRET_KEY, algorithms=['HS256'])
+            user_id = payload.get('user_id')
+            user = UserManager.get_by_id(user_id)
+            if not user:
+                return JsonResponse({'error': 'Usuario no encontrado'}, status=404)
+            profile, _ = UserProfile.get_or_create_by_user(user)
+            
+            if profile.recover_token != token:
+                return JsonResponse({'error': 'Token inválido o ya utilizado'}, status=400)
+
+            initial_data = {
+                'username': user.username,
+                'email': user.email,
+            }
+            form = UserEditForm(initial=initial_data)
+            return render(request, "editUser.html", {
+                "form": form,
+                'user': user,
+                'token': token,
+            })
+        except jwt.ExpiredSignatureError:
+            return JsonResponse({'error': 'El token ha expirado'}, status=400)
+        except jwt.InvalidTokenError:
+            return JsonResponse({'error': 'Token inválido'}, status=400)
+    elif request.method == 'POST':
+        token = request.POST.get('token', '')
+        if not token:
+            return JsonResponse({'error': 'Token no proporcionado'}, status=400)
+        try:
+            payload = jwt.decode(token, settings.SECRET_KEY, algorithms=['HS256'])
+            user_id = payload.get('user_id')
+            user = UserManager.get_by_id(user_id)
+            if not user:
+                return JsonResponse({'error': 'Usuario no encontrado'}, status=404)
+            profile, _ = UserProfile.get_or_create_by_user(user)
+            
+            if profile.recover_token != token:
+                return JsonResponse({'error': 'Token inválido o ya utilizado'}, status=400)
+
+            password1 = request.POST.get('password1', '')
+            password2 = request.POST.get('password2', '')
+            if password1 != password2:
+                return JsonResponse({'error': 'Las contraseñas no coinciden'}, status=400)
+
+            user.set_password(password1)
+            user.save()
+            profile.set_recover_token(None)  
+            login(request, user)  
+            return redirect('home')
+        except jwt.ExpiredSignatureError:
+            return JsonResponse({'error': 'El token ha expirado'}, status=400)
+        except jwt.InvalidTokenError:
+            return JsonResponse({'error': 'Token inválido'}, status=400)
+    
 
 @permission_required('auth.change_user')
 def crear_worker(request):
