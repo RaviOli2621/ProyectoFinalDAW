@@ -8,6 +8,7 @@ boto3==1.38.5
 botocore==1.38.5
 Brotli==1.1.0
 certifi==2025.1.31
+cffi==1.17.1
 charset-normalizer==3.4.1
 click==8.1.8
 click-didyoumean==0.3.1
@@ -16,8 +17,10 @@ click-repl==0.3.0
 cloudinary==1.44.0
 colorama==0.4.6
 cron-descriptor==1.4.5
+cryptography==45.0.3
 dj-database-url==2.3.0
 Django==5.1.7
+django-allauth==65.8.1
 django-capture-tag==1.0
 django-cloudinary-storage==0.3.0
 django-picklefield==3.3
@@ -33,6 +36,7 @@ packaging==25.0
 pillow==11.1.0
 prompt_toolkit==3.0.51
 psycopg2-binary==2.9.10
+pycparser==2.22
 pycryptodome==3.22.0
 PyJWT==2.10.1
 python-crontab==3.2.0
