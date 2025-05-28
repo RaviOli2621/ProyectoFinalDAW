@@ -89,6 +89,7 @@ def signin(request):
                 "toastType": "error"
             })
         else: 
+            user.backend = 'django.contrib.auth.backends.ModelBackend'
             login(request, user)
             if request.POST.get('remember_me', False):
                 print(f"modongo")
@@ -127,6 +128,7 @@ def editUser(request):
                 user_profile.set_foto(request.FILES['foto'])
                 print(f"URL de la imagen guardada: {user_profile.foto.url}")
             if password1:
+                user.backend = 'django.contrib.auth.backends.ModelBackend'
                 login(request, user)
             return redirect('home')
         else:
@@ -359,6 +361,7 @@ def recover_user(request):
             user.set_password(password1)
             user.save()
             profile.set_recover_token(None)  
+            user.backend = 'django.contrib.auth.backends.ModelBackend'
             login(request, user)  
             return redirect('home')
         except jwt.ExpiredSignatureError:
