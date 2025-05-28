@@ -16,7 +16,7 @@ footer {
 }
 
 footer a {
-    color: var(--strong-color);
+    color:var(--secondary-dark-color);
     text-decoration: none;
     transition: color 0.2s;
 }

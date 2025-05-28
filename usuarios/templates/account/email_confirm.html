@@ -1,0 +1,33 @@
+<!-- filepath: c:\xampp\htdocs\Practiques\Projecte\Projecte final\Final\usuarios\templates\account\email_confirm.html -->
+{% extends "base.html" %}
+
+{% block content %}
+<div style="max-width: 500px; margin: 3rem auto; background: #fff; border-radius: 1rem; box-shadow: 0 2px 16px #0001; padding: 2rem; text-align: center;">
+    {% if confirmation %}
+        {% if confirmation.confirmed %}
+            <h2 style="color: #2b7cff;">¡Correo confirmado!</h2>
+            <p style="font-size: 1.1rem; color: #444;">
+                Tu dirección de correo ha sido verificada correctamente.<br>
+                Ya puedes acceder a todas las funcionalidades de la web.
+            </p>
+        {% else %}
+            <h2 style="color: #2b7cff;">Confirmar correo electrónico</h2>
+            <p style="font-size: 1.1rem; color: #444;">
+                Haz clic en el botón para confirmar tu dirección de correo electrónico.
+            </p>
+            <form method="post">
+                {% csrf_token %}
+                <button type="submit" class="btn" style="margin-top: 1.5rem; background: #2b7cff; color: #fff; padding: 0.7rem 2rem; border-radius: 0.5rem; border: none;">
+                    Confirmar correo
+                </button>
+            </form>
+        {% endif %}
+    {% else %}
+        <h2 style="color: #e74c3c;">Error</h2>
+        <p style="font-size: 1.1rem; color: #444;">
+            No se ha podido confirmar tu correo electrónico.
+        </p>
+    {% endif %}
+    <a href="/" class="btn" style="margin-top: 1.5rem; display: inline-block; background: #2b7cff; color: #fff; padding: 0.7rem 2rem; border-radius: 0.5rem; text-decoration: none;">Ir al inicio</a>
+</div>
+{% endblock %}

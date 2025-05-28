@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div style="max-width: 400px; margin: 3rem auto; background: #fff; border-radius: 1rem; box-shadow: 0 2px 16px #0001; padding: 2rem;">
+    <h2 style="color: #FF4500;">¡Completa tu registro!</h2>
+    <p style="color: #444;">
+        Para continuar, necesitamos tu dirección de correo electrónico.
+    </p>
+    <form method="post" action="">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn" style="margin-top: 1rem; background: #FF4500; color: #fff; padding: 0.7rem 2rem; border-radius: 0.5rem; border: none;">
+            Finalizar registro
+        </button>
+    </form>
+</div>
+{% endblock %}

@@ -21,4 +21,6 @@ urlpatterns = [
     path('forgot-username/', views.forgot_username, name='forgot_username'),
     path('recover-user/', views.recover_user, name='recover_user'),
 
+    path('accounts/password/reset/', views.redirect_password_reset, name='password_reset_redirect'),
+
 ]

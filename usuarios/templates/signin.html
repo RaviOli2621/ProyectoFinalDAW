@@ -54,11 +54,60 @@
         <p class="signup-link">
             No tienes cuenta?   <a href="{% url 'signup' %}">SignUp</a>
         </p>
-
+        <br>
+        <p class="signup-link">
+            Tambien te puedes regisrtrar con: <br>
+        </p>
     </form>
-
+    <div style="display: flex; justify-content: center; gap: 1rem; margin-top: 2rem;">
+        {% load socialaccount %}
+        <a href="{% provider_login_url 'google' %}" 
+           style="
+                display: inline-flex;
+                align-items: center;
+                gap: 0.35rem;
+                background: #fff;
+                color: #444;
+                border: 1px solid #ccc;
+                padding: 0.6rem 2rem;
+                border-radius: 2rem;
+                font-weight: 500;
+                font-size: 0.75rem;
+                box-shadow: 0 2px 8px #0001;
+                transition: box-shadow 0.2s, border 0.2s;
+                text-decoration: none;
+            "
+           onmouseover="this.style.boxShadow='0 4px 16px #0002';this.style.borderColor='#4285F4';"
+           onmouseout="this.style.boxShadow='0 2px 8px #0001';this.style.borderColor='#ccc';"
+        >
+            <img src="{% static 'google.svg' %}" alt="Google" style="height:1.5rem; vertical-align:middle;">
+            Google
+        </a>
+        <a href="{% provider_login_url 'reddit' %}"
+        style="
+                display: inline-flex;
+                align-items: center;
+                gap: 0.35rem;
+                background: #fff;
+                color: #444;
+                border: 1px solid #ccc;
+                padding: 0.6rem 2rem;
+                border-radius: 2rem;
+                font-weight: 500;
+                font-size: 0.75rem;
+                box-shadow: 0 2px 8px #0001;
+                transition: box-shadow 0.2s, border 0.2s;
+                text-decoration: none;
+            "
+        onmouseover="this.style.boxShadow='0 4px 16px #0002';this.style.borderColor='#FF4500';"
+        onmouseout="this.style.boxShadow='0 2px 8px #0001';this.style.borderColor='#ccc';"
+        >
+            <img src="{% static 'reddit.svg' %}" alt="Reddit" style="height:1.5rem; vertical-align:middle;">
+            Reddit
+        </a>
+    </div>
         
-</button></div>
+
 </div>
 
 {% endblock %}

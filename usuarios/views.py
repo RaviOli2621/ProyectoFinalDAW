@@ -156,6 +156,8 @@ def userList(request, user_id=""):
 
     return JsonResponse({'success': False, 'error': 'Método no permitido'}, status=405)
 
+def redirect_password_reset(request):
+    return redirect('/forgot-username/')
 
 @permission_required('auth.change_user')
 def workerList(request):

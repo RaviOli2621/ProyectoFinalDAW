@@ -1,0 +1,7 @@
+¡Hola de parte de example.com!
+
+Ya existe una cuenta con el correo {{ email }}.
+
+Si eres tú, inicia sesión normalmente. Si tienes problemas, contacta con soporte.
+
+¡Gracias por usar proyectofinaldaw-h88n.onrender.com!

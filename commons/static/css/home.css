@@ -49,14 +49,20 @@
     margin: 0 0 0.5rem 0;
 }
 .carousel-caption button {
-    background: #2f319e;
+    background: var(--secondary-dark-color);
     color: #fff;
     border: none;
     padding: 0.5rem 1.2rem;
     border-radius: 0.5rem;
     cursor: pointer;
     font-size: 1rem;
+    transition: background 0.2s;
 }
+.carousel-caption button:hover {
+    transition: background 0.2s;
+    background: rgba(44,62,80,0.7);
+}
+
 .carousel-btn {
     position: absolute;
     top: 50%;
@@ -73,7 +79,7 @@
 }
 .carousel-btn.prev { left: 1rem; }
 .carousel-btn.next { right: 1rem; }
-.carousel-btn:hover { background: #2f319e; }
+.carousel-btn:hover { background: var(--secondary-dark-color); }
 .carousel-autoplay-control {
     position: absolute;
     right: 1.5rem;

@@ -1,0 +1,16 @@
+<!-- filepath: c:\xampp\htdocs\Practiques\Projecte\Projecte final\Final\usuarios\templates\account\email_confirmation_sent.html -->
+{% extends "base.html" %}
+
+{% block content %}
+<div style="max-width: 500px; margin: 3rem auto; background: #fff; border-radius: 1rem; box-shadow: 0 2px 16px #0001; padding: 2rem; text-align: center;">
+    <h2 style="color: #2b7cff;">¡Revisa tu correo!</h2>
+    <p style="font-size: 1.1rem; color: #444;">
+        Te hemos enviado un enlace de confirmación a tu dirección de correo electrónico.<br>
+        Haz clic en el enlace para activar tu cuenta.
+    </p>
+    <p style="color: #888; font-size: 0.95rem;">
+        Si no ves el correo, revisa tu carpeta de spam o promociones.
+    </p>
+    <a href="/" class="btn" style="margin-top: 1.5rem; display: inline-block; background: #2b7cff; color: #fff; padding: 0.7rem 2rem; border-radius: 0.5rem; text-decoration: none;">Volver al inicio</a>
+</div>
+{% endblock %}
