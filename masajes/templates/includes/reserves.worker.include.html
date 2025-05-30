@@ -4,15 +4,11 @@
     <div class="Title">
     {% comment %} Se tiene que hacer dos conversiones para que no llore. Pasar el int a string y luego la concatenacion  {% endcomment %}
         {% with id=reserva.id|stringformat:"s" %} 
-            {% with reservaid="?reservaid="|add:id %}
-                {% include "commons/includes/imgBoton.include.html" with src="/pen.svg" alt="Pen Icon" url="reservar_cambio" data=reservaid %}
-            {% endwith %}
+            <div></div>
 
             <div>{{nombre}}</div>
 
-            {% with accionAHacer="showConfirmModal("|add:id|add:")" %}
-                {% include "commons/includes/imgBoton.include.html" with src="/trash.svg" alt="Trash Icon" action=accionAHacer  %}
-            {% endwith %}
+            <div id="reserva-id-{{reserva.id}}">{{reserva.id}}</div>
         {% endwith %}
 
     </div>
@@ -27,7 +23,12 @@
             <input id="reserva-pagado-{{reserva.id}}" type="checkbox" {% if reserva.pagado %}checked{% endif %} disabled>
             </label>
         </div>
-        <div id="reserva-id-{{reserva.id}}">id:{{reserva.id}}</div>
+        <div>
+            <label>
+            <p>Hecho:</p> 
+            <input id="reserva-hecho-{{reserva.id}}" type="checkbox" {% if reserva.hecho %}checked{% endif %} disabled>
+            </label>
+        </div>
     </div>
     <script defer src="{% static 'js/modal.include.js' %}"></script>
 </div>

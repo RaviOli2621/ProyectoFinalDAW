@@ -9,6 +9,7 @@ from commons.utils import get_filename
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User 
 from django.utils.timezone import make_aware, is_naive
+from django.utils import timezone
 import json
 
 def worker_required(view_func):
@@ -65,7 +66,16 @@ def workerReserves(request):
             print(e)
             return JsonResponse({'success': False, 'error': str(e)})
     else:
-        return render(request,"workerReservas.html",{
+        # Mostrar reservas futuras (o de hoy)
+        hoy = timezone.now().date()
+        reservas = Reserva.objects.filter(fecha__date__gte=hoy)
+        for reserva in reservas:
+            reserva.foto_nombre = get_filename(reserva.idMasaje.foto)
+            reserva.duracion_formatada = f"{reserva.idMasaje.duracion.total_seconds() / 3600:.1f}"
+            reserva.precio_final = float(reserva.idMasaje.precio) * float(reserva.duracion_formatada)
+            print(reserva)
+        return render(request, "workerReservas.html", {
+            "reservas": reservas
         })
 
 def getReservaById(request):

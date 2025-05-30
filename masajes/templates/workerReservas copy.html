@@ -4,15 +4,10 @@
     {% include "commons/includes/title.include.html" with Titulo="Ver reservas como trabajador" Subtitulo="Podras gestionar las reservas de hoy" %}
     <form method="" class="search-bar" style="margin-bottom: 20px;">
         <input type="text" name="q" placeholder="Buscar reserva..." value="{{ request.GET.q|default:'' }}">
+        <button type="submit">Buscar</button>
     </form>
 
-    <div id="contentList">
-        {% for reserva in reservas %}
-                {% include "includes/reserves.worker.include.html" with imagen=reserva.foto_nombre nombre=reserva.idMasaje.nombre description="Mondongo" reserva=reserva %}
-            {% empty %}
-                <p>No hay reservas futuras.</p>
-        {% endfor %}
-    </div>
+    {% include "includes/reserves.include.html" with imagen="nothing" nombre="nothing" description="nothing" %}
     
     <script src="{% static 'js/buscarReservas.js' %}"></script>
     <link rel="stylesheet" href="{% static 'css/workerReservas.css' %}">
