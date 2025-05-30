@@ -1,6 +1,8 @@
 from datetime import datetime, time, timedelta
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
+from django.core.mail import send_mail
+from django.conf import settings
 
 from usuarios.forms import ReservaForm, TarjetaForm
 from usuarios.models import Fiestas, Reserva, Worker, UserManager
@@ -253,7 +255,25 @@ def borrar_reserva(request, reserva_id):
         if not reserva:
             return JsonResponse({'success': False, 'error': 'Reserva no encontrada'})
         try:
+            fecha_objetivo = reserva.fecha.date()
             reserva.delete()
+
+            fecha_inicio = fecha_objetivo - timedelta(days=1)
+            fecha_fin = fecha_objetivo + timedelta(days=1)
+            reservas_cercanas = Reserva.objects.filter(
+                fecha__date__gte=fecha_inicio,
+                fecha__date__lte=fecha_fin
+            ).exclude(id=reserva_id)
+
+            for r in reservas_cercanas:
+                send_mail(
+                    subject="Aviso sobre reservas cercanas",
+                    message=f"Estimado/a {r.idCliente.username},\n\nLe informamos que ha habido cambios en las reservas cercanas a la suya. Si desea cambiar su reserva, vaya a la sección de reservas en nuestra web https://proyectofinaldaw-h88n.onrender.com y realice los cambios necesarios.",
+                    from_email='no-reply@proyectofinaldaw.com',
+                    recipient_list=[r.idCliente.email],
+                    fail_silently=True,
+                )
+
             return JsonResponse({'success': True})
         except Exception as e:
             return JsonResponse({'success': False, 'error': str(e)})

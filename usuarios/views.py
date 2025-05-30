@@ -300,7 +300,7 @@ def forgot_username(request):
 
             Si no solicitaste esto, ignora este correo.
             '''
-            from_email = 'no-reply@tudominio.com'
+            from_email = 'no-reply@proyectofinaldaw.com'
             recipient_list = [email]
             send_mail(subject, message, from_email, recipient_list, fail_silently=False)
             context['success'] = 'Se ha enviado un correo electrónico con el enlace para restablecer la contraseña'
